@@ -1,0 +1,9 @@
+/out
+/.idea
+/venv
+
+*.tex
+media/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
