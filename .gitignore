@@ -2,8 +2,10 @@
 /.idea
 /venv
 
-*.tex
 media/
+*.log
+*.gz
+*.aux
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
