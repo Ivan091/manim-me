@@ -3,6 +3,7 @@
 /venv
 
 media/
+prduction/
 *.log
 *.gz
 *.aux
