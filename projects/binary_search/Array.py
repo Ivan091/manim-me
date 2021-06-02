@@ -1,5 +1,3 @@
-import sys
-
 from manim import *
 
 sys.path.append("../../")
