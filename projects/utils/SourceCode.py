@@ -9,12 +9,7 @@ from projects.utils import WaitingScene
 class SourceCode(VGroup, ABC):
     """
     Indexes of line and of char in code begin from 1
-
     [i] -> CodeLine i
-
-    [i][0] -> Row number Paragraph
-
-    [i][1] -> Line of code Paragraph
     """
 
     def __init__(
@@ -42,8 +37,8 @@ class SourceCode(VGroup, ABC):
         end = min(end, listing.code.__len__())
 
         self.add(VMobject())
-        for i in range(start, end):
-            self.add(VGroup(listing[1][i], listing[2][i]))
+        for q in range(start, end):
+            self.add(listing[2][q])
 
 
 class SourceCodeGenerator(Code, ABC):
@@ -80,7 +75,7 @@ class SourceCodeGenerator(Code, ABC):
                 line_str = line_str + self.code_json[line_no][word_index][0]
             lines_text.append(" " + self.tab_spaces[line_no] * " " * self.tab_width + line_str)
         code = Paragraph(
-            *[i for i in lines_text],
+            *lines_text,
             line_spacing=self.line_spacing,
             font=self.font,
             disable_ligatures=True,
@@ -90,10 +85,7 @@ class SourceCodeGenerator(Code, ABC):
             line = code.chars[line_no]
             line_char_index = self.tab_spaces[line_no] * self.tab_width + 1
             for word_index in range(self.code_json[line_no].__len__()):
-                line[
-                line_char_index: line_char_index
-                                 + self.code_json[line_no][word_index][0].__len__()
-                ].set_color(self.code_json[line_no][word_index][1])
+                line[line_char_index: line_char_index + self.code_json[line_no][word_index][0].__len__()].set_color(self.code_json[line_no][word_index][1])
                 line_char_index += self.code_json[line_no][word_index][0].__len__()
         return code
 

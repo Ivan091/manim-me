@@ -1,7 +1,6 @@
 import sys
 
 sys.path.append("../../")
-from projects.utils.ArrowMobject import ArrowMobject, update_arrow
 from projects.utils.WaitingScene import *
 
 
@@ -17,7 +16,7 @@ class Contract(WaitingScene):
         fieldsAndMethodsTx = VGroup(fieldsTx, methodsTx).scale(0.7)
         brace = Brace(fieldsAndMethodsTx, LEFT)
         VGroup(brace, fieldsAndMethodsTx).next_to(contract, RIGHT)
-        self.play_wait(VFadeIn(brace))
+        self.play_wait(FadeIn(brace, shift=RIGHT))
         self.play_wait(Write(fieldsAndMethodsTx))
         self.play_wait(GrowArrow(Arrow(typeText, contract.get_edge_center(LEFT)).set_color(BLUE)))
 
@@ -28,15 +27,12 @@ class Contract(WaitingScene):
         self.play_wait(Write(objectItem))
 
         arrows_to_obj = VGroup(
-            ArrowMobject(objectItem, typeText).set_color(BLUE).add_updater(
-                lambda a: update_arrow(a, objectItem, typeText)),
-            ArrowMobject(objectItem, contract).set_color(BLUE).add_updater(
-                lambda a: update_arrow(a, objectItem, contract))
+            Arrow(objectItem, typeText).set_color(BLUE),
+            Arrow(objectItem, contract).set_color(BLUE)
         )
 
-        self.play_wait(Write(arrows_to_obj[0]))
-        self.play_wait(Write(arrows_to_obj[1]))
-        self.play_wait(Transform(objectItem, angel))
+        self.play_wait(GrowArrow(arrows_to_obj[0]))
+        self.play_wait(GrowArrow(arrows_to_obj[1]))
 
         demon = SVGMobject("svg/demon3.svg").set_color(RED_D).move_to(objectItem.get_center() + DOWN * 0.7)
         self.play_wait(Transform(objectItem, Text("null").set_color(demon.get_color()).move_to(objectItem)))
@@ -64,5 +60,5 @@ class Contract(WaitingScene):
         for a in arrows_to_obj:
             a.clear_updaters(recursive=True)
         npe = Text("NullPointerException").set_color(demon.get_color())
-        self.play_wait(ReplacementTransform(Group(*self.mobjects), npe))
+        self.play_wait(ReplacementTransform(VGroup(*self.get_all_vmobjects(), objectItem, *arrows_to_obj), npe))
         self.play_wait(FadeOut(npe))

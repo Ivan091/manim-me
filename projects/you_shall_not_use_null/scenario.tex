@@ -21,22 +21,20 @@
     The program becomes less readable and maintainable what makes it expensive and unpleasant to work with.
     It's especially painful when we talk about lambdas or collection processing because the null checks can double such type of code that pisses people off.
 
-    Second, null reference ruins type concept.
+    Second, null reference ruins all type concept.
     Well, each type provides kinda contract, which contains the list of fields and methods, which every object of the type must have.
-    So, each object of the type must fulfill the contract.
-    The main purpose of that is to let you trust your code.
+    So, each typed entity must fulfill the contract.
+    The main purpose of that is to let you trust your own code.
     You never get no such method exception if types work fine.
     But, null doesn't think so.
     It's like a demon just pretends to be a typed object but when the contract must be fulfilled it reviles itself and fucks you up throwing null pointer exception.
-    So, no trust to objects, welcome to null check world.
+    So, no trust to objects, welcome to the null check world of shit.
 
     The root of the problem is that in many old languages like java, C\# and C++ reference types are nullable by default.
     Null itself is nothing but a pointer to the first cell in your memory.
     It is nothing it doesn't mean anything.
     Almost every programmer nowadays have a deal with abstractions, but null breaks everything.
     I'm glad Kotlin, Dart and Swift got rid of that, so it looks like we're going right way.
-
-    Finally, I strongly recommend you to never ever use null as a business value.
 
     So, how to avoid this crap?
 

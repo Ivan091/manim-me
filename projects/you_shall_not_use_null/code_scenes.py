@@ -13,6 +13,27 @@ class NullAlways(WaitingScene):
         self.play_wait(FadeOutAndShift(listing))
 
 
+class NullHandle(WaitingScene):
+    def construct(self):
+        l1 = SourceCode("src/NullHandlingSmall.java", "java")
+        l2 = SourceCode("src/NullHandlingPolluted.java", "java")
+        group = VGroup(l1, l2).scale(1.8)
+        group.arrange(RIGHT, 2)
+        self.play_wait(Write(l1))
+        self.play_wait(Write(l2))
+        self.play(FadeOut(group))
+
+
+class LambdaProcessing(WaitingScene):
+    def construct(self):
+        l1 = SourceCode("src/LambdaSmall.java", "java")
+        l2 = SourceCode("src/LambdaPolluted.java", "java")
+        gr = VGroup(l1, l2).scale(1.2).arrange(RIGHT, 1)
+        self.play_wait(Write(l1))
+        self.play_wait(Write(l2))
+        self.play_wait(FadeOut(gr))
+
+
 class NullSometimes(WaitingScene):
     def construct(self):
         listing = SourceCode("src/NullSometimes.java", "java").move_to(ORIGIN).scale(1.5)

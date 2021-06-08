@@ -8,3 +8,10 @@ class WaitingScene(Scene):
     def play_wait(self, *args, wait_time: float = 0.5, **kwargs):
         super().play(*args, **kwargs)
         self.wait(wait_time)
+
+    def get_all_vmobjects(self) -> []:
+        vMObjects = []
+        for item in self.mobjects:
+            if isinstance(item, VMobject):
+                vMObjects.append(item)
+        return vMObjects
