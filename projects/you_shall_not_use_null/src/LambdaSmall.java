@@ -1,0 +1,1 @@
+collection.forEach(x -> x.doStuff())
