@@ -1,9 +1,9 @@
 import sys
 
-sys.path.append("../../")
+sys.path.append("../")
 
 from manim import *
-from projects.utils.WaitingScene import WaitingScene
+from utils.WaitingScene import WaitingScene
 
 
 class Thumbnail(WaitingScene):

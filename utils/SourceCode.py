@@ -1,9 +1,9 @@
 import sys
 
-sys.path.append("../../")
+sys.path.append("../")
 from manim import *
 from abc import ABC
-from projects.utils import WaitingScene
+from utils import WaitingScene
 
 
 class SourceCode(VGroup, ABC):

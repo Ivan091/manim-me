@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append("../../")
-from projects.utils.WaitingScene import *
+sys.path.append("../")
+from utils.WaitingScene import *
 
 
 class Contract(WaitingScene):

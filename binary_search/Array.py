@@ -1,7 +1,7 @@
 from manim import *
 
-sys.path.append("../../")
-from projects.utils.WaitingScene import WaitingScene
+sys.path.append("../")
+from utils.WaitingScene import WaitingScene
 
 
 def init_array() -> VGroup:

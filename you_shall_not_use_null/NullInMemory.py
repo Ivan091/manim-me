@@ -1,7 +1,6 @@
 import sys
-
-sys.path.append("../../")
-from projects.utils.WaitingScene import *
+sys.path.append("../")
+from utils.WaitingScene import *
 
 
 def init_array() -> VGroup:
@@ -29,8 +28,9 @@ class NullInMemory(WaitingScene):
     def construct(self):
         array = init_array()
         pointers = init_pointers(array, 2)
-        self.play_wait(Write(array), Write(pointers))
+        self.play_wait(Write(array, run_time=10), Write(pointers))
         brace = Brace(array[0:12], UP)
         self.play_wait(FadeIn(brace))
         braceLabel = Text("memory").add_updater(lambda mob: mob.next_to(brace, UP))
         self.play_wait(Write(braceLabel))
+        self.play_wait(FadeOut(*self.get_all_vmobjects()))
