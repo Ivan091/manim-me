@@ -2,13 +2,11 @@ import sys
 
 sys.path.append("../")
 from manim import *
-from abc import ABC
 from utils import WaitingScene
 
 
-class SourceCode(VGroup, ABC):
+class SourceCode(VGroup):
     """
-    Indexes of line and of char in code begin from 1
     [i] -> CodeLine i
     """
 
@@ -16,78 +14,42 @@ class SourceCode(VGroup, ABC):
             self,
             file: str,
             language: str,
-            start: int = 1,
+            start: int = 0,
             end: int = None,
     ):
         VGroup.__init__(self)
-        listing = SourceCodeGenerator(
+        listing = Code(
             file,
             language=language,
             tab_width=4,
             font="Consolas",
             style="monokai",
-            insert_line_nums=True,
+            insert_line_nums=False,
         )
         if end is None:
             end = listing.code.__len__()
-        else:
-            end -= 1
-        start -= 1
         start = max(start, 0)
         end = min(end, listing.code.__len__())
 
-        self.add(VMobject())
         for q in range(start, end):
             self.add(listing[2][q])
 
+    def line(self, number: int) -> VGroup:
+        """
+        Gets line as VGroup by number. Numeration begins from 1.
+        :param number: line number
+        :return: line
+        """
+        return self[number - 1]
 
-class SourceCodeGenerator(Code, ABC):
-    def __init__(
-            self,
-            file_name: str = None,
-            language: str = None,
-            line_num_from: int = 1,
-            tab_width: int = 5,
-            font: str = "Consolas",
-            insert_line_nums: bool = True,
-            style: str = "monokai",
-            line_spacing: float = 0.5,
-            **kwargs,
-    ):
-        Code.__init__(
-            self,
-            file_name=file_name,
-            tab_width=tab_width,
-            font=font,
-            insert_line_no=insert_line_nums,
-            line_no_from=line_num_from,
-            style=style,
-            language=language,
-            line_spacing=line_spacing,
-            **kwargs,
-        )
-
-    def gen_colored_lines(self):
-        lines_text = []
-        for line_no in range(0, self.code_json.__len__()):
-            line_str = ""
-            for word_index in range(self.code_json[line_no].__len__()):
-                line_str = line_str + self.code_json[line_no][word_index][0]
-            lines_text.append(" " + self.tab_spaces[line_no] * " " * self.tab_width + line_str)
-        code = Paragraph(
-            *lines_text,
-            line_spacing=self.line_spacing,
-            font=self.font,
-            disable_ligatures=True,
-            stroke_width=self.stroke_width,
-        ).scale(self.scale_factor)
-        for line_no in range(code.__len__()):
-            line = code.chars[line_no]
-            line_char_index = self.tab_spaces[line_no] * self.tab_width + 1
-            for word_index in range(self.code_json[line_no].__len__()):
-                line[line_char_index: line_char_index + self.code_json[line_no][word_index][0].__len__()].set_color(self.code_json[line_no][word_index][1])
-                line_char_index += self.code_json[line_no][word_index][0].__len__()
-        return code
+    def letter(self, line: int, row: int) -> VMobject:
+        """
+        Gets letter as VMobject. Numeration begins from 1.
+        :param line: number of line of the letter
+        :param row: number of row of the letter
+        :return: letter
+        """
+        return self[line - 1][row - 1]
 
 
 def make_code_scene(scene: WaitingScene, listing: SourceCode, label: Text):
