@@ -1,9 +1,9 @@
 from manim import *
 
 config = {
-    'fast': {'gravity_constant': 0.00001, 'speed': 0.009},
-    'medium': {'gravity_constant': 0.0000051, 'speed': 0.0045},
-    'slow': {'gravity_constant': 0.0000002, 'speed': 0.001}
+    'fast': {'gravity_constant': 0.00067, 'speed': 0.0027},
+    'medium': {'gravity_constant': 0.000089, 'speed': 0.0009},
+    'slow': {'gravity_constant': 0.000012, 'speed': 0.0003}
 }
 
 
@@ -16,12 +16,38 @@ class Planet(Dot):
     def move(self):
         self.shift(self.speed)
 
-class StaticPlanet(Planet):
-        def __init__(self, mass: float, speed: np.ndarray, **kwargs):
-            super().__init__(mass, speed, **kwargs)
 
-        def move(self):
-            pass
+class StaticPlanet(Planet):
+    def __init__(self, mass: float, speed: np.ndarray, **kwargs):
+        super().__init__(mass, speed, **kwargs)
+
+    def move(self):
+        pass
+
+
+class Trace(VMobject):
+    def __init__(
+            self,
+            function,
+            length: int = sys.maxsize,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.function = function
+        self.length = length
+        self.path = [function()]
+
+    def tracing_updater(self, trace, dt):
+        trace.path.append(self.function())
+        if len(trace.path) > trace.length:
+            trace.path.pop(0)
+        trace.set_points_smoothly(trace.path)
+
+    def trace(self):
+        self.add_updater(self.tracing_updater)
+
+    def untrace(self):
+        self.remove_updater(self.tracing_updater)
 
 
 class GravitySimulation(VGroup):
@@ -40,36 +66,22 @@ class GravitySimulation(VGroup):
         self.planets = planets
         self.gravity_constant = gravity_constant
 
-    def simulate(self, frames_count: int, frame_duration: float = 0.09) -> AnimationGroup:
-        animations = []
-        init_centers = [p.copy() for p in self.planets]
-        for f in range(frames_count):
-            for p1 in self.planets:
-                for p2 in self.planets:
-                    if p1 == p2:
-                        continue
-                    p1_center = p1.get_center_of_mass()
-                    p2_center = p2.get_center_of_mass()
+    @staticmethod
+    def _planet_updater(this: Planet, dt: float, simulation):
+        for other in simulation.planets:
+            if this == other:
+                continue
+            p1_center = this.get_center_of_mass()
+            p2_center = other.get_center_of_mass()
 
-                    r = np.linalg.norm(p1_center - p2_center)
-                    dv = ((p2_center - p1_center) / r)
-                    p1.speed += dv * self.gravity_constant * self.acceleration_law(p2.mass, r)
+            r = np.linalg.norm(p1_center - p2_center)
+            dv = ((p2_center - p1_center) / r)
+            this.speed += dv * dt * simulation.gravity_constant * simulation.acceleration_law(other.mass, r)
+            this.move()
 
-            animations.append(
-                AnimationGroup(
-                    *[p.animate(rate_functions=running_start, run_time=frame_duration).move() for p in self.planets]
-                )
-            )
-            for p in self.planets:
-                p.move()
-
-        for j in range(len(init_centers)):
-            self.planets[j].move_to(init_centers[j])
-
-        return Succession(
-            *animations,
-            lag_ratio=frame_duration
-        )
+    def simulate(self):
+        for p in self.planets:
+            p.add_updater(lambda m, dt: self._planet_updater(m, dt, self))
 
 
 class Simulation(Scene):
@@ -81,38 +93,37 @@ class Simulation(Scene):
             Planet(1, LEFT * 10).move_to(DOWN * 2).set_color(YELLOW),
             StaticPlanet(1000, ORIGIN),
         ]
-        self.play(
-            Write(MathTex(r"g=\frac{m}{r^{2}}").to_corner(UP + LEFT)),
-            GravitySimulation(*planets, **config['medium']).simulate(3000, 0.1)
-        )
+        gr = GravitySimulation(*planets, **config['fast'])
+        self.add(gr)
+        gr.simulate()
+        self.wait(10)
 
 
 class SimulationRLinear(Scene):
     def construct(self):
         planets = [
-            Planet(1, UP * 6).move_to(LEFT * 3).set_color(BLUE),
+            Planet(1, UP * 15).move_to(LEFT * 3).set_color(BLUE),
             StaticPlanet(1000, ORIGIN).move_to(ORIGIN).set_color(YELLOW)
         ]
-        tr = TracedPath(planets[0].get_center)
-        self.add(tr)
-        self.play(
-            Write(MathTex(r"g=\frac{m}{r}").to_corner(UP + LEFT)),
-            GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r).simulate(180, 0.1)
-        )
+        tr = Trace(planets[0].get_center, sys.maxsize).set_color_by_gradient([PURE_BLUE, BLUE_D, WHITE])
+        gr = GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r)
+        self.add(tr, gr)
+        tr.trace()
+        gr.simulate()
+        self.wait(5)
 
 
 class SimulationRNormal(Scene):
     def construct(self):
         planets = [
-            Planet(1, UP * 6).move_to(LEFT * 3).set_color(BLUE),
+            Planet(1, UP * 17).move_to(LEFT * 3).set_color(BLUE),
             StaticPlanet(1000, ORIGIN).move_to(ORIGIN).set_color(YELLOW)
         ]
         tr = TracedPath(planets[0].get_center)
-        self.add(tr)
-        self.play(
-            Write(MathTex(r"g=\frac{m}{r^{2}}").to_corner(UP + LEFT)),
-            GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r ** 2).simulate(2000, 0.1)
-        )
+        gr = GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r ** 2)
+        self.add(tr, gr)
+        gr.simulate()
+        self.wait(10)
 
 
 class SimulationRTriple(Scene):
@@ -121,12 +132,10 @@ class SimulationRTriple(Scene):
             Planet(1, UP * 3.7).move_to(LEFT * 3).set_color(BLUE),
             StaticPlanet(1000, ORIGIN).move_to(ORIGIN).set_color(YELLOW)
         ]
-        tr = TracedPath(planets[0].get_center)
-        self.add(tr)
-        self.play(
-            Write(MathTex(r"g=\frac{m}{r^{3}}").to_corner(UP + LEFT)),
-            GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r ** 3).simulate(3000, 0.1)
-        )
+        tr = Trace(planets[0].get_center)
+        gr = GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r ** 3)
+        self.add(tr, gr)
+        self.wait(10)
 
 
 class ThumbNail(Scene):
@@ -136,8 +145,7 @@ class ThumbNail(Scene):
             StaticPlanet(1000, ORIGIN).move_to(LEFT * 2).set_color(YELLOW),
             StaticPlanet(1000, ORIGIN).move_to(RIGHT * 2).set_color(YELLOW),
         ]
-        tr = TracedPath(planets[0].get_center)
-        self.add(tr)
-        self.play(
-            GravitySimulation(*planets, **config['fast']).simulate(3000, 0.1)
-        )
+        tr = Trace(planets[0].get_center)
+        gr = GravitySimulation(*planets, **config['fast'])
+        self.add(tr, gr)
+        self.wait(10)
