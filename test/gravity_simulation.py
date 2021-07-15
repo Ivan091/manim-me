@@ -81,7 +81,7 @@ class GravitySimulation(VGroup):
 
     def simulate(self):
         for p in self.planets:
-            p.add_updater(lambda m, dt: self._planet_updater(m, dt, self))
+            p.add_updater(lambda m, dt: self._planet_updater(m, dt, self) if dt != 0 else m)
 
 
 class Simulation(Scene):
