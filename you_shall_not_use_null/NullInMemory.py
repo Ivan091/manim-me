@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../")
-from utils.WaitingScene import *
+from _utils.WaitingScene import *
 
 
 def init_array() -> VGroup:

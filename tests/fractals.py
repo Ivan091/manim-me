@@ -1,5 +1,3 @@
-from typing import Optional, Callable
-
 from colour import Color
 from manim import *
 

@@ -1,8 +1,5 @@
-import sys
-
-sys.path.append("../")
 from manim import *
-from utils import WaitingScene
+from _utils.WaitingScene import WaitingScene
 
 
 class SourceCode(VGroup):
@@ -15,21 +12,20 @@ class SourceCode(VGroup):
             file: str,
             language: str,
             start: int = 0,
-            end: int = None,
+            end: int = sys.maxsize,
+            **kwargs,
     ):
-        VGroup.__init__(self)
+        super().__init__(**kwargs)
         listing = Code(
             file,
             language=language,
             tab_width=4,
             font="Consolas",
             style="monokai",
-            insert_line_nums=False,
+            insert_line_no=False,
         )
-        if end is None:
-            end = listing.code.__len__()
         start = max(start, 0)
-        end = min(end, listing.code.__len__())
+        end = min(end, len(listing.code))
 
         for q in range(start, end):
             self.add(listing[2][q])

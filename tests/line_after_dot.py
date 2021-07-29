@@ -1,12 +1,11 @@
 from manim import *
 
-
 class LineAfterDot(Scene):
     def construct(self):
-        circ = Circle(color=RED).shift(4 * LEFT)
-        dot = Dot(color=RED).move_to(circ.get_start())
-        rolling_circle = VGroup(circ, dot)
-        trace = TracedPath(circ.get_start)
+        c = Circle(color=RED).shift(4 * LEFT)
+        dot = Dot(color=RED).move_to(c.get_start())
+        rolling_circle = VGroup(c, dot)
+        trace = TracedPath(c.get_start)
         self.add(trace, rolling_circle)
         self.play(rolling_circle.animate.shift(8 * RIGHT), run_time=4, rate_func=linear)
         self.wait(1)

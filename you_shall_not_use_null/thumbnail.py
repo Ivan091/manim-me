@@ -3,7 +3,7 @@ import sys
 sys.path.append("../")
 
 from manim import *
-from utils.WaitingScene import WaitingScene
+from _utils.WaitingScene import WaitingScene
 
 
 class Thumbnail(WaitingScene):

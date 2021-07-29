@@ -2,11 +2,11 @@ from manim import *
 
 
 class WaitingScene(Scene):
-    def __init__(self):
-        Scene.__init__(self)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-    def play_wait(self, *args, wait_time: float = 0.2, **kwargs):
-        super().play(*args, **kwargs)
+    def play_wait(self, *args, wait_time: float = 0.5, **kwargs):
+        self.play(*args, **kwargs)
         self.wait(wait_time)
 
     def get_all_vmobjects(self) -> []:

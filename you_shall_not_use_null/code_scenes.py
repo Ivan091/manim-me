@@ -1,8 +1,8 @@
 import sys
 
 sys.path.append("../")
-from utils.WaitingScene import *
-from utils.SourceCode import SourceCode, make_code_scene
+from _utils.WaitingScene import *
+from _utils.SourceCode import SourceCode, make_code_scene
 from manim import *
 
 

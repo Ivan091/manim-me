@@ -1,18 +1,14 @@
-import sys
-
-sys.path.append("../")
-from utils.WaitingScene import *
-from utils.SourceCode import SourceCode
 from manim import *
+from _utils.WaitingScene import WaitingScene
+from _utils.SourceCode import SourceCode
 
 
 class Stack(WaitingScene):
     def construct(self):
         listing = SourceCode("code/stack.txt", "java").scale(1.4)
-        finger = SVGMobject("../common/assets/finger.svg").scale(0.2).set_color(WHITE).next_to(listing.line(1), LEFT)
+        finger = SVGMobject("../_common/assets/finger.svg").scale(0.2).set_color(WHITE).next_to(listing.line(1), LEFT)
         VGroup(listing, finger).to_edge(LEFT)
-        VGroup(listing, finger).to_edge(LEFT)
-        stack = StackAnimated(Dot().move_to(RIGHT * 4 + DOWN * 2))
+        stack = StackAnimated(RIGHT * 4 + DOWN * 2)
         self.play_wait(Write(listing))
         self.play_wait(Write(finger))
         self.play_wait(stack.push(VGroup(Square(1.3), Text("1"))), finger.animate.next_to(listing.line(2), LEFT))

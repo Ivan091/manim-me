@@ -35,19 +35,25 @@ class Trace(VMobject):
         super().__init__(**kwargs)
         self.function = function
         self.length = length
-        self.path = [function()]
+        self.set_points([function()])
 
-    def tracing_updater(self, trace, dt):
-        trace.path.append(self.function())
-        if len(trace.path) > trace.length:
-            trace.path.pop(0)
-        trace.set_points_smoothly(trace.path)
+    @staticmethod
+    def trace_updater(trace, dt):
+        edgePoints = np.append(trace.get_points()[::trace.n_points_per_cubic_curve], [trace.get_points()[-1], trace.function()], axis=0)
+        if edgePoints.size > trace.length:
+            edgePoints = np.delete(edgePoints, 0, 0)
+        trace.set_points_smoothly(edgePoints)
 
-    def trace(self):
-        self.add_updater(self.tracing_updater)
+    def start_trace(self) -> 'Trace':
+        self.add_updater(self.trace_updater)
+        return self
 
-    def untrace(self):
-        self.remove_updater(self.tracing_updater)
+    def stop_trace(self) -> 'Trace':
+        self.remove_updater(self.trace_updater)
+        return self
+
+    def set_length(self, length: int):
+        self.length = length
 
 
 class GravitySimulation(VGroup):
@@ -108,7 +114,7 @@ class SimulationRLinear(Scene):
         tr = Trace(planets[0].get_center, sys.maxsize).set_color_by_gradient([PURE_BLUE, BLUE_D, WHITE])
         gr = GravitySimulation(*planets, **config['fast'], acceleration_law=lambda m, r: m / r)
         self.add(tr, gr)
-        tr.trace()
+        tr.start_trace()
         gr.simulate()
         self.wait(5)
 
