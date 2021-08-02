@@ -38,7 +38,7 @@ class Trace(VMobject):
         self.set_points([function()])
 
     @staticmethod
-    def trace_updater(trace, dt):
+    def trace_updater(trace):
         edgePoints = np.append(trace.get_points()[::trace.n_points_per_cubic_curve], [trace.get_points()[-1], trace.function()], axis=0)
         if edgePoints.size > trace.length:
             edgePoints = np.delete(edgePoints, 0, 0)
