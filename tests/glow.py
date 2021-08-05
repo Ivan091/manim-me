@@ -5,7 +5,16 @@ from _utils.WaitingScene import WaitingScene
 
 class GlowLine(WaitingScene):
     def construct(self):
-        a = Polygon(UP, DOWN, LEFT)
-        b = a.copy().set_stroke(width=50, opacity=0.1)
-        self.add(a)
-        self.play(Create(b))
+        tex = Tex("WaveWaveWaveWaveWave").scale(2)
+        self.play(ApplyWave(tex))
+        self.play(ApplyWave(
+            tex,
+            direction=RIGHT,
+            time_width=0.5,
+            amplitude=0.3
+        ))
+        self.play(ApplyWave(
+            tex,
+            rate_func=linear,
+            ripples=4
+        ))

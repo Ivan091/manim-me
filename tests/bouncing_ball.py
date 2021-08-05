@@ -94,5 +94,5 @@ class BouncingThumbnail(WaitingScene):
         return [t, t ** 2, 0]
 
     def construct(self):
-        self.add(ParametricFunction(self.func, t_range=[-2, 2], use_smoothing=False, stroke_width=4).scale(5).to_edge(DOWN),
-                 Circle(2))
+        self.add(ParametricFunction(self.func, t_range=[-2, 2], use_smoothing=False, stroke_width=8).scale(5).to_edge(DOWN),
+                 Circle(2, stroke_width=8))
