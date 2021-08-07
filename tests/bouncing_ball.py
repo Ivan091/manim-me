@@ -5,16 +5,18 @@ from manim import *
 from _utils.WaitingScene import WaitingScene
 
 
-def find_closest_point(point: np.ndarray, mobs: Sequence[Mobject]) -> Tuple[np.ndarray, float]:
+def find_closest_point(point: np.ndarray, mobs: Sequence[Mobject]) -> Tuple[np.ndarray, float, Mobject]:
     closestPoint = mobs[0].get_all_points()[0]
     curDist = np.linalg.norm(closestPoint - point)
+    curMob = mobs[0]
     for mob in mobs:
         for p in mob.get_all_points():
             newDist = np.linalg.norm(p - point)
             if newDist < curDist:
                 closestPoint = p
                 curDist = newDist
-    return closestPoint, curDist
+                curMob = mob
+    return closestPoint, curDist, curMob
 
 
 colors = [
@@ -30,6 +32,7 @@ colors = [
 class Ball(Circle):
     def __init__(self, speed: np.ndarray = ORIGIN, **kwargs):
         self.speed = np.copy(speed)
+        self.was_hit = False
         super().__init__(**kwargs)
 
 
@@ -40,8 +43,9 @@ class BounceSimulation(VGroup):
             walls: Sequence[ParametricFunction],
             scene: Scene,
             gravity_constant: float = 0.002,
-            speed_multiplier: float = 0.1,
+            speed_multiplier: float = 0.03,
             ball_buff: float = 1.2,
+            windage: float = 0.99999,
             **kwargs
     ):
         for ball in balls:
@@ -50,42 +54,75 @@ class BounceSimulation(VGroup):
         self.walls = walls
         self.scene = scene
         self.gravity_constant = gravity_constant
+        self.speed_multiplier = speed_multiplier
         self.ball_buff = ball_buff
+        self.windage = windage
         super().__init__(*balls, *walls, **kwargs)
 
-    def ball_updater(self, ball: Ball):
-        point, distance = find_closest_point(ball.get_center(), self.walls)
+    def wall_collision_updater(self, ball: Ball):
+        if ball.was_hit:
+            return
+        point, distance, mob = find_closest_point(ball.get_center(), self.walls)
         if distance <= ball.radius * self.ball_buff:
-            norm = ball.get_center() - point
-            norm = norm / np.linalg.norm(norm)
-            ball.speed -= 2 * np.dot(ball.speed, norm) * norm
-            self.scene.add_sound("assets/ball_hit1.wav", gain=-20)
-            ball.shift(ball.speed * 1.2)
-        else:
-            ball.speed += DOWN * self.gravity_constant
-            ball.shift(ball.speed)
-        ball.speed *= 0.99999999
+            normal = ball.get_center() - point
+            normal = normal / np.linalg.norm(normal)
+            ball.speed -= 2 * np.dot(ball.speed, normal) * normal
+            ball.was_hit = True
+            gain = np.interp(np.linalg.norm(ball.speed), [0.015, 0.15], [-40, -10])
+            self.scene.add_sound("assets/ball_hit1.wav", gain=gain)
+
+    def gravity_updater(self, ball: Ball):
+        if ball.was_hit:
+            return
+        ball.speed += DOWN * self.gravity_constant
+
+    def windage_updater(self, ball: Ball):
+        ball.speed *= self.windage
+
+    @staticmethod
+    def hit_updater(ball: Ball):
+        ball.was_hit = False
 
     def simulate(self):
         for b in self.balls:
-            b.add_updater(lambda m, dt: self.ball_updater(m))
+            if len(self.walls) > 0:
+                b.add_updater(lambda m, dt: self.wall_collision_updater(m))
+            b.add_updater(lambda m, dt: self.gravity_updater(m))
+            b.add_updater(lambda m, dt: self.windage_updater(m))
+            b.add_updater(lambda m, dt: self.hit_updater(m))
+            b.add_updater(lambda m, dt: m.shift(m.speed))
 
 
-class Bouncing(WaitingScene):
+class Bouncing(Scene):
 
     def func(self, t):
         return [t, t ** 2, 0]
 
     def construct(self):
         sim = BounceSimulation(
-            [Ball(ORIGIN, radius=0.3, arc_center=UP * 2 + RIGHT * (j / 2.0 + 0.5), color=colors[j]) for j in range(6)],
+            [Ball(ORIGIN, radius=0.3, arc_center=UP * 2 + RIGHT * (j + 0.5), color=colors[j]) for j in range(-3, 4)],
             [ParametricFunction(self.func, t_range=[-2, 2], use_smoothing=False, stroke_width=4).scale(5).to_edge(DOWN)],
             self,
         )
         self.add(*sim.walls)
         self.play(Write(VGroup(*sim.balls)), Write(Tex("Parabola").to_edge(DL)))
+        self.wait()
         sim.simulate()
-        self.wait(60)
+        self.wait(20)
+
+
+class Collision(Scene):
+    def construct(self):
+        sim = BounceSimulation(
+            [Ball(UR, radius=0.3, arc_center=DL),
+             Ball(LEFT, radius=0.3, arc_center=RIGHT)],
+            [],
+            self,
+            gravity_constant=0,
+        )
+        self.add(sim)
+        sim.simulate()
+        self.wait(2)
 
 
 class BouncingThumbnail(WaitingScene):
