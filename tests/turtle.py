@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from manim import *
 
 
@@ -10,13 +12,16 @@ class Turtle:
         self.angle += dr
 
     def go(self, speed: float):
-        new_pos = np.array(self.pos(), copy=True)
+        new_pos = np.array(self.get_pos(), copy=True)
         new_pos[0] += speed * np.cos(self.angle)
         new_pos[1] += speed * np.sin(self.angle)
         self.path.append(new_pos)
 
-    def pos(self) -> np.ndarray:
+    def get_pos(self) -> np.ndarray:
         return self.path[-1]
+
+    def get_path(self) -> Sequence[np.ndarray]:
+        return self.path
 
 
 class TurtleTest(Scene):
@@ -34,6 +39,5 @@ class TurtleTest(Scene):
                 t.rotate(-PI / 2)
             else:
                 t.go(1)
-        curve = VMobject().set_points_as_corners(t.path).move_to(ORIGIN).scale_to_fit_height(6)
+        curve = VMobject().set_points_as_corners(t.get_path()).move_to(ORIGIN).scale_to_fit_height(6)
         self.play(Create(curve, run_time=20))
-

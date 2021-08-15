@@ -24,3 +24,12 @@ class BitAnd(WaitingScene):
                   FadeIn(Integer(0).move_to(num0[0]).scale(4), shift=RIGHT),
                   FadeOut(num0[3], shift=RIGHT))
         self.wait()
+
+
+class IntegerTest(WaitingScene):
+    def construct(self):
+        int = Integer(1234567890, group_with_commas=False).scale_to_fit_width(7)
+        self.add(int)
+        self.play(
+            int.animate.set_value(10)
+        )
