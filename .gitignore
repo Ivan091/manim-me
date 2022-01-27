@@ -1,6 +1,6 @@
-/out
-/.idea
-/venv
+out/
+.idea/
+venv/
 
 media/
 production/
