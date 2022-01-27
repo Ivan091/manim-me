@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import TypeVar, Callable
+from typing import TypeVar, Callable, Protocol
 
 from colour import Color
 from manim import *
@@ -7,6 +7,10 @@ from manim import *
 from _utils.WaitingScene import WaitingScene
 
 T = TypeVar('T')
+
+
+class Play(Protocol):
+    def __call__(self, *__origin: Animation) -> None: ...
 
 
 class BitNums(VGroup, ABC):
@@ -23,39 +27,47 @@ class BitNums(VGroup, ABC):
         self.center()
         self.mapper = mapper
 
-    def shift_right(self, scene: Scene, f: Callable[[Integer], Integer] = lambda x: x):
+    def shift_right(self,
+                    play: Play,
+                    f: Callable[[Integer], Integer] = lambda x: x):
         z = zip(self[0:-1], self[1:])
         r = map(lambda x: x[0].animate.move_to(x[1]), z)
         n = f(self.mapper(BitNums(0).move_to(self[0])))
-        scene.play(
-            AnimationGroup(*r,
-                           FadeIn(n, shift=RIGHT),
-                           FadeOut(self[-1], shift=RIGHT),
-                           )
-        )
+        play(*r,
+             FadeIn(n, shift=RIGHT),
+             FadeOut(self[-1], shift=RIGHT)
+             )
         self.submobjects = [n, *self.submobjects[:-1]]
 
-    def shift_left(self, scene: Scene, f: Callable[[Integer], Integer] = lambda x: x):
+    def shift_left(self,
+                   play: Play,
+                   f: Callable[[Integer], Integer] = lambda x: x):
         z = zip(self[1:], self[0:-1])
         r = map(lambda x: x[0].animate.move_to(x[1]), z)
         n = f(self.mapper(BitNums(0).move_to(self[-1])))
-        scene.play(
-            AnimationGroup(*r,
-                           FadeIn(n, shift=LEFT),
-                           FadeOut(self[0], shift=LEFT),
-                           )
-        )
+        play(*r,
+             FadeIn(n, shift=LEFT),
+             FadeOut(self[0], shift=LEFT)
+             )
         self.submobjects = [*self.submobjects[1:], n]
 
-    def flip_bit(self, scene: Scene, n: int, f: Callable[[Integer], Integer] = lambda x: x, val_f: Callable[[int], int] = lambda x: 1 - x):
+    def flip_bit_math(self,
+                      play: Play,
+                      n: int,
+                      f: Callable[[Integer], Integer] = lambda x: x,
+                      val_f: Callable[[int], int] = lambda x: 1 - x):
+        return self.flip_bit(play, -n - 1, f, val_f)
+
+    def flip_bit(self,
+                 play: Play,
+                 n: int,
+                 f: Callable[[Integer], Integer] = lambda x: x,
+                 val_f: Callable[[int], int] = lambda x: 1 - x):
         old_mobj = self[n]
         new_val = val_f(old_mobj.get_value())
         new_mobj = f(self.mapper(Integer(new_val)))
-        scene.play(old_mobj.animate.become(new_mobj, match_center=True))
+        play(old_mobj.animate.become(new_mobj, match_center=True))
         self[n] = new_mobj
-
-    def flip_bit_math(self, scene: Scene, n: int, f: Callable[[Integer], Integer] = lambda x: x, val_f: Callable[[int], int] = lambda x: 1 - x):
-        return self.flip_bit(scene, -n - 1, f, val_f)
 
     def map(self, f: Callable[[Integer], Integer]) -> 'BitNums':
         return BitNums(*map(f, self.submobjects), mapper=f)
@@ -86,13 +98,10 @@ class BitAnd(WaitingScene):
         #
         self.wait()
 
-        num0.flip_bit(self, 2, f=self.to_yellow)
-        num0.flip_bit(self, 2, f=self.to_blue)
+        num0.flip_bit(self.play3, 2, f=self.to_yellow)
+        num0.flip_bit(self.play3, 2, f=self.to_blue)
 
-        num0.shift_right(self, self.to_yellow)
-        num0.shift_right(self, self.to_yellow)
-        num0.shift_right(self, self.to_yellow)
-        num0.shift_right(self, self.to_yellow)
+        num0.shift_right(self.play, self.to_yellow)
         #
         # self.play(num0.flip_bit(0))
         # self.play(num0.flip_bit(0))
