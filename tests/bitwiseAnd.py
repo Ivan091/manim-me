@@ -44,7 +44,7 @@ class BitAnd(WaitingScene):
 
     @staticmethod
     def right(x: Integer) -> Integer:
-        return x.set_color(RED)
+        return x.set_color(Co)
 
     def construct(self):
         num0 = BitNums(1, 0, 1, 1, 0, mapper=self.default)
