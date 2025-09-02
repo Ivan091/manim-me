@@ -11,12 +11,12 @@ class Stack(WaitingScene):
         finger = SVGMobject("../_common/assets/finger.svg").scale(0.2).set_color(WHITE).next_to(listing.line(1), LEFT)
         VGroup(listing, finger).to_edge(LEFT)
         stack = StackAnimated(RIGHT * 4 + DOWN * 2)
-        self.play_wait(Write(listing))
-        self.play_wait(Write(finger))
-        self.play_wait(stack.push(VGroup(Square(1.3), Text("1"))), finger.animate.next_to(listing.line(2), LEFT))
-        self.play_wait(stack.push(VGroup(Square(1.3), Text("2"))), finger.animate.next_to(listing.line(3), LEFT))
-        self.play_wait(stack.push(VGroup(Square(1.3), Text("3"))), finger.animate.next_to(listing.line(4), LEFT))
-        self.play_wait(stack.pull(), FadeOut(finger))
+        self.play1(Write(listing))
+        self.play1(Write(finger))
+        self.play1(stack.push(VGroup(Square(1.3), Text("1"))), finger.animate.next_to(listing.line(2), LEFT))
+        self.play1(stack.push(VGroup(Square(1.3), Text("2"))), finger.animate.next_to(listing.line(3), LEFT))
+        self.play1(stack.push(VGroup(Square(1.3), Text("3"))), finger.animate.next_to(listing.line(4), LEFT))
+        self.play1(stack.pull(), FadeOut(finger))
 
 
 class StackAnimated:

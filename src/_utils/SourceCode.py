@@ -51,7 +51,7 @@ class SourceCode(VGroup):
 
 
 def make_code_scene(scene: WaitingScene, listing: SourceCode, label: Text):
-    scene.play_wait(Write(label))
-    scene.play_wait(label.animate.next_to(listing, UP))
-    scene.play_wait(Write(listing))
-    scene.play_wait(FadeOut(listing), FadeOut(label))
+    scene.play1(Write(label))
+    scene.play1(label.animate.next_to(listing, UP))
+    scene.play1(Write(listing))
+    scene.play1(FadeOut(listing), FadeOut(label))

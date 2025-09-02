@@ -9,8 +9,8 @@ from manim import *
 class NullAlways(WaitingScene):
     def construct(self):
         listing = SourceCode("src/NullAlways.java", "java").move_to(ORIGIN).scale(2)
-        self.play_wait(Write(listing))
-        self.play_wait(FadeOutAndShift(listing))
+        self.play1(Write(listing))
+        self.play1(FadeOutAndShift(listing))
 
 
 class NullHandle(WaitingScene):
@@ -19,8 +19,8 @@ class NullHandle(WaitingScene):
         l2 = SourceCode("src/NullHandlingPolluted.java", "java")
         group = VGroup(l1, l2).scale(1.8)
         group.arrange(RIGHT, 2)
-        self.play_wait(Write(l1))
-        self.play_wait(Write(l2))
+        self.play1(Write(l1))
+        self.play1(Write(l2))
         self.play(FadeOut(group))
 
 
@@ -29,16 +29,16 @@ class LambdaProcessing(WaitingScene):
         l1 = SourceCode("src/LambdaSmall.java", "java")
         l2 = SourceCode("src/LambdaPolluted.java", "java")
         gr = VGroup(l1, l2).scale(1.2).arrange(RIGHT, 1)
-        self.play_wait(Write(l1))
-        self.play_wait(Write(l2))
-        self.play_wait(FadeOut(gr))
+        self.play1(Write(l1))
+        self.play1(Write(l2))
+        self.play1(FadeOut(gr))
 
 
 class NullSometimes(WaitingScene):
     def construct(self):
         listing = SourceCode("src/NullSometimes.java", "java").move_to(ORIGIN).scale(1.5)
-        self.play_wait(Write(listing))
-        self.play_wait(FadeOut(listing))
+        self.play1(Write(listing))
+        self.play1(FadeOut(listing))
 
 
 class NullObject(WaitingScene):
@@ -52,10 +52,10 @@ class Optional(WaitingScene):
     def construct(self):
         listing = SourceCode("src/Optional.java", "java").move_to(ORIGIN).scale(1.5)
         label = Text("Nullable")
-        self.play_wait(Write(label))
-        self.play_wait(label.animate.next_to(listing, UP))
-        self.play_wait(Write(listing))
-        self.play_wait(Write(listing, rate_func=lambda t: smooth(1 - t)),
+        self.play1(Write(label))
+        self.play1(label.animate.next_to(listing, UP))
+        self.play1(Write(listing))
+        self.play1(Write(listing, rate_func=lambda t: smooth(1 - t)),
                        Write(label, rate_func=lambda t: smooth(1 - t)))
 
 

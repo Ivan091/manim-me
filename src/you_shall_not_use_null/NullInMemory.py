@@ -28,9 +28,9 @@ class NullInMemory(WaitingScene):
     def construct(self):
         array = init_array()
         pointers = init_pointers(array, 2)
-        self.play_wait(Write(array, run_time=10), Write(pointers))
+        self.play1(Write(array, run_time=10), Write(pointers))
         brace = Brace(array[0:12], UP)
-        self.play_wait(FadeIn(brace))
+        self.play1(FadeIn(brace))
         braceLabel = Text("memory").add_updater(lambda mob: mob.next_to(brace, UP))
-        self.play_wait(Write(braceLabel))
-        self.play_wait(FadeOut(*self.get_all_vmobjects()))
+        self.play1(Write(braceLabel))
+        self.play1(FadeOut(*self.get_all_vmobjects()))

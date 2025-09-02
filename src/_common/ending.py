@@ -20,8 +20,8 @@ class Ending(WaitingScene):
             tex[4].set_color(ORANGE)
             return tex
 
-        self.play_wait(ApplyFunction(modify_text, text))
-        self.play_wait(
+        self.play1(ApplyFunction(modify_text, text))
+        self.play1(
             Unwrite(text, run_time=4),
             Unwrite(azari, run_time=4)
         )
