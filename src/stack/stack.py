@@ -1,3 +1,5 @@
+import os
+
 from manim import *
 from _utils.WaitingScene import WaitingScene
 from _utils.SourceCode import SourceCode

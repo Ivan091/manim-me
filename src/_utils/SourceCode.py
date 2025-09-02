@@ -1,3 +1,5 @@
+import sys
+
 from manim import *
 from _utils.WaitingScene import WaitingScene
 

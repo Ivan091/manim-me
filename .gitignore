@@ -8,7 +8,9 @@ production/
 *.gz
 *.aux
 *.docx
+*.iml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 manim_i.egg-info/
+build/
