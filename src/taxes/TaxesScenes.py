@@ -209,15 +209,31 @@ class B2BvsEmployment(Scene):
 
         points_employment = [axes.coords_to_point(row[0], row[2]) for row in data]
         graph_employment = VMobject().set_points_as_corners(points_employment).set_color(ORANGE)
-        graph_employment_legend = axes.get_graph_label(graph_employment, label=Tex("employment net", font_size=36), dot=True).set_color(ORANGE).arrange(LEFT, center=True)
+        graph_employment_legend = axes.get_graph_label(graph_employment, label=Tex("employment net", font_size=36), dot=True).set_color(
+            ORANGE).arrange(LEFT, center=True)
 
         points_b2b = [axes.coords_to_point(row[0], row[3]) for row in data]
         graph_b2b = VMobject().set_points_as_corners(points_b2b).set_color(BLUE)
-        graph_b2b_legend = axes.get_graph_label(graph_b2b, label=Tex("b2b net", font_size=36), dot=True).set_color(BLUE).arrange(LEFT, center=True)
+        graph_b2b_legend = axes.get_graph_label(graph_b2b, label=Tex("b2b net", font_size=36), dot=True).set_color(BLUE).arrange(LEFT,
+                                                                                                                                 center=True)
 
-        legend_group = VGroup(graph_baseline_legend, graph_b2b_legend, graph_employment_legend).arrange(DOWN, aligned_edge=LEFT).next_to(axes, RIGHT, buff=MED_LARGE_BUFF)
+        legend_group = VGroup(graph_baseline_legend, graph_b2b_legend, graph_employment_legend).arrange(DOWN, aligned_edge=LEFT).next_to(
+            axes, RIGHT, buff=MED_LARGE_BUFF)
 
         main_group = VGroup(axes, labels, legend_group, graph_baseline, graph_employment, graph_b2b).move_to(ORIGIN)
 
         self.play(Write(main_group), run_time=7)
         self.wait()
+
+
+class B2BDisadvantages(Scene):
+    def construct(self):
+        paragraph = Paragraph("Mobility", "Narrow market", "No paid vacation", "No sick paid leave", "No paid paternity leave",
+                              "Access to healthcare", "Access to pension", line_spacing=1)
+        for i in [1, 2, 3, 4]:
+            paragraph[i].set_color(ORANGE)
+        for i in [0, 5, 6]:
+            paragraph[i].set_color(BLUE)
+
+        self.play(Write(paragraph), run_time=10)
+
