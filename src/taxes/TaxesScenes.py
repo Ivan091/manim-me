@@ -1,4 +1,3 @@
-import numpy as np
 from manim import *
 
 
@@ -236,4 +235,3 @@ class B2BDisadvantages(Scene):
             paragraph[i].set_color(BLUE)
 
         self.play(Write(paragraph), run_time=10)
-
