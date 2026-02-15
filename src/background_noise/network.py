@@ -129,7 +129,7 @@ def random_velocity(min_speed: float = 1.5, max_speed: float = 2) -> Vector3D:
 class Network(Scene):
 
     def construct(self):
-        simulation_time: int = 300
+        simulation_time: int = 600
         max_line_len: int = 2
         points_count: int = 100
 
