@@ -117,7 +117,7 @@ class B2BandB2BTaxes(Scene):
         Text.set_default(font_size=36)
 
         social_tax_label = Text("Social tax:").set_color(ORANGE)
-        social_tax_value = Text("14% + 24% of the median").next_to(social_tax_label, RIGHT)
+        social_tax_value = Text("24% of the median").next_to(social_tax_label, RIGHT)
         social_tax_group = VGroup(social_tax_label, social_tax_value).arrange(RIGHT).move_to(ORIGIN)
 
         turnover_tax_label = Text("Turnover tax:").set_color(ORANGE)
@@ -207,13 +207,13 @@ class B2BvsEmployment(Scene):
         graph_baseline_legend = axes.get_graph_label(graph_baseline, label=Tex("gross", font_size=36), dot=True).arrange(LEFT, center=True)
 
         points_employment = [axes.coords_to_point(row[0], row[2]) for row in data]
-        graph_employment = VMobject().set_points_as_corners(points_employment).set_color(ORANGE)
+        graph_employment = VMobject().set_points_as_corners(points_employment).set_color(BLUE)
         graph_employment_legend = axes.get_graph_label(graph_employment, label=Tex("employment net", font_size=36), dot=True).set_color(
-            ORANGE).arrange(LEFT, center=True)
+            BLUE).arrange(LEFT, center=True)
 
         points_b2b = [axes.coords_to_point(row[0], row[3]) for row in data]
-        graph_b2b = VMobject().set_points_as_corners(points_b2b).set_color(BLUE)
-        graph_b2b_legend = axes.get_graph_label(graph_b2b, label=Tex("b2b net", font_size=36), dot=True).set_color(BLUE).arrange(LEFT,
+        graph_b2b = VMobject().set_points_as_corners(points_b2b).set_color(ORANGE)
+        graph_b2b_legend = axes.get_graph_label(graph_b2b, label=Tex("b2b net", font_size=36), dot=True).set_color(ORANGE).arrange(LEFT,
                                                                                                                                  center=True)
 
         legend_group = VGroup(graph_baseline_legend, graph_b2b_legend, graph_employment_legend).arrange(DOWN, aligned_edge=LEFT).next_to(
@@ -227,7 +227,7 @@ class B2BvsEmployment(Scene):
 
 class B2BDisadvantages(Scene):
     def construct(self):
-        paragraph = Paragraph("Mobility", "Narrow market", "No paid vacation", "No sick paid leave", "No paid paternity leave",
+        paragraph = Paragraph("Mobility", "Narrow market", "No paid vacation", "No paid sick leave", "No paid paternity leave",
                               "Access to healthcare", "Access to pension", line_spacing=1)
         for i in [1, 2, 3, 4]:
             paragraph[i].set_color(ORANGE)
@@ -235,3 +235,4 @@ class B2BDisadvantages(Scene):
             paragraph[i].set_color(BLUE)
 
         self.play(Write(paragraph), run_time=10)
+        self.wait()
