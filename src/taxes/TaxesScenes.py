@@ -1,6 +1,16 @@
 from manim import *
 
 
+class Thumbnail(Scene):
+    def construct(self):
+        label_employment = Text("56%", font_size=150).set_color(ORANGE)
+        label_vs = Text("vs")
+        label_b2b = Text("20%", font_size=150).set_color(BLUE)
+        main_group = VGroup(label_employment, label_vs, label_b2b).arrange(RIGHT).move_to(ORIGIN)
+        question_mark = Text("?", font_size=150).next_to(main_group, UP)
+        self.add(main_group, question_mark)
+
+
 class Intro(Scene):
     def construct(self):
         p = Paragraph("This video is not a tax advice.", "Never commit any tax fraud.")
@@ -214,7 +224,7 @@ class B2BvsEmployment(Scene):
         points_b2b = [axes.coords_to_point(row[0], row[3]) for row in data]
         graph_b2b = VMobject().set_points_as_corners(points_b2b).set_color(ORANGE)
         graph_b2b_legend = axes.get_graph_label(graph_b2b, label=Tex("b2b net", font_size=36), dot=True).set_color(ORANGE).arrange(LEFT,
-                                                                                                                                 center=True)
+                                                                                                                                   center=True)
 
         legend_group = VGroup(graph_baseline_legend, graph_b2b_legend, graph_employment_legend).arrange(DOWN, aligned_edge=LEFT).next_to(
             axes, RIGHT, buff=MED_LARGE_BUFF)
