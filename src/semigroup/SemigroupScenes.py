@@ -240,6 +240,7 @@ class ExampleReduce(WaitingScene):
         self.play(final_result.animate.move_to(ORIGIN).scale(2))
         self.play(Unwrite(final_result))
 
+
 class ZipSum(WaitingScene):
     def construct(self):
         label = MathTex("\\oplus(a, b) = a + b")
@@ -248,21 +249,21 @@ class ZipSum(WaitingScene):
         pluses = VGroup([MathTex("\\oplus") for _ in range(6)])
         rights = VGroup([SquaredVMobject(Square(0.7), Integer(i * 10, font_size=40)) for i in range(6)])
         equals = VGroup([MathTex("=") for _ in range(6)])
-        results = VGroup([SquaredVMobject(Square(0.7), Tex("?")) for _ in range(6)])
+        question_marks = VGroup([SquaredVMobject(Square(0.7), Tex("?")) for _ in range(6)])
 
         VGroup(
-            label, VGroup(*lefts, *pluses, *rights, *equals, *results).arrange_in_grid(
+            label, VGroup(*lefts, *pluses, *rights, *equals, *question_marks).arrange_in_grid(
                 6, 5, buff=MED_SMALL_BUFF, flow_order="dr"
             )
         ).arrange(DOWN, buff=MED_SMALL_BUFF)
 
-        question_marks = deepcopy(results)
+
         question_marks_sum = VGroup(
             [
                 SquaredVMobject(
                     Square(0.7), Integer(left.vmobject.get_value() + right.vmobject.get_value(), font_size=40)
-                ).move_to(res)
-                for left, right, res in zip(lefts, rights, results)
+                ).move_to(qm)
+                for left, right, qm in zip(lefts, rights, question_marks)
             ]
         )
 
@@ -270,42 +271,49 @@ class ZipSum(WaitingScene):
             [
                 SquaredVMobject(
                     Square(0.7), Integer(left.vmobject.get_value() * right.vmobject.get_value(), font_size=40)
-                ).move_to(res)
-                for left, right, res in zip(lefts, rights, results)
+                ).move_to(qm)
+                for left, right, qm in zip(lefts, rights, question_marks)
             ]
         )
 
-        self.play(Write(VGroup(label, *lefts, *pluses, *rights, *equals, *results)))
+        self.play(Write(VGroup(label, *lefts, *pluses, *rights, *equals, *question_marks)), run_time=4)
 
-        results = VGroup(
-            [VGroup(res, left.copy(), right.copy()) for left, right, res, qm_sum in zip(lefts, rights, results, question_marks_sum)]
-        )
+
+        question_marks.save_state()
         self.play(
             AnimationGroup(
-                [Transform(res, qm_sum) for res, qm_sum in zip(results, question_marks_sum)],
+                [
+                    ReplacementTransform(VGroup(qm, VGroup(left.copy(), right.copy())), qm_sum)
+                    for left, right, qm, qm_sum in zip(lefts, rights, question_marks, question_marks_sum)
+                ],
                 lag_ratio=0.1
             )
         )
+        question_marks.restore()
 
         self.play(
             AnimationGroup(
                 label.animate.become(MathTex("\\oplus(a, b) = a * b"), match_center=True),
-                *[Transform(res, qm) for qm, res in zip(question_marks, results)],
+                *[
+                    ReplacementTransform(qm_sum, qm)
+                    for qm, qm_sum in zip(question_marks, question_marks_sum)
+                ],
                 lag_ratio=0.1
             )
         )
 
-        results = VGroup(
-            [VGroup(res, left.copy(), right.copy()) for left, right, res in zip(lefts, rights, results)]
-        )
+        question_marks.save_state()
         self.play(
             AnimationGroup(
-                [Transform(res, qm_product) for res, qm_product in zip(results, question_marks_product)],
+                [
+                    ReplacementTransform(VGroup(qm, VGroup(left.copy(), right.copy())), qm_product)
+                    for left, right, qm, qm_product in zip(lefts, rights, question_marks, question_marks_product)
+                ],
                 lag_ratio=0.1
             )
         )
+        question_marks.restore()
 
         self.play(
-            Unwrite(VGroup(label, *lefts, *pluses, *rights, *equals, *results))
+            Unwrite(VGroup(label, *lefts, *pluses, *rights, *equals, *question_marks_product))
         )
-
