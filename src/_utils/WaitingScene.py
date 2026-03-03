@@ -7,14 +7,31 @@ from manim.typing import Vector3D
 
 class WaitingScene(Scene):
     wait_time = 0.2
+    scene_number = Integer(0).set_color(LIGHT_GRAY).move_to(UP * 3.5 + LEFT * 7)
+
+    def setup(self) -> None:
+        Tex.set_default(font_size=60)
+        Text.set_default(font_size=60)
+        self.add(self.scene_number)
 
     def play(
             self,
             *args: Animation | Mobject | _AnimationBuilder,
+            wait_time: float | None = wait_time,
             **kwargs: Any,
     ) -> None:
         super().play(*args, **kwargs)
-        super().play(Wait(self.wait_time))
+        self.update_scene_number()
+        if wait_time is not None:
+            if wait_time > 0:
+                super().play(Wait(wait_time))
+                self.update_scene_number()
+        else:
+            super().play(Wait(self.wait_time))
+            self.update_scene_number()
+
+    def update_scene_number(self):
+        self.scene_number.set_value(self.scene_number.get_value() + 1)
 
     def tag_vgroup(self, group: VGroup, color: ManimColor = GREEN, direction: Vector3D = UP):
         tags = VGroup()
@@ -24,7 +41,6 @@ class WaitingScene(Scene):
             )
 
         self.add(tags)
-
 
     def play1(self, *args: Animation | Mobject | _AnimationBuilder, **kwargs):
         self.play(*args, **kwargs)
