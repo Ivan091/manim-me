@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from manim import *
 
 from _utils.WaitingScene import WaitingScene
@@ -257,7 +255,6 @@ class ZipSum(WaitingScene):
             )
         ).arrange(DOWN, buff=MED_SMALL_BUFF)
 
-
         question_marks_sum = VGroup(
             [
                 SquaredVMobject(
@@ -277,7 +274,6 @@ class ZipSum(WaitingScene):
         )
 
         self.play(Write(VGroup(label, *lefts, *pluses, *rights, *equals, *question_marks)), run_time=4)
-
 
         question_marks.save_state()
         self.play(
@@ -317,3 +313,81 @@ class ZipSum(WaitingScene):
         self.play(
             Unwrite(VGroup(label, *lefts, *pluses, *rights, *equals, *question_marks_product))
         )
+
+
+class MapRow(VGroup):
+    def __init__(self, key: str, value: VMobject):
+        self.key = key
+        self.value = value
+        super().__init__([MathTex(key), MathTex("\\Rightarrow"), value])
+        self.arrange(RIGHT)
+
+
+class Map(VGroup):
+    def __init__(self, *rows: MapRow):
+        self.rows = rows
+        super().__init__(*rows)
+        self.arrange(DOWN, aligned_edge=LEFT)
+
+
+class MapMerge(WaitingScene):
+
+    def construct(self) -> None:
+        Circle.set_default(stroke_width = 3, radius = 0.4)
+        RegularPolygram.set_default(radius = 0.4, density = 1, stroke_width = 3)
+        MathTex.set_default(font_size = 60)
+
+        WHITE_BLUE = interpolate_color(WHITE, BLUE, 0.5)
+        WHITE_ORANGE = interpolate_color(WHITE, ORANGE, 0.5)
+
+        map_l = Map(
+            MapRow("a", RegularPolygram(3, color=WHITE)),
+            MapRow("b", RegularPolygram(4, color=WHITE)),
+            MapRow("c", RegularPolygram(5, color=WHITE))
+        )
+
+        map_r = Map(
+            MapRow("b", RegularPolygram(3, density=2, color=BLUE)),
+            MapRow("c", RegularPolygram(4, density=2, color=ORANGE)),
+            MapRow("d", RegularPolygram(5, density=2, color=BLUE))
+        )
+
+        map_m = Map(
+            MapRow("a", RegularPolygram(3, color=WHITE)),
+            MapRow("b", VGroup(RegularPolygram(4, color=WHITE_BLUE), RegularPolygram(3, density=2, color=WHITE_BLUE))),
+            MapRow("c", VGroup(RegularPolygram(5, color=WHITE_ORANGE), RegularPolygram(4, density=2, color=WHITE_ORANGE))),
+            MapRow("d", RegularPolygram(5, density=2, color=BLUE))
+        )
+
+
+        VGroup(map_l, map_m, map_r).arrange(RIGHT, buff=LARGE_BUFF)
+
+        plus = VGroup(
+            Circle(color=BLUE),
+            MathTex("\\oplus"),
+            RegularPolygram(4, color=ORANGE),
+            MathTex("="),
+            VGroup(Circle(), RegularPolygram(4)).set_color(WHITE_ORANGE)
+        ).arrange(RIGHT).shift(UP * 3)
+
+        self.play(Write(VGroup(map_l, plus, map_r)))
+
+        self.play(
+            ReplacementTransform(map_l[0].copy(), map_m[0])
+        )
+
+        self.play(
+            ReplacementTransform(map_l[1].copy(), map_m[1]),
+            ReplacementTransform(map_r[0].copy(), map_m[1])
+        )
+
+        self.play(
+            ReplacementTransform(map_l[2].copy(), map_m[2]),
+            ReplacementTransform(map_r[1].copy(), map_m[2])
+        )
+
+        self.play(
+            ReplacementTransform(map_r[2].copy(), map_m[3])
+        )
+
+        self.play(Unwrite(VGroup(map_l, map_r, plus, map_m)))
