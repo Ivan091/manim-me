@@ -391,3 +391,19 @@ class MapMerge(WaitingScene):
         )
 
         self.play(Unwrite(VGroup(map_l, map_r, plus, map_m)))
+
+class ThumbnailScene(Scene):
+    def construct(self):
+        Circle.set_default(stroke_width = 10, radius = 0.4)
+        RegularPolygram.set_default(radius = 0.4, density = 1, stroke_width = 10)
+        MathTex.set_default(font_size = 60)
+
+        plus = VGroup(
+            Circle(color=BLUE),
+            MathTex("\\oplus"),
+            RegularPolygram(4, color=ORANGE),
+            MathTex("="),
+            MathTex("?")
+        ).arrange(RIGHT).scale(2.5)
+
+        self.add(plus)
