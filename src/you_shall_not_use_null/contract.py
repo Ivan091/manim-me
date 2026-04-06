@@ -1,10 +1,10 @@
 import sys
 
 sys.path.append("../")
-from _utils.WaitingScene import *
+from _utils.MeineLiebeScene import *
 
 
-class Contract(WaitingScene):
+class Contract(MeineLiebeScene):
     def construct(self):
         typeText = Text("Type").move_to([-2.7, 1.5, 0])
         contract = SVGMobject("svg/contract.svg").set_color(WHITE).move_to([2.5, 1.5, 0]).scale(0.5)

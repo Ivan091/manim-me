@@ -1,6 +1,6 @@
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
 class SquaredVMobject(VGroup):
@@ -10,7 +10,7 @@ class SquaredVMobject(VGroup):
         VGroup.__init__(self, square, vmobject)
 
 
-class Intro(WaitingScene):
+class Intro(MeineLiebeScene):
     def construct(self):
         label = Text("Semigroup", font_size=100)
 
@@ -20,7 +20,7 @@ class Intro(WaitingScene):
         self.play(Unwrite(label))
 
 
-class Definition(WaitingScene):
+class Definition(MeineLiebeScene):
     def construct(self):
         label = Paragraph(
             "A type A is a semigroup if it provides an associative function",
@@ -128,7 +128,7 @@ class Definition(WaitingScene):
         self.play(Unwrite(label))
 
 
-class Example(WaitingScene):
+class Example(MeineLiebeScene):
     def construct(self):
 
         semigroup_label = Tex("Semigroup[int, sum] = a + b")
@@ -178,7 +178,7 @@ class Example(WaitingScene):
             self.play(Unwrite(lists_labels), Unwrite(acc_label))
 
 
-class ExampleReduce(WaitingScene):
+class ExampleReduce(MeineLiebeScene):
     def construct(self):
         colors = [RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, LIGHT_GRAY, WHITE]
 
@@ -239,7 +239,7 @@ class ExampleReduce(WaitingScene):
         self.play(Unwrite(final_result))
 
 
-class ZipSum(WaitingScene):
+class ZipSum(MeineLiebeScene):
     def construct(self):
         label = MathTex("\\oplus(a, b) = a + b")
 
@@ -330,7 +330,7 @@ class Map(VGroup):
         self.arrange(DOWN, aligned_edge=LEFT)
 
 
-class MapMerge(WaitingScene):
+class MapMerge(MeineLiebeScene):
 
     def construct(self) -> None:
         Circle.set_default(stroke_width = 3, radius = 0.4)
@@ -362,6 +362,8 @@ class MapMerge(WaitingScene):
 
         VGroup(map_l, map_m, map_r).arrange(RIGHT, buff=LARGE_BUFF)
 
+        self.next_section("Write")
+
         plus = VGroup(
             Circle(color=BLUE),
             MathTex("\\oplus"),
@@ -371,6 +373,8 @@ class MapMerge(WaitingScene):
         ).arrange(RIGHT).shift(UP * 3)
 
         self.play(Write(VGroup(map_l, plus, map_r)))
+
+        self.next_section("Merge")
 
         self.play(
             ReplacementTransform(map_l[0].copy(), map_m[0])
@@ -390,7 +394,11 @@ class MapMerge(WaitingScene):
             ReplacementTransform(map_r[2].copy(), map_m[3])
         )
 
+        self.next_section("Unwrite")
+
         self.play(Unwrite(VGroup(map_l, map_r, plus, map_m)))
+
+        self.save_section_frame()
 
 class ThumbnailScene(Scene):
     def construct(self):

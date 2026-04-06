@@ -1,11 +1,11 @@
 import os
 
 from manim import *
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 from _utils.SourceCode import SourceCode
 
 
-class Stack(WaitingScene):
+class Stack(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("code/stack.txt", "java").scale(1.4)
         finger = SVGMobject("../_common/assets/finger.svg").scale(0.2).set_color(WHITE).next_to(listing.line(1), LEFT)

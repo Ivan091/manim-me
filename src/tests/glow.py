@@ -1,9 +1,9 @@
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
-class GlowLine(WaitingScene):
+class GlowLine(MeineLiebeScene):
     def construct(self):
         tex = Tex("WaveWaveWaveWaveWave").scale(2)
         self.play(ApplyWave(

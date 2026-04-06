@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../")
-from _utils.WaitingScene import *
+from _utils.MeineLiebeScene import *
 
 
 def init_array() -> VGroup:
@@ -24,7 +24,7 @@ def init_pointers(array: VGroup, size: int) -> VDict:
     return pointers
 
 
-class NullInMemory(WaitingScene):
+class NullInMemory(MeineLiebeScene):
     def construct(self):
         array = init_array()
         pointers = init_pointers(array, 2)

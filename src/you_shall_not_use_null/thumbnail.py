@@ -3,10 +3,10 @@ import sys
 sys.path.append("../")
 
 from manim import *
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
-class Thumbnail(WaitingScene):
+class Thumbnail(MeineLiebeScene):
     def construct(self):
         t = Text("null").set_color(RED).scale(2)
         demon = SVGMobject("svg/demon3.svg").set_color(RED).next_to(t, buff=MED_SMALL_BUFF).scale(1.5)

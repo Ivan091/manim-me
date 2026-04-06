@@ -1,8 +1,8 @@
 from manim import *
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
-class Ending(WaitingScene):
+class Ending(MeineLiebeScene):
     def construct(self):
         azari = SVGMobject("assets/azari_colorful_old.svg").scale(3.5).set_color(WHITE)
         azari[1].set_color(BLUE)

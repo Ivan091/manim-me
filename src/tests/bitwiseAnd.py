@@ -4,7 +4,7 @@ from typing import TypeVar, Callable, Protocol
 from colour import Color
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 T = TypeVar('T')
 
@@ -73,7 +73,7 @@ class BitNums(VGroup, ABC):
         return BitNums(*map(f, self.submobjects), mapper=f)
 
 
-class BitAnd(WaitingScene):
+class BitAnd(MeineLiebeScene):
     @staticmethod
     def default(x: Integer) -> Integer:
         return x.scale(4)

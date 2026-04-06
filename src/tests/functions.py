@@ -1,6 +1,6 @@
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 axis_config = {
     'tip_length': 0.2,
@@ -9,7 +9,7 @@ axis_config = {
 }
 
 
-class Function(WaitingScene):
+class Function(MeineLiebeScene):
     def construct(self):
         axes = Axes(y_range=[-10, 10, 1], x_range=[-3, 4, 1], axis_config=axis_config)
         points = [[0, 0, 0], [1, 2, 0], [2, 1, 0]]

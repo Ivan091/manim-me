@@ -1,19 +1,19 @@
 import sys
 
 sys.path.append("../")
-from _utils.WaitingScene import *
+from _utils.MeineLiebeScene import *
 from _utils.SourceCode import SourceCode, make_code_scene
 from manim import *
 
 
-class NullAlways(WaitingScene):
+class NullAlways(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("src/NullAlways.java", "java").move_to(ORIGIN).scale(2)
         self.play1(Write(listing))
         self.play1(FadeOutAndShift(listing))
 
 
-class NullHandle(WaitingScene):
+class NullHandle(MeineLiebeScene):
     def construct(self):
         l1 = SourceCode("src/NullHandlingSmall.java", "java")
         l2 = SourceCode("src/NullHandlingPolluted.java", "java")
@@ -24,7 +24,7 @@ class NullHandle(WaitingScene):
         self.play(FadeOut(group))
 
 
-class LambdaProcessing(WaitingScene):
+class LambdaProcessing(MeineLiebeScene):
     def construct(self):
         l1 = SourceCode("src/LambdaSmall.java", "java")
         l2 = SourceCode("src/LambdaPolluted.java", "java")
@@ -34,21 +34,21 @@ class LambdaProcessing(WaitingScene):
         self.play1(FadeOut(gr))
 
 
-class NullSometimes(WaitingScene):
+class NullSometimes(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("src/NullSometimes.java", "java").move_to(ORIGIN).scale(1.5)
         self.play1(Write(listing))
         self.play1(FadeOut(listing))
 
 
-class NullObject(WaitingScene):
+class NullObject(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("src/NullObject.java", "java").move_to(ORIGIN).scale(1.5)
         label = Text("Null object")
         make_code_scene(self, listing, label)
 
 
-class Optional(WaitingScene):
+class Optional(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("src/Optional.java", "java").move_to(ORIGIN).scale(1.5)
         label = Text("Nullable")
@@ -59,7 +59,7 @@ class Optional(WaitingScene):
                        Write(label, rate_func=lambda t: smooth(1 - t)))
 
 
-class FailFast(WaitingScene):
+class FailFast(MeineLiebeScene):
     def construct(self):
         listing = SourceCode("src/FailFast.java", "java").move_to(ORIGIN).scale(1)
         label = Text("Fail fast")

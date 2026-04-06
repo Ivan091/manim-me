@@ -2,7 +2,7 @@ from typing import Sequence, Tuple
 
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
 def find_closest_point(point: np.ndarray, mobs: Sequence[Mobject]) -> Tuple[np.ndarray, float, Mobject]:
@@ -125,7 +125,7 @@ class Collision(Scene):
         self.wait(2)
 
 
-class BouncingThumbnail(WaitingScene):
+class BouncingThumbnail(MeineLiebeScene):
 
     def func(self, t):
         return [t, t ** 2, 0]

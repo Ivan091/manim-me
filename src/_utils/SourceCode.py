@@ -1,7 +1,7 @@
 import sys
 
 from manim import *
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
 class SourceCode(VGroup):
@@ -50,7 +50,7 @@ class SourceCode(VGroup):
         return self[line - 1][row - 1]
 
 
-def make_code_scene(scene: WaitingScene, listing: SourceCode, label: Text):
+def make_code_scene(scene: MeineLiebeScene, listing: SourceCode, label: Text):
     scene.play1(Write(label))
     scene.play1(label.animate.next_to(listing, UP))
     scene.play1(Write(listing))

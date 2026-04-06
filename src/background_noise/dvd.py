@@ -1,12 +1,13 @@
 from itertools import cycle
 
-from manim import Rectangle, Mobject, PI, RED, YELLOW, ORANGE, GREEN, BLUE, PURPLE
+from manim import Rectangle, Mobject, PI, RED, YELLOW, ORANGE, GREEN, BLUE, PURPLE, Wait
 from numpy import cos, sin
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
-class DVDScene(WaitingScene):
+class DVDScene(MeineLiebeScene):
+
     def construct(self):
         direction = PI / 4
         speed = 3
@@ -17,16 +18,11 @@ class DVDScene(WaitingScene):
         def updater(m: Mobject, dt: float):
             nonlocal direction
 
-            if m.get_right()[0] > main_frame.get_right()[0]:
+            if m.get_right()[0] > main_frame.get_right()[0] or m.get_left()[0] < main_frame.get_left()[0]:
                 direction = PI - direction
                 m.set_color(next(colors))
-            elif m.get_left()[0] < main_frame.get_left()[0]:
-                direction = PI - direction
-                m.set_color(next(colors))
-            elif m.get_top()[1] > main_frame.get_top()[1]:
-                direction = -direction
-                m.set_color(next(colors))
-            elif m.get_bottom()[1] < main_frame.get_bottom()[1]:
+
+            elif m.get_top()[1] > main_frame.get_top()[1] or m.get_bottom()[1] < main_frame.get_bottom()[1]:
                 direction = -direction
                 m.set_color(next(colors))
 
@@ -35,5 +31,5 @@ class DVDScene(WaitingScene):
         self.add(r, main_frame)
         r.add_updater(updater)
 
-        for _ in range(600):
-            self.wait(1)
+        for _ in range(125):
+            self.wait(5)

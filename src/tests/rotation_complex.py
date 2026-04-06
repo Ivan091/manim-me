@@ -1,9 +1,9 @@
 from manim import *
 
-from _utils.WaitingScene import WaitingScene
+from _utils.MeineLiebeScene import MeineLiebeScene
 
 
-class RotationTest(WaitingScene):
+class RotationTest(MeineLiebeScene):
     def construct(self):
         sq = Square(color=ORANGE, side_length=2, stroke_width=2)
         self.add(sq)
