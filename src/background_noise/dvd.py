@@ -31,5 +31,5 @@ class DVDScene(MeineLiebeScene):
         self.add(r, main_frame)
         r.add_updater(updater)
 
-        for _ in range(125):
+        for _ in range(120):
             self.wait(5)
