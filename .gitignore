@@ -14,3 +14,24 @@ production/
 __pycache__/
 manim_i.egg-info/
 build/
+
+# --- Python & uv ---
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.uv/
+
+# --- Manim specific ---
+media/
+videos/
+images/
+
+# --- Build & Distribution ---
+dist/
+build/
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
