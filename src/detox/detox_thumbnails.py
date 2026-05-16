@@ -97,3 +97,13 @@ class Day22(MeineLiebeScene):
             main_label,
             books_label
         )
+
+class Day40(MeineLiebeScene):
+    def construct(self):
+        books_label = Text("Books done: 1").move_to(DOWN * 3)
+        books_label[-1].set_color(GREEN)
+        main_label = Text("Day 40", font_size=120).set_color(BLUE)
+        self.add(
+            main_label,
+            books_label
+        )
