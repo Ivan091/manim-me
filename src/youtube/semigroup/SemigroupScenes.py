@@ -1,6 +1,6 @@
 from manim import *
 
-from _utils.MeineLiebeScene import MeineLiebeScene
+from utils.MeineLiebeScene import MeineLiebeScene
 
 
 class SquaredVMobject(VGroup):
@@ -23,7 +23,7 @@ class Intro(MeineLiebeScene):
 class Definition(MeineLiebeScene):
     def construct(self):
         label = Paragraph(
-            "A type A is a semigroup if it provides an associative function",
+            "A type A is a youtube.youtube.semigroup if it provides an associative function",
             "that lets you combine any two values of type A into one.", alignment="center", line_spacing=1, font_size=30
         )
         label[0][5].set_color(GREEN)
@@ -119,7 +119,7 @@ class Definition(MeineLiebeScene):
         if True:
             final_label = Paragraph(
                 "If you have an associative operation over type A,",
-                "you have a semigroup", alignment="center", line_spacing=1, font_size=30
+                "you have a youtube.youtube.semigroup", alignment="center", line_spacing=1, font_size=30
             )
 
             final_label[0][39].set_color(GREEN)

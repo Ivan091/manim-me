@@ -1,8 +1,8 @@
 import os
 
 from manim import *
-from _utils.MeineLiebeScene import MeineLiebeScene
-from _utils.SourceCode import SourceCode
+from utils.MeineLiebeScene import MeineLiebeScene
+from utils.SourceCode import SourceCode
 
 
 class Stack(MeineLiebeScene):

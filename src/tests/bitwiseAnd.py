@@ -4,7 +4,7 @@ from typing import TypeVar, Callable, Protocol
 from colour import Color
 from manim import *
 
-from _utils.MeineLiebeScene import MeineLiebeScene
+from utils.MeineLiebeScene import MeineLiebeScene
 
 T = TypeVar('T')
 

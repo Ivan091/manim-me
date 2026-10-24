@@ -191,7 +191,7 @@ wheels = [
 
 [[package]]
 name = "manim"
-version = "0.20.1"
+version = "0.22.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "audioop-lts", marker = "python_full_version >= '3.13'" },
@@ -221,9 +221,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "watchdog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/3b/ad54ce02f3e95d17d016cb1254708ae3795b60d5661f3b2085655940a565/manim-0.20.1.tar.gz", hash = "sha256:1e9747fb2fc1bde58ad09bcbd77d141793ce4b61811726a7fce537193d92e16b", size = 553537 }
+sdist = { url = "https://files.pythonhosted.org/packages/98/fa/cef49e8c5c5617232ae8324a8ad14d8d724eb308dc898687240daca2800b/manim-0.22.0.tar.gz", hash = "sha256:e227aef6dab218c7fe68fa31ed1ff418e1c86a450f43509ed2630f3ffd06602d", size = 599668 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4b/74/7a54f81bbb3016036662c5497edc89c5d053a8ab1e8f7c8faaca5d43b174/manim-0.20.1-py3-none-any.whl", hash = "sha256:2c76784716aef88630eace2762645e1eb25f236fe750cb1b3c4fdd3558de49e1", size = 652109 },
+    { url = "https://files.pythonhosted.org/packages/2d/05/35fc67b65a8ecbe38de39b9747adabc18de696683e0e27b5e121ad6d05ae/manim-0.22.0-py3-none-any.whl", hash = "sha256:bce56dbe420ce002cb77076c0b4e041637a0bd41ce5749e837e96375937e935f", size = 700688 },
 ]
 
 [[package]]
@@ -235,26 +235,30 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "manim", specifier = ">=0.20.1" }]
+requires-dist = [{ name = "manim", specifier = ">=0.22.0" }]
 
 [[package]]
 name = "manimpango"
-version = "0.6.1"
+version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/47/55/d360e73eb4d04b102cef399ddebcba486a9b6c1977a26fe710beffd52e95/manimpango-0.6.1.tar.gz", hash = "sha256:59a00bbf8e99dab5f94341087c88e609fe946e79724627429cf59da84cbd40bf", size = 4080834 }
+sdist = { url = "https://files.pythonhosted.org/packages/13/a7/6e48da060ddf8b78765fb5ceb17deaee35a992f2805754e595340c6caccf/manimpango-0.7.1.tar.gz", hash = "sha256:4b2ef45b37a091ebc6775bcc660a91221f4cbd2c5361c5e872ddeb213a5c88bb", size = 4081504 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/1c/440a6cb359b2b0fd2ba54f615af3b8d84d26f66a1e3a72ed70e812ffeedc/manimpango-0.6.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:2039787f156a6ce2135c2ebccd4199a1859b45945e7b8d2bf46423ae1c3bcf11", size = 7754764 },
-    { url = "https://files.pythonhosted.org/packages/d3/6b/14c90dd8bce1f98fc4f4bbc708985b10106a793b25cfac9df3d7bd26396e/manimpango-0.6.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:412a876be8221aaf76a80401746ed7f42865779ac6f5ad5a220ff935bbc7e455", size = 7065699 },
-    { url = "https://files.pythonhosted.org/packages/ce/85/ddf7bdb96660c63b07306c8b074444f30d7f233dbec206a99e74828f926d/manimpango-0.6.1-cp312-cp312-win32.whl", hash = "sha256:81dd186c5cabd682afe56d43e88f7438bffd093061f858eb95bf8a773bfc2000", size = 3626854 },
-    { url = "https://files.pythonhosted.org/packages/5e/ef/dc48832fa8d2d867ba88a9dade038a148aaf9c3e4bf5f4539e3969f79560/manimpango-0.6.1-cp312-cp312-win_amd64.whl", hash = "sha256:5bf98ec864c3ade022211f88dd22e6da9d72f1b1ba7b20091b149e45a5e0d5ba", size = 4203288 },
-    { url = "https://files.pythonhosted.org/packages/23/ee/01cd6b3087a5ead9483add3023f46c135bddd7773d506b771b44bbe0830b/manimpango-0.6.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:79aafe6373cb31dcdd1ee505407ec2bea18e74aed877f93dcd27ec9d88584472", size = 7751685 },
-    { url = "https://files.pythonhosted.org/packages/70/93/905ac20a9190655870131940dadb5121645cf8a23e6ea0f04be7f4604f2e/manimpango-0.6.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:1049bda27ca504d24b48bec21756f4d8a3310ea7bc690167c54d05e97b8f7639", size = 7062629 },
-    { url = "https://files.pythonhosted.org/packages/76/88/b2de7d2d3a0331cf79992f8c6da0f0abd873d4ec9f024cad5992f1cf7a6d/manimpango-0.6.1-cp313-cp313-win32.whl", hash = "sha256:8da8238147b96737b36725b0fc386dc1dd7901516dfd7e73b2e7d34cd5d934f1", size = 3626705 },
-    { url = "https://files.pythonhosted.org/packages/3b/ed/a7a57491b26e8fb85ac0be9c39b53a6690f3c39beaf06d3715cb6916932b/manimpango-0.6.1-cp313-cp313-win_amd64.whl", hash = "sha256:e90d6b926d0e673ce624963d44cc28c55a368b6074108ab885a43305baeae26c", size = 4203874 },
-    { url = "https://files.pythonhosted.org/packages/f1/c0/318410215b409465a237c126a3e1f612c432d33b037b2f997870df327434/manimpango-0.6.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:318d14087901ee27ed6d0cfef0335aed57db217f8de831c8ca4e4c52b7805b45", size = 7751895 },
-    { url = "https://files.pythonhosted.org/packages/d1/83/f0a05e3e6312ca9673bc8b470c6a743cf2d0bd7f08b218efc993226e72e4/manimpango-0.6.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:ffe2f8353857f0ca9a16894430d871051da450bc2d19beb969cf8b57b032f580", size = 7063387 },
-    { url = "https://files.pythonhosted.org/packages/13/76/0748323341647e8c338bd7af6fb527ffdc43d676003b57743740bdfcffcc/manimpango-0.6.1-cp314-cp314-win32.whl", hash = "sha256:c294ab801c8ffc217342dfeff7aeca97cbea86cd8b4e6e8c9a8d7da020b820e1", size = 3737933 },
-    { url = "https://files.pythonhosted.org/packages/2b/e9/42b995549cfd137780045e44b3bfba2cb1247b18bd2fb9f97079048e78ac/manimpango-0.6.1-cp314-cp314-win_amd64.whl", hash = "sha256:d8b0ee675eb30bbb67097cecb2be469847c3ccf574291f2bd43360caeb5f62ed", size = 4357908 },
+    { url = "https://files.pythonhosted.org/packages/15/0b/9cfe721f53b9bb6e4786e477320a150a1d1528fffb23206352d3e4b6d51c/manimpango-0.7.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:2b1f339c27ed905a1b0641841df2698ca7ea539442418e06b8320e2592c4200c", size = 8892737 },
+    { url = "https://files.pythonhosted.org/packages/f0/ad/8c147b987378bce14cbd7a8b21140d8635bcaf7b3a0630e41bd46edbc9c5/manimpango-0.7.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:df7f84496e2abe6ebdf858c62b28ddf57353efa84c5dbb4d3714878323f884d3", size = 8384003 },
+    { url = "https://files.pythonhosted.org/packages/d5/29/221ded5e5649ce27d74729b2542003fd3aa2d2a790f16b8dcd8c5c182c14/manimpango-0.7.1-cp312-cp312-win32.whl", hash = "sha256:fb84766f44a48c9a1dd849806b469f0fb647eee0c4a774cb437fbbbe5bbff6e5", size = 5661109 },
+    { url = "https://files.pythonhosted.org/packages/e7/9a/baffeb71ea52323046011be6aae422b2db3405b00fbe25b625843861c99f/manimpango-0.7.1-cp312-cp312-win_amd64.whl", hash = "sha256:e896f54cd1830a828a982620b4e4c9a9f409652c1a95f6a6209f234aef7832a0", size = 6392557 },
+    { url = "https://files.pythonhosted.org/packages/60/93/9139206ea962caa8004e6c25c74165f1dda9282b1925a3b0a6a49eac7984/manimpango-0.7.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:1475a541b8db66734d5f309a4e43fe89f9293f169a8c2e68cf9771b5df2fd75e", size = 8890851 },
+    { url = "https://files.pythonhosted.org/packages/35/53/b8f2feb432bc99d4972ddea7665b7b7c9bed026f6cc89ad07d437c0eb6db/manimpango-0.7.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:4cef48d85d9f68e9b1e5ca114af7904a9ad7831a0daa3781e50bbaf23551997b", size = 8381601 },
+    { url = "https://files.pythonhosted.org/packages/fe/b7/4ac2ac5e6c214fd442c8f0505aba6caf698eaecc0186604ee3bfac651656/manimpango-0.7.1-cp313-cp313-win32.whl", hash = "sha256:3b6ea6de1ea66e19912d4e6f2b888e6250fff305389a5d440923f2c075e2d2fe", size = 5648725 },
+    { url = "https://files.pythonhosted.org/packages/25/49/59b3dadb80e93d82312f8c0a279d03211733c176536c635a0461ba0c0087/manimpango-0.7.1-cp313-cp313-win_amd64.whl", hash = "sha256:30a07ddd679c6111590df70f639aa366b238eabadb18016a2fab25fb91749cb5", size = 6378828 },
+    { url = "https://files.pythonhosted.org/packages/c5/5b/156400b77f6775e7f338922360e584fe0604fc3d620354c29bde88a80137/manimpango-0.7.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:c46aaa97e24a29b62dca4d728323db22a859c811438a6eb179c375504a6db724", size = 8890795 },
+    { url = "https://files.pythonhosted.org/packages/b8/c5/5b8dbeab1eb66b6ae6bfc784d49cb79bfacadf360636731effd188de784b/manimpango-0.7.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:50f6cabfc8a470affa8f481a9c2835736f00892045a96d090358d5b6bacc1aa2", size = 8381783 },
+    { url = "https://files.pythonhosted.org/packages/19/92/1f059499e88de39eb0a912f5e550291f151b6e3fb7b52f071141d3f38664/manimpango-0.7.1-cp314-cp314-win32.whl", hash = "sha256:09d34f69ce08eaa2a4305c574a66d64b32a0822ef76bd2216b80d9fc1d1e2eac", size = 5854315 },
+    { url = "https://files.pythonhosted.org/packages/5e/74/98e2bf99a39c5fd6d8ce7fc75b004b12083ea720eef0c559e5e21e290658/manimpango-0.7.1-cp314-cp314-win_amd64.whl", hash = "sha256:77ad98fbed3af7c4d0b397dadc8b5ebad719cff87145a71482b4655b600dc0b5", size = 6586400 },
+    { url = "https://files.pythonhosted.org/packages/28/54/866a404d3ca4efbf8783d5011603f1bdfbab11cbd13f47f39209a1f9a9b4/manimpango-0.7.1-cp315-cp315-macosx_10_15_x86_64.whl", hash = "sha256:8cf97643d684358306c0e3fb84b0ed179bb1f94be8fe984ae53f6f5f30bf265e", size = 8890461 },
+    { url = "https://files.pythonhosted.org/packages/38/b0/90d522ab5c7c0c78d481f1b5481f098747011ac3b19ee9755cdc963faafc/manimpango-0.7.1-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:9d01890d3072eef4e95767a5fd64ff628a9bb5e7dd9832ceb06a010b7f1abb0c", size = 8381306 },
+    { url = "https://files.pythonhosted.org/packages/fe/0e/44d12d883d85067b0bd57f7edcc2101978494e732a3180b40b03d525f039/manimpango-0.7.1-cp315-cp315-win32.whl", hash = "sha256:19f562edea1887352ec8c4c5df1e4df24e66bd02da20f6d44d0a732a329dc95e", size = 5854297 },
+    { url = "https://files.pythonhosted.org/packages/66/7e/b221cbea202e2123699ca75d6481ba61f3df93345e66c28f921ff3da2fac/manimpango-0.7.1-cp315-cp315-win_amd64.whl", hash = "sha256:d9c01deb26f84034705ff833bbd16e21c6af64e669a25dc7958a4188f846b800", size = 6595066 },
 ]
 
 [[package]]

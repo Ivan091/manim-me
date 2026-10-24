@@ -2,7 +2,7 @@ from typing import Sequence, Tuple
 
 from manim import *
 
-from _utils.MeineLiebeScene import MeineLiebeScene
+from utils.MeineLiebeScene import MeineLiebeScene
 
 
 def find_closest_point(point: np.ndarray, mobs: Sequence[Mobject]) -> Tuple[np.ndarray, float, Mobject]:

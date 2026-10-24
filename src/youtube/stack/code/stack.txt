@@ -1,0 +1,4 @@
+youtube.stack.push(1)
+youtube.stack.push(2)
+youtube.stack.push(3)
+youtube.stack.pull()

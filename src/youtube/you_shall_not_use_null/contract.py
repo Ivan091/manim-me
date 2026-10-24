@@ -1,7 +1,7 @@
 import sys
 
 sys.path.append("../")
-from _utils.MeineLiebeScene import *
+from utils.MeineLiebeScene import *
 
 
 class Contract(MeineLiebeScene):

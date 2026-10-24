@@ -3,7 +3,7 @@ from itertools import cycle
 from manim import Rectangle, Mobject, PI, RED, YELLOW, ORANGE, GREEN, BLUE, PURPLE, Wait
 from numpy import cos, sin
 
-from _utils.MeineLiebeScene import MeineLiebeScene
+from utils.MeineLiebeScene import MeineLiebeScene
 
 
 class DVDScene(MeineLiebeScene):

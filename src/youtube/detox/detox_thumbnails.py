@@ -1,6 +1,6 @@
 from manim import *
 
-from _utils.MeineLiebeScene import MeineLiebeScene
+from utils.MeineLiebeScene import MeineLiebeScene
 
 
 class Day1(MeineLiebeScene):
