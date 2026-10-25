@@ -18,11 +18,13 @@ def _heading(direction: float) -> np.ndarray:
     return np.array([np.cos(direction), np.sin(direction)])
 
 
-def _check_stream_rate(spawn_rate: float) -> None:
+def _check_stream(spawn_rate: float, firing_time: float) -> None:
     if not 0 < spawn_rate < math.inf:
         raise ValueError(
             f"spawn_rate must be positive and finite, got {spawn_rate}"
         )
+    if firing_time <= 0:
+        raise ValueError(f"firing_time must be positive, got {firing_time}")
 
 
 class Cannon(ABC):
@@ -92,13 +94,14 @@ class StreamCannon(Cannon):
     velocity: float = 1.3
     coloring: Coloring = StaticColor()
     spawn_rate: float = 60.0
+    firing_time: float = math.inf
     sound: Sound = Silence()
 
     def __post_init__(self):
-        _check_stream_rate(self.spawn_rate)
+        _check_stream(self.spawn_rate, self.firing_time)
 
     def amount_for(self, duration: float) -> int:
-        return int(duration * self.spawn_rate) + 1
+        return int(min(duration, self.firing_time) * self.spawn_rate) + 1
 
     def positions(self, count: int) -> np.ndarray:
         origin = np.asarray(self.origin, dtype=float)[:2]
@@ -112,7 +115,7 @@ class StreamCannon(Cannon):
         return self.coloring.colors(count)
 
     def fired(self, elapsed: float) -> int:
-        return int(elapsed * self.spawn_rate + _TIME_EPS)
+        return int(min(elapsed, self.firing_time) * self.spawn_rate + _TIME_EPS)
 
 
 @dataclass(frozen=True)
@@ -125,15 +128,16 @@ class WideCannon(Cannon):
     spawn_rate: float = 60.0
     distribution: Distribution = Uniform()
     seed: int = 0
+    firing_time: float = math.inf
     sound: Sound = Silence()
 
     def __post_init__(self):
         if self.width <= 0:
             raise ValueError(f"width must be positive, got {self.width}")
-        _check_stream_rate(self.spawn_rate)
+        _check_stream(self.spawn_rate, self.firing_time)
 
     def amount_for(self, duration: float) -> int:
-        return int(duration * self.spawn_rate) + 1
+        return int(min(duration, self.firing_time) * self.spawn_rate) + 1
 
     def positions(self, count: int) -> np.ndarray:
         origin = np.asarray(self.origin, dtype=float)[:2]
@@ -151,4 +155,4 @@ class WideCannon(Cannon):
         return self.coloring.colors(count)
 
     def fired(self, elapsed: float) -> int:
-        return int(elapsed * self.spawn_rate + _TIME_EPS)
+        return int(min(elapsed, self.firing_time) * self.spawn_rate + _TIME_EPS)
