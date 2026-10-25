@@ -54,7 +54,7 @@ class HexagonLight(BoundaryScene):
   3. How it was made: Manim Community (`manim` version from `uv.lock`) and a short plain-language note on the simulation, only if true for the scene.
   4. The hashtags on the last line, at most 3, each starting with `#`, no spaces. The first two also appear above the title on the watch page.
   - Add links, music credits, or socials as extra paragraphs only when the user supplied them.
-- **Tags**: a comma-separated list, 8 to 15 entries, most specific first, total length under 500 characters including separators. Mix the specific (shape, "ray reflection", "billiards"), the tool ("manim", "python"), and the broad ("simulation", "mathematics", "physics visualization"). No repeats of the title wording as one long tag, no misleading tags.
+- **Tags**: a comma-separated list, all lowercase (including proper nouns), 8 to 15 entries, most specific first, total length under 500 characters including separators. Mix the specific (shape, "ray reflection", "billiards"), the tool ("manim", "python"), and the broad ("simulation", "mathematics", "physics visualization"). No repeats of the title wording as one long tag, no misleading tags.
 - **Category**: one of YouTube's category names; default `Science & Technology`, use `Education` only when the scene teaches step by step.
 - **Language**: BCP-47 code of the spoken or on-screen text, `en` by default.
 - **Visibility**: `public`, unless the user says otherwise.
