@@ -231,7 +231,8 @@ class PolygonBoundary(Boundary):
     def sdf_many(self, points):
         ap = points[:, None, :] - self.a[None]  # (N, E, 2)
         t = np.clip((ap * self.ab).sum(-1) / self.len2, 0, 1)
-        d = np.linalg.norm(ap - t[..., None] * self.ab, axis=-1).min(axis=1)
+        closest = ap - np.expand_dims(t, -1) * self.ab
+        d = np.linalg.norm(closest, axis=-1).min(axis=1)
 
         # ray-casting inside test
         x, y = points[:, 0:1], points[:, 1:2]
