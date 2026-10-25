@@ -29,6 +29,7 @@ PALETTE: Final[tuple[ManimColor, ...]] = (
 )
 
 INSTANT: Final[float] = math.inf
+_TIME_EPS: Final[float] = 1e-9
 
 
 class Cannon(ABC):
@@ -102,7 +103,8 @@ class RadialCannon(Cannon):
     def fired(self, elapsed: float) -> int:
         if math.isinf(self.spawn_rate):
             return self.amount
-        return min(self.amount, int(elapsed * self.spawn_rate))
+        fired = int(elapsed * self.spawn_rate + _TIME_EPS)
+        return min(self.amount, fired)
 
 
 @dataclass(frozen=True)
@@ -135,4 +137,4 @@ class StreamCannon(Cannon):
         return [self.color] * count
 
     def fired(self, elapsed: float) -> int:
-        return int(elapsed * self.spawn_rate)
+        return int(elapsed * self.spawn_rate + _TIME_EPS)
