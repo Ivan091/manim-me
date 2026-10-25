@@ -385,8 +385,8 @@ class CircleLight(BoundaryScene):
     Light Bouncing Inside a Circle (Off-Center Source)
 
     Description:
-    5,760 points of light start from one spot inside a circle and bounce off its wall for 15 seconds. The source is off-
-    center, so the pattern is not symmetric.
+    5,760 points of light start from one spot inside a circle and bounce off its wall for 15 seconds. The source is
+    off-center, so the pattern is not symmetric.
 
     The circle has radius 2 and the source sits one third of the radius above the center. The points leave in 5,760
     evenly spaced directions at speed 1.3. The directions pointing left are blue and the directions pointing right are
