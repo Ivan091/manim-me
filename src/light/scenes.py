@@ -420,8 +420,10 @@ class ZShortLight(BoundaryScene):
         width=0.8,
         velocity=2,
         spawn_rate=120.0,
+        firing_time=10.0,
         distribution=Normal(2),
         coloring=Gradient((BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)),
+        sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=30, every_jitter=10, gain_jitter=3),
     )
     points_radius = 0.02
 
