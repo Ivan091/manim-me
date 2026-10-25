@@ -402,6 +402,30 @@ Thumbnail text: 30 Mirrors
         super().construct()
 
 
+class ZShortLight(BoundaryScene):
+    simulation_time = 12
+    half_width = 1.5
+    half_height = 2.0
+    offscreen = 2.75
+    z_path = (
+        (-offscreen, half_height),
+        (half_width, half_height),
+        (-half_width, -half_height),
+        (offscreen, -half_height),
+    )
+    boundary = MirrorPath(z_path, half_length=0.6)
+    cannon = WideCannon(
+        origin=z_path[0],
+        direction=0.0,
+        width=0.8,
+        velocity=2,
+        spawn_rate=120.0,
+        distribution=Normal(2),
+        coloring=Gradient((BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)),
+    )
+    points_radius = 0.02
+
+
 class WideCannonsLight(Scene):
     simulation_time: int = 15
     cannon_width: float = 3.0
