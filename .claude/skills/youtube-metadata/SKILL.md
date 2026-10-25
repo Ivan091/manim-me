@@ -1,6 +1,6 @@
 ---
 name: youtube-metadata
-description: Add YouTube publishing metadata (title, description, tags, hashtags, category, language, visibility, thumbnail text) as a copy-ready docstring on the named Manim scene classes in this repo, derived from what each scene actually renders. Invoke whenever the user asks to add, generate, update, or review YouTube metadata, a title, a description, or tags for a scene (e.g. one in src/light/light.py) they plan to publish.
+description: Add YouTube publishing metadata (title, description, tags, hashtags, category, language, visibility, thumbnail text) as a copy-ready docstring on the named Manim scene classes in this repo, derived from what each scene actually renders. Invoke whenever the user asks to add, generate, update, or review YouTube metadata, a title, a description, or tags for a scene (e.g. one in src/light/scenes.py) they plan to publish.
 ---
 
 # youtube-metadata
@@ -65,7 +65,7 @@ Thumbnail text: Six Colors
 
 ## Example
 
-`CircleLight` in `src/light/light.py` is the reference for tone, level of detail, and wrapping:
+`CircleLight` in `src/light/scenes.py` is the reference for tone, level of detail, and wrapping:
 
 ```python
 class CircleLight(BoundaryScene):
@@ -107,5 +107,5 @@ Thumbnail text: Off-Center Source
 3. **Gather facts** to use in the text: shape name and dimensions, `points_count`, `points_speed`, color groups (`colors_fractions`, `colors_start_angle`), `simulation_time`, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.
 5. **Write the docstring** as the first statement of each scene class, keeping the surrounding formatting, and remove any legacy `youtube_metadata` dict from that class.
-6. **Verify.** Import the module (`python -c "import light.light"` from `src/`, or the equivalent for the file) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, no line over 120 characters, and no leading spaces inside the docstring.
+6. **Verify.** Import the module (`python -c "import light.scenes"` from `src/`, or the equivalent for the file) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, no line over 120 characters, and no leading spaces inside the docstring.
 7. **Report.** List each scene's title and tags, say which extras (links, credits, socials) the user can still add, and state that nothing was published.
