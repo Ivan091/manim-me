@@ -1,27 +1,4 @@
-from typing import Any, Callable, Final, Sequence
-
-import numpy as np
-from manim import (
-    BLUE,
-    GREEN,
-    ORANGE,
-    ORIGIN,
-    PI,
-    PINK,
-    PURPLE,
-    RED,
-    RIGHT,
-    TAU,
-    TEAL,
-    UP,
-    YELLOW,
-    Dot,
-    ManimColor,
-    Mobject,
-    Scene,
-    VGroup,
-)
-from manim.typing import Vector3D
+from manim import PI, RIGHT, TAU, UP, Scene
 
 from light.boundaries import (
     Boundary,
@@ -34,94 +11,19 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
+from light.cannon import Cannon, RadialCannon
 from light.world import World
-
-
-def draw_dots(pos: np.ndarray, dots: list[Dot]) -> Callable[[Mobject], Any]:
-    p3 = np.zeros((len(dots), 3))
-
-    def update(_: Mobject):
-        p3[:, :2] = pos  # `pos` is World.pos, mutated in place
-        for i, d in enumerate(dots):
-            d.move_to(p3[i])
-
-    return update
-
-
-POINT_PALETTE: Final[tuple[ManimColor, ...]] = (
-    BLUE,
-    ORANGE,
-    GREEN,
-    PINK,
-    YELLOW,
-    PURPLE,
-    RED,
-    TEAL,
-)
 
 
 class BoundaryScene(Scene):
     simulation_time: int = 15
     boundary: Boundary
-    points_origin: Vector3D = ORIGIN
-    points_speed: float = 1.3
+    cannon: Cannon = RadialCannon()
     points_radius: float = 0.017
-    points_count: int = 5760
-    colors_fractions: Sequence[float] = ()
-    colors_start_angle: float = 0.0
-
-    def point_colors(self) -> list[ManimColor]:
-        if not self.colors_fractions:
-            return [POINT_PALETTE[0]] * self.points_count
-        if len(self.colors_fractions) > len(POINT_PALETTE):
-            raise ValueError(
-                f"at most {len(POINT_PALETTE)} fractions, "
-                f"got {len(self.colors_fractions)}"
-            )
-
-        weights = np.asarray(self.colors_fractions, dtype=float)
-        edges = np.round(
-            np.cumsum(weights) / weights.sum() * self.points_count
-        ).astype(int)
-        point_ids = np.arange(self.points_count)
-        idx = np.searchsorted(edges, point_ids, side="right")
-
-        # rotate the whole color layout:
-        # point i has angle i * TAU / points_count
-        shift = int(round(self.colors_start_angle / TAU * self.points_count))
-        idx = np.roll(idx, shift)
-        return [POINT_PALETTE[i] for i in idx]
-
-    def velocities(self, angles: np.ndarray) -> np.ndarray:
-        directions = np.stack([np.cos(angles), np.sin(angles)], axis=1)
-        return self.points_speed * directions
 
     def construct(self) -> None:
-        angles = np.linspace(0, TAU, self.points_count, endpoint=False)
-        origin = np.asarray(self.points_origin, dtype=float)[:2]
-        pos = np.tile(origin, (self.points_count, 1))
-
-        world = World(pos, self.velocities(angles), self.boundary)
-
-        def world_updater(_, dt):
-            world.step(dt)
-
-        world_group = VGroup(self.boundary.to_mobject())
-        world_group.add_updater(world_updater)
-
-        dots = [
-            Dot(
-                np.append(pos[i], 0.0),
-                radius=self.points_radius,
-                color=c,
-                num_components=4,
-            )
-            for i, c in enumerate(self.point_colors())
-        ]
-        dots_group = VGroup(*dots).add_updater(draw_dots(world.pos, dots))
-
-        self.add(world_group)
-        self.add_foreground_mobjects(dots_group)
+        world = World(self.boundary, self.cannon, self.simulation_time)
+        self.add(world.to_mobject(self.points_radius))
         self.wait(self.simulation_time)
 
 
@@ -157,9 +59,11 @@ Thumbnail text: Off-Center Source
     """
 
     boundary = CircleBoundary((0, 0), 2.0)
-    points_origin = UP * (2 / 3)  # same 1/3-of-radius offset as before
-    colors_fractions = [1, 1]
-    colors_start_angle = PI / 2
+    cannon = RadialCannon(
+        origin=UP * (2 / 3),
+        color_fractions=[1, 1],
+        color_start_angle=PI / 2,
+    )
 
 
 class HexagonLight(BoundaryScene):
@@ -194,7 +98,7 @@ Thumbnail text: Six Colors
 
     # vertices on the x-axis, so half-width = R
     boundary = PolygonBoundary(regular_polygon(6, 2.0))
-    colors_fractions = [1, 1, 1, 1, 1, 1]
+    cannon = RadialCannon(color_fractions=[1, 1, 1, 1, 1, 1])
 
 
 class StarLight(BoundaryScene):
@@ -229,8 +133,10 @@ Thumbnail text: Five Colors
 
     # widest tips at ±outer·cos(18°) ≈ ±0.951·outer, so outer = 2.1 gives ±2.0
     boundary = PolygonBoundary(star(5, 2.1, 0.92))
-    colors_fractions = [1, 1, 1, 1, 1]
-    colors_start_angle = PI / 2 - TAU / 10 - TAU / 5
+    cannon = RadialCannon(
+        color_fractions=[1, 1, 1, 1, 1],
+        color_start_angle=PI / 2 - TAU / 10 - TAU / 5,
+    )
 
 
 class CrossLight(BoundaryScene):
@@ -263,8 +169,10 @@ Thumbnail text: Four Colors
     """
 
     boundary = PolygonBoundary(cross(0.53, 2.0))
-    colors_fractions = [1, 1, 1, 1]
-    colors_start_angle = -PI / 4
+    cannon = RadialCannon(
+        color_fractions=[1, 1, 1, 1],
+        color_start_angle=-PI / 4,
+    )
 
 
 class EllipseLight(BoundaryScene):
@@ -298,8 +206,10 @@ Thumbnail text: Start at Focus
     """
 
     boundary = EllipseBoundary((0, 0), 2.0, 3.0)  # 4.0 wide, 6.0 tall
-    points_origin = boundary.foci[0]  # bottom focus, (0, -2.236)
-    colors_fractions = [1]
+    cannon = RadialCannon(
+        origin=boundary.foci[0],  # bottom focus, (0, -2.236)
+        color_fractions=[1],
+    )
 
 
 class StadiumLight(BoundaryScene):
@@ -334,8 +244,7 @@ Thumbnail text: Stadium Billiard
     """
 
     boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15+0.85)=4.0
-    colors_fractions = [1, 3]
-    colors_start_angle = -PI / 4
+    cannon = RadialCannon(color_fractions=[1, 3], color_start_angle=-PI / 4)
 
 
 class RingLight(BoundaryScene):
@@ -368,8 +277,7 @@ Thumbnail text: Inside the Ring
     """
 
     boundary = RingBoundary((0, 0), 0.67, 2.0)
-    points_origin = RIGHT * 1.33  # mid-band, as before
-    colors_fractions = [1]
+    cannon = RadialCannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
 
 
 del BoundaryScene
