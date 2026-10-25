@@ -432,7 +432,6 @@ class WideCannonsShortLight(Scene):
     cannon_width: float = 0.9
     face_x: float = -1.9
     top_margin: float = 0.35
-    spawn_sound: Sound = Sample(ASSETS_DIR / "bubble.wav", gain=-12, every=20)
     distributions: tuple[tuple[str, Distribution], ...] = (
         ("uniform", Uniform()),
         ("normal 1σ", Normal(1)),
@@ -443,12 +442,15 @@ class WideCannonsShortLight(Scene):
     )
     points_radius: float = 0.017
 
+    def spawn_sound(self, lane: int) -> Sound:
+        return Sample(ASSETS_DIR / "bubble.wav", gain=-12, every=20, every_jitter=5, gain_jitter=3, seed=lane)
+
     def construct(self) -> None:
         top = config.frame_height / 2 - self.top_margin
         band = (config.frame_height - self.top_margin) / len(self.distributions)
-        heights = (top - (i + 0.5) * band for i in range(len(self.distributions)))
-        for y, color, (label, distribution) in zip(heights, PALETTE, self.distributions):
-            center = RIGHT * self.face_x + UP * y
+        lanes = zip(PALETTE, self.distributions)
+        for lane, (color, (label, distribution)) in enumerate(lanes):
+            center = RIGHT * self.face_x + UP * (top - (lane + 0.5) * band)
             view, face = wide_lane(
                 self,
                 center,
@@ -458,7 +460,7 @@ class WideCannonsShortLight(Scene):
                 distribution,
                 self.simulation_time,
                 self.points_radius,
-                self.spawn_sound,
+                self.spawn_sound(lane),
             )
             caption = Text(label, font_size=20).next_to(face, UP, buff=0.08, aligned_edge=LEFT)
             self.add(view, face, caption)
