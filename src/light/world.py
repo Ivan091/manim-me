@@ -1,24 +1,43 @@
 from dataclasses import dataclass, field
 
 import numpy as np
+from manim import ManimColor
 
 from light.boundaries import Boundary
+from light.cannon import Cannon
 
 
 @dataclass(slots=True)
 class World:
-    pos: np.ndarray  # (N, 2), updated in place
-    vel: np.ndarray  # (N, 2), updated in place
     boundary: Boundary
+    cannon: Cannon
+    duration: float
     # 0 = ideal point reflection; dot radius is draw-only
     wall_radius: float = 0.0
     max_bounces: int = 8
+    pos: np.ndarray = field(init=False)  # (N, 2), updated in place
+    vel: np.ndarray = field(init=False)  # (N, 2), updated in place
+    colors: list[ManimColor] = field(init=False)
     alive: int = field(init=False, default=0)
+    elapsed: float = field(init=False, default=0.0)
 
-    def spawn(self, count: int):
-        self.alive = max(self.alive, min(count, len(self.pos)))
+    def __post_init__(self):
+        count = self.cannon.amount_for(self.duration)
+        self.pos = self.cannon.positions(count)
+        self.vel = self.cannon.velocities(count)
+        self.colors = self.cannon.colors(count)
+        self._fire()
 
     def step(self, dt: float):
+        self.elapsed += dt
+        self._fire()
+        self._move(dt)
+
+    def _fire(self):
+        fired = min(self.cannon.fired(self.elapsed), len(self.pos))
+        self.alive = max(self.alive, fired)
+
+    def _move(self, dt: float):
         pos, vel = self.pos, self.vel
         b, wr = self.boundary, self.wall_radius
         rem = np.full(len(pos), dt)

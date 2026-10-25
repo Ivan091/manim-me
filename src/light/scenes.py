@@ -51,18 +51,9 @@ class BoundaryScene(Scene):
     points_radius: float = 0.017
 
     def construct(self) -> None:
-        cannon = self.cannon
-        count = cannon.amount_for(self.simulation_time)
-        world = World(
-            cannon.positions(count), cannon.velocities(count), self.boundary
-        )
-        world.spawn(cannon.fired(0.0))
-        elapsed = 0.0
+        world = World(self.boundary, self.cannon, self.simulation_time)
 
         def world_updater(_, dt):
-            nonlocal elapsed
-            elapsed += dt
-            world.spawn(cannon.fired(elapsed))
             world.step(dt)
 
         world_group = VGroup(self.boundary.to_mobject())
@@ -76,7 +67,7 @@ class BoundaryScene(Scene):
                 fill_opacity=1.0 if i < world.alive else 0.0,
                 num_components=4,
             )
-            for i, c in enumerate(cannon.colors(count))
+            for i, c in enumerate(world.colors)
         ]
         dots_group = VGroup(*dots).add_updater(draw_dots(world, dots))
 
