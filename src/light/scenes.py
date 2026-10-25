@@ -1,4 +1,21 @@
-from manim import BLACK, LEFT, PI, RIGHT, TAU, UP, Rectangle, Scene
+from manim import (
+    BLACK,
+    BLUE,
+    GREEN,
+    LEFT,
+    ORANGE,
+    PI,
+    PINK,
+    PURPLE,
+    RED,
+    RIGHT,
+    TAU,
+    TEAL,
+    UP,
+    YELLOW,
+    Rectangle,
+    Scene,
+)
 
 from light.boundaries import (
     Boundary,
@@ -13,7 +30,7 @@ from light.boundaries import (
     star,
 )
 from light.cannon import Cannon, RadialCannon, StreamCannon
-from light.coloring import Palette
+from light.coloring import Gradient, Palette
 from light.lettering import vertical_math_path
 from light.world import World
 
@@ -289,7 +306,14 @@ class MathShortLight(BoundaryScene):
     visible_half_width = letter_half_width + 0.05
     word_path = vertical_math_path(half_width=letter_half_width)
     boundary = MirrorPath(word_path)
-    cannon = StreamCannon(origin=word_path[0], velocity=2.5, spawn_rate=120.0)
+    cannon = StreamCannon(
+        origin=word_path[0],
+        velocity=2.5,
+        spawn_rate=120.0,
+        coloring=Gradient(
+            (BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)
+        ),
+    )
     points_radius = 0.025
 
     def construct(self) -> None:
