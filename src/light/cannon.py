@@ -4,29 +4,9 @@ from dataclasses import dataclass
 from typing import Final, Sequence
 
 import numpy as np
-from manim import (
-    BLUE,
-    GREEN,
-    ORANGE,
-    PINK,
-    PURPLE,
-    RED,
-    TAU,
-    TEAL,
-    YELLOW,
-    ManimColor,
-)
+from manim import TAU, ManimColor
 
-PALETTE: Final[tuple[ManimColor, ...]] = (
-    BLUE,
-    ORANGE,
-    GREEN,
-    PINK,
-    YELLOW,
-    PURPLE,
-    RED,
-    TEAL,
-)
+from light.coloring import Coloring, StaticColor
 
 INSTANT: Final[float] = math.inf
 _TIME_EPS: Final[float] = 1e-9
@@ -54,8 +34,7 @@ class RadialCannon(Cannon):
     origin: Sequence[float] = (0.0, 0.0)
     amount: int = 5760
     velocity: float = 1.3
-    color_fractions: Sequence[float] = ()
-    color_start_angle: float = 0.0
+    coloring: Coloring = StaticColor()
     spawn_rate: float = INSTANT
 
     def __post_init__(self):
@@ -64,11 +43,6 @@ class RadialCannon(Cannon):
         if self.spawn_rate <= 0:
             raise ValueError(
                 f"spawn_rate must be positive, got {self.spawn_rate}"
-            )
-        if len(self.color_fractions) > len(PALETTE):
-            raise ValueError(
-                f"at most {len(PALETTE)} fractions, "
-                f"got {len(self.color_fractions)}"
             )
 
     def amount_for(self, duration: float) -> int:
@@ -84,21 +58,7 @@ class RadialCannon(Cannon):
         return self.velocity * directions
 
     def colors(self, count: int) -> list[ManimColor]:
-        if not self.color_fractions:
-            return [PALETTE[0]] * count
-
-        weights = np.asarray(self.color_fractions, dtype=float)
-        edges = np.round(
-            np.cumsum(weights) / weights.sum() * count
-        ).astype(int)
-        point_ids = np.arange(count)
-        idx = np.searchsorted(edges, point_ids, side="right")
-
-        # rotate the whole color layout:
-        # point i has angle i * TAU / count
-        shift = int(round(self.color_start_angle / TAU * count))
-        idx = np.roll(idx, shift)
-        return [PALETTE[i] for i in idx]
+        return self.coloring.colors(count)
 
     def fired(self, elapsed: float) -> int:
         if math.isinf(self.spawn_rate):
@@ -112,7 +72,7 @@ class StreamCannon(Cannon):
     origin: Sequence[float] = (0.0, 0.0)
     direction: float = 0.0
     velocity: float = 1.3
-    color: ManimColor = PALETTE[0]
+    coloring: Coloring = StaticColor()
     spawn_rate: float = 60.0
 
     def __post_init__(self):
@@ -134,7 +94,7 @@ class StreamCannon(Cannon):
         return np.tile(self.velocity * heading, (count, 1))
 
     def colors(self, count: int) -> list[ManimColor]:
-        return [self.color] * count
+        return self.coloring.colors(count)
 
     def fired(self, elapsed: float) -> int:
         return int(elapsed * self.spawn_rate + _TIME_EPS)

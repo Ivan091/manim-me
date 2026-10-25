@@ -13,6 +13,7 @@ from light.boundaries import (
     star,
 )
 from light.cannon import Cannon, RadialCannon, StreamCannon
+from light.coloring import Palette
 from light.lettering import vertical_math_path
 from light.world import World
 
@@ -63,8 +64,7 @@ Thumbnail text: Off-Center Source
     boundary = CircleBoundary((0, 0), 2.0)
     cannon = RadialCannon(
         origin=UP * (2 / 3),
-        color_fractions=[1, 1],
-        color_start_angle=PI / 2,
+        coloring=Palette([1, 1], start_angle=PI / 2),
     )
 
 
@@ -100,7 +100,7 @@ Thumbnail text: Six Colors
 
     # vertices on the x-axis, so half-width = R
     boundary = PolygonBoundary(regular_polygon(6, 2.0))
-    cannon = RadialCannon(color_fractions=[1, 1, 1, 1, 1, 1])
+    cannon = RadialCannon(coloring=Palette([1, 1, 1, 1, 1, 1]))
 
 
 class StarLight(BoundaryScene):
@@ -136,8 +136,9 @@ Thumbnail text: Five Colors
     # widest tips at ±outer·cos(18°) ≈ ±0.951·outer, so outer = 2.1 gives ±2.0
     boundary = PolygonBoundary(star(5, 2.1, 0.92))
     cannon = RadialCannon(
-        color_fractions=[1, 1, 1, 1, 1],
-        color_start_angle=PI / 2 - TAU / 10 - TAU / 5,
+        coloring=Palette(
+            [1, 1, 1, 1, 1], start_angle=PI / 2 - TAU / 10 - TAU / 5
+        ),
     )
 
 
@@ -172,8 +173,7 @@ Thumbnail text: Four Colors
 
     boundary = PolygonBoundary(cross(0.53, 2.0))
     cannon = RadialCannon(
-        color_fractions=[1, 1, 1, 1],
-        color_start_angle=-PI / 4,
+        coloring=Palette([1, 1, 1, 1], start_angle=-PI / 4),
     )
 
 
@@ -210,7 +210,6 @@ Thumbnail text: Start at Focus
     boundary = EllipseBoundary((0, 0), 2.0, 3.0)  # 4.0 wide, 6.0 tall
     cannon = RadialCannon(
         origin=boundary.foci[0],  # bottom focus, (0, -2.236)
-        color_fractions=[1],
     )
 
 
@@ -246,7 +245,9 @@ Thumbnail text: Stadium Billiard
     """
 
     boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15+0.85)=4.0
-    cannon = RadialCannon(color_fractions=[1, 3], color_start_angle=-PI / 4)
+    cannon = RadialCannon(
+        coloring=Palette([1, 3], start_angle=-PI / 4)
+    )
 
 
 class RingLight(BoundaryScene):
@@ -279,7 +280,7 @@ Thumbnail text: Inside the Ring
     """
 
     boundary = RingBoundary((0, 0), 0.67, 2.0)
-    cannon = RadialCannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
+    cannon = RadialCannon(origin=RIGHT * 1.33)  # mid-band
 
 
 class MathShortLight(BoundaryScene):
