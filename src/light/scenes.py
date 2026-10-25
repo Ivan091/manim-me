@@ -23,7 +23,7 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon
+from light.cannon import Cannon, RadialCannon
 from light.world import World
 
 
@@ -46,12 +46,15 @@ def draw_dots(world: World, dots: list[Dot]) -> Callable[[Mobject], Any]:
 class BoundaryScene(Scene):
     simulation_time: int = 15
     boundary: Boundary
-    cannon: Cannon = Cannon()
+    cannon: Cannon = RadialCannon()
     points_radius: float = 0.017
 
     def construct(self) -> None:
         cannon = self.cannon
-        world = World(cannon.positions(), cannon.velocities(), self.boundary)
+        count = cannon.amount_for(self.simulation_time)
+        world = World(
+            cannon.positions(count), cannon.velocities(count), self.boundary
+        )
         world.spawn(cannon.fired(0.0))
         elapsed = 0.0
 
@@ -72,7 +75,7 @@ class BoundaryScene(Scene):
                 fill_opacity=1.0 if i < world.alive else 0.0,
                 num_components=4,
             )
-            for i, c in enumerate(cannon.colors())
+            for i, c in enumerate(cannon.colors(count))
         ]
         dots_group = VGroup(*dots).add_updater(draw_dots(world, dots))
 
@@ -113,7 +116,7 @@ Thumbnail text: Off-Center Source
     """
 
     boundary = CircleBoundary((0, 0), 2.0)
-    cannon = Cannon(
+    cannon = RadialCannon(
         origin=UP * (2 / 3),
         color_fractions=[1, 1],
         color_start_angle=PI / 2,
@@ -152,7 +155,7 @@ Thumbnail text: Six Colors
 
     # vertices on the x-axis, so half-width = R
     boundary = PolygonBoundary(regular_polygon(6, 2.0))
-    cannon = Cannon(color_fractions=[1, 1, 1, 1, 1, 1])
+    cannon = RadialCannon(color_fractions=[1, 1, 1, 1, 1, 1])
 
 
 class StarLight(BoundaryScene):
@@ -187,7 +190,7 @@ Thumbnail text: Five Colors
 
     # widest tips at ±outer·cos(18°) ≈ ±0.951·outer, so outer = 2.1 gives ±2.0
     boundary = PolygonBoundary(star(5, 2.1, 0.92))
-    cannon = Cannon(
+    cannon = RadialCannon(
         color_fractions=[1, 1, 1, 1, 1],
         color_start_angle=PI / 2 - TAU / 10 - TAU / 5,
     )
@@ -223,7 +226,7 @@ Thumbnail text: Four Colors
     """
 
     boundary = PolygonBoundary(cross(0.53, 2.0))
-    cannon = Cannon(
+    cannon = RadialCannon(
         color_fractions=[1, 1, 1, 1],
         color_start_angle=-PI / 4,
     )
@@ -260,7 +263,7 @@ Thumbnail text: Start at Focus
     """
 
     boundary = EllipseBoundary((0, 0), 2.0, 3.0)  # 4.0 wide, 6.0 tall
-    cannon = Cannon(
+    cannon = RadialCannon(
         origin=boundary.foci[0],  # bottom focus, (0, -2.236)
         color_fractions=[1],
     )
@@ -298,7 +301,7 @@ Thumbnail text: Stadium Billiard
     """
 
     boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15+0.85)=4.0
-    cannon = Cannon(color_fractions=[1, 3], color_start_angle=-PI / 4)
+    cannon = RadialCannon(color_fractions=[1, 3], color_start_angle=-PI / 4)
 
 
 class RingLight(BoundaryScene):
@@ -331,7 +334,7 @@ Thumbnail text: Inside the Ring
     """
 
     boundary = RingBoundary((0, 0), 0.67, 2.0)
-    cannon = Cannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
+    cannon = RadialCannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
 
 
 del BoundaryScene
