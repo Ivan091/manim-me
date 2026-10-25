@@ -537,7 +537,7 @@ Thumbnail text: Six Distributions
     points_radius: float = 0.017
 
     def spawn_sound(self, lane: int) -> Sound:
-        return Sample(ASSETS_DIR / "bubble.wav", gain=-18, every=25, every_jitter=5, gain_jitter=5, seed=lane)
+        return Sample(ASSETS_DIR / "bubble.wav", gain=-18, every=50, every_jitter=15, gain_jitter=4, seed=lane)
 
     def construct(self) -> None:
         top = config.frame_height / 2 - self.top_margin
