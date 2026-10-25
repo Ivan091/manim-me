@@ -49,8 +49,13 @@ class World:
         ]
         dots_group = VGroup(*dots).add_updater(self._draw(dots))
         view = VGroup(self.boundary.to_mobject(), dots_group)
-        view.add_updater(lambda _, dt: self.cannon.sound.play(scene, self.step(dt), dt))
+        view.add_updater(lambda _, dt: self._tick(scene, dt))
         return view
+
+    def _tick(self, scene: Scene, dt: float):
+        start = self.alive
+        fired = self.step(dt)
+        self.cannon.sound.play(scene, start, fired, dt)
 
     def _draw(self, dots: list[Dot]) -> Callable[[Mobject], Any]:
         p3 = np.zeros((len(dots), 3))

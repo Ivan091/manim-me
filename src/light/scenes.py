@@ -432,7 +432,7 @@ class WideCannonsShortLight(Scene):
     cannon_width: float = 0.9
     face_x: float = -1.9
     top_margin: float = 0.35
-    spawn_sound: Sound = Sample(ASSETS_DIR / "bubble.wav", gain=-18)
+    spawn_sound: Sound = Sample(ASSETS_DIR / "bubble.wav", gain=-12, every=20)
     distributions: tuple[tuple[str, Distribution], ...] = (
         ("uniform", Uniform()),
         ("normal 1σ", Normal(1)),
