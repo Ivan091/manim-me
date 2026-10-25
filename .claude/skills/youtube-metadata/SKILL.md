@@ -35,7 +35,7 @@ Description:
 
 <how-it-was-made paragraph>
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 tag one, tag two, tag three
@@ -53,7 +53,7 @@ Thumbnail text: Six Colors
   1. A one- or two-sentence hook in the first ~150 characters (the part shown before "show more"), containing the main keywords.
   2. What the viewer is seeing, stated from the code (shape, number of points, how they move, what the colors mean).
   3. How it was made: Manim Community (`manim` version from `uv.lock`) and a short plain-language note on the simulation, only if true for the scene.
-  4. The hashtags on the last line, at most 3, each starting with `#`, no spaces. The first two also appear above the title on the watch page.
+  4. The hashtags on the last line, at most 3, each starting with `#`, all lowercase, no spaces. The first two also appear above the title on the watch page.
   - Add links, music credits, or socials as extra paragraphs only when the user supplied them.
 - **Tags**: a comma-separated list, all lowercase (including proper nouns), 8 to 15 entries, most specific first, total length under 500 characters including separators. Mix the specific (shape, "ray reflection", "billiards"), the tool ("manim", "python"), and the broad ("simulation", "mathematics", "physics visualization"). No repeats of the title wording as one long tag, no misleading tags.
 - **Category**: one of YouTube's category names; default `Science & Technology`, use `Education` only when the scene teaches step by step.
@@ -86,7 +86,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 circle billiard, off-center light source, mathematical billiards, dynamical billiards, reflection, light simulation,
@@ -103,7 +103,7 @@ Thumbnail text: Off-Center Source
 ## Workflow
 
 1. **Locate the scenes.** Read the file and each named scene class, including class attributes inherited from its base. Note the render profile if the user mentions one (`dev_short.cfg` and `prod_simulation_short.cfg` are vertical 9:16 Shorts; the others are 16:9).
-2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (`simulation_time`), use `#Shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
+2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (`simulation_time`), use `#shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
 3. **Gather facts** to use in the text: shape name and dimensions, `points_count`, `points_speed`, color groups (`colors_fractions`, `colors_start_angle`), `simulation_time`, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.
 5. **Write the docstring** as the first statement of each scene class, keeping the surrounding formatting, and remove any legacy `youtube_metadata` dict from that class.
