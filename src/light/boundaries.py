@@ -201,6 +201,8 @@ class MirrorPath(Boundary):
         return self.cores[None] + s[..., None] * self.tangents[None]
 
     def sdf_many(self, points):
+        if len(self.faces) == 0:
+            return np.full(len(points), -np.inf)
         gap = points[:, None, :] - self._closest(points)
         return self.radius - np.linalg.norm(gap, axis=-1).min(axis=1)
 
