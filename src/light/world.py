@@ -47,11 +47,8 @@ class World:
         ]
         dots_group = VGroup(*dots).add_updater(self._draw(dots))
         view = VGroup(self.boundary.to_mobject(), dots_group)
-        view.add_updater(self._advance)
+        view.add_updater(lambda _, dt: self.step(dt))
         return view
-
-    def _advance(self, _: Mobject, dt: float):
-        self.step(dt)
 
     def _draw(self, dots: list[Dot]) -> Callable[[Mobject], Any]:
         p3 = np.zeros((len(dots), 3))
