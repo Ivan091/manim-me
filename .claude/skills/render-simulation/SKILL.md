@@ -24,7 +24,7 @@ Render one scene with manim and report the result. The scene code is the source 
 
 ## Workflow
 
-1. **Locate the scene.** Confirm the class exists in the named module (default `src/light/scenes.py`) with Grep. Note `simulation_time` so you can estimate the render.
+1. **Locate the scene.** Confirm the class exists in the named module (default `src/light/scenes.py`; the letter scenes `AShortLight` to `ZShortLight` live in `src/light/letters.py`) with Grep. Note `simulation_time` so you can estimate the render; letter scenes compute it, so import the module and read the class attribute.
 2. **Choose the profile** as above.
 3. **Render** from the repo root, for example:
 

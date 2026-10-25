@@ -192,14 +192,12 @@ class MirrorPath(Boundary):
         self.tangents = np.stack([-self.normals[:, 1], self.normals[:, 0]], 1)
         self.faces = p[1:-1]
         self.cores = self.faces + radius * self.normals
-        self.half_length = half_length
+        self.half_length = np.broadcast_to(np.asarray(half_length, dtype=float), (len(self.faces),))
         self.radius = radius
 
     def _closest(self, points):
         rel = points[:, None, :] - self.cores[None]
-        s = np.clip(
-            (rel * self.tangents).sum(-1), -self.half_length, self.half_length
-        )
+        s = np.clip((rel * self.tangents).sum(-1), -self.half_length[None], self.half_length[None])
         return self.cores[None] + s[..., None] * self.tangents[None]
 
     def sdf_many(self, points):
@@ -215,7 +213,7 @@ class MirrorPath(Boundary):
 
     def to_mobject(self, **kwargs):
         kwargs.setdefault("color", GRAY)
-        reach = self.half_length * self.tangents
+        reach = self.half_length[:, None] * self.tangents
         return VGroup(
             *[
                 Line(np.append(f - r, 0.0), np.append(f + r, 0.0), **kwargs)

@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from manim import (
     BLACK,
     BLUE,
@@ -26,8 +24,8 @@ from manim import (
     config,
 )
 
+from light.base import ASSETS_DIR, BoundaryScene
 from light.boundaries import (
-    Boundary,
     CircleBoundary,
     EllipseBoundary,
     MirrorPath,
@@ -39,14 +37,12 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon, RadialCannon, StreamCannon, WideCannon
+from light.cannon import RadialCannon, StreamCannon, WideCannon
 from light.coloring import PALETTE, Gradient, Palette, StaticColor
 from light.distribution import Arcsine, Bimodal, Distribution, Normal, Uniform
 from light.lettering import vertical_math_path
 from light.sound import Sample, Silence, Sound
 from light.world import World
-
-ASSETS_DIR = Path(__file__).parent / "assets"
 
 
 def wide_lane(
@@ -73,18 +69,6 @@ def wide_lane(
     face = Line(LEFT * width / 2, RIGHT * width / 2, color=GRAY)
     face.rotate(direction - PI / 2).move_to(center)
     return world.to_mobject(points_radius, scene), face
-
-
-class BoundaryScene(Scene):
-    simulation_time: int = 15
-    boundary: Boundary
-    cannon: Cannon = RadialCannon()
-    points_radius: float = 0.017
-
-    def construct(self) -> None:
-        world = World(self.boundary, self.cannon, self.simulation_time)
-        self.add(world.to_mobject(self.points_radius, self))
-        self.wait(self.simulation_time)
 
 
 class CircleLight(BoundaryScene):
@@ -402,66 +386,6 @@ Thumbnail text: 30 Mirrors
         super().construct()
 
 
-class ZShortLight(BoundaryScene):
-    """
-Title:
-A Wide Beam of Dots Draws the Letter Z With Two Mirrors
-
-Description:
-A wide beam of dots flies in from the left, bounces off two mirrors and draws the letter Z in a 15-second vertical
-Short, then switches off and drains away.
-
-The beam is 0.8 wide and the dots are spread across it on a bell curve, so the stroke is dense in the middle and soft
-at the edges. The letter is 3 wide and 4 tall. The dots enter along the top bar at speed 3, 120 per second, 1,200 in
-total. A mirror at the top-right corner sends them down the diagonal, a mirror at the bottom-left corner sends them
-along the bottom bar, and they leave through the right edge. Each new dot is a slightly different color, moving
-through blue, teal, green, yellow, orange, red, pink and purple, so the Z is drawn in changing hues. Roughly one dot in
-every 20 pops a bubble sound as it appears, with random timing and loudness. After 10 seconds the beam stops, and the
-last dots trace the Z and leave just before the video ends.
-
-Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
-constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The
-mirror angles are computed from the path the beam should follow, each dot's starting height is drawn with NumPy from a
-fixed seed, and the exact moment each dot meets a mirror is found by bisection.
-
-#shorts #manim #simulation
-
-Tags:
-letter z, mirror reflection, wide beam, normal distribution, bell curve, ray reflection, mirrors, light simulation,
-particle stream, manim, python, simulation, physics visualization, shorts
-
-Category: Science & Technology
-Language: en
-Visibility: public
-Made for kids: no
-Thumbnail text: Two Mirrors
-    """
-
-    simulation_time = 15
-    half_width = 1.5
-    half_height = 2.0
-    offscreen = 2.75
-    z_path = (
-        (-offscreen, half_height),
-        (half_width, half_height),
-        (-half_width, -half_height),
-        (offscreen, -half_height),
-    )
-    boundary = MirrorPath(z_path, half_length=0.6)
-    cannon = WideCannon(
-        origin=z_path[0],
-        direction=0.0,
-        width=0.8,
-        velocity=3,
-        spawn_rate=120.0,
-        firing_time=10.0,
-        distribution=Normal(2),
-        coloring=Gradient((BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)),
-        sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=20, every_jitter=4, gain_jitter=3),
-    )
-    points_radius = 0.03
-
-
 class WideCannonsLight(Scene):
     simulation_time: int = 15
     cannon_width: float = 3.0
@@ -537,7 +461,7 @@ Thumbnail text: Six Distributions
     points_radius: float = 0.017
 
     def spawn_sound(self, lane: int) -> Sound:
-        return Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=30, every_jitter=10, gain_jitter=3, seed=lane)
+        return Sample(ASSETS_DIR / "bubble.wav", gain=-18, every=50, every_jitter=15, gain_jitter=4, seed=lane)
 
     def construct(self) -> None:
         top = config.frame_height / 2 - self.top_margin
