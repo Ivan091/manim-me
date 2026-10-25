@@ -397,7 +397,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 circle billiard, off-center light source, mathematical billiards, dynamical billiards, reflection, light simulation,
@@ -433,7 +433,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 hexagon billiard, polygon billiard, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
@@ -468,7 +468,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 star billiard, non-convex billiard, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
@@ -503,7 +503,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 cross billiard, non-convex billiard, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
@@ -538,7 +538,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 ellipse billiard, ellipse foci, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
@@ -574,7 +574,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 stadium billiard, bunimovich stadium, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
@@ -608,7 +608,7 @@ constant speed and reflects perfectly off the wall: the angle of incidence equal
 simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
 meets the wall is found by bisection.
 
-#Manim #Simulation #Math
+#manim #simulation #math
 
 Tags:
 annular billiard, ring billiard, mathematical billiards, dynamical billiards, reflection, light simulation, manim,
