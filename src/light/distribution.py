@@ -44,5 +44,11 @@ class Bimodal(Distribution):
 
 @dataclass(frozen=True)
 class Arcsine(Distribution):
+    edge: float = 0.5
+
+    def __post_init__(self):
+        if self.edge <= 0:
+            raise ValueError(f"edge must be positive, got {self.edge}")
+
     def offsets(self, count: int, rng: np.random.Generator) -> np.ndarray:
-        return np.cos(rng.uniform(0.0, np.pi, count))
+        return rng.beta(self.edge, self.edge, count) * 2 - 1
