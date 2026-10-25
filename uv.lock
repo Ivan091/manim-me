@@ -232,10 +232,14 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "manim" },
+    { name = "numpy" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "manim", specifier = ">=0.22.0" }]
+requires-dist = [
+    { name = "manim", specifier = ">=0.22.0" },
+    { name = "numpy", specifier = ">=2.4.4" },
+]
 
 [[package]]
 name = "manimpango"
