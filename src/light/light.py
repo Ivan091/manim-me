@@ -1,8 +1,35 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Any, Sequence, Final
+from typing import Any, Callable, Final, Sequence
 
-from manim import *
+import numpy as np
+from manim import (
+    BLUE,
+    GREEN,
+    ORANGE,
+    ORIGIN,
+    PI,
+    PINK,
+    PURPLE,
+    RED,
+    RIGHT,
+    TAU,
+    TEAL,
+    UP,
+    WHITE,
+    YELLOW,
+    Circle,
+    Dot,
+    Ellipse,
+    ManimColor,
+    Mobject,
+    Polygon,
+    Rectangle,
+    RoundedRectangle,
+    Scene,
+    VGroup,
+    VMobject,
+)
 from manim.typing import Vector3D
 
 
@@ -10,27 +37,36 @@ class Boundary(ABC):
     _GRAD_EPS: float = 1e-6
 
     @abstractmethod
-    def sdf_many(self, P: np.ndarray) -> np.ndarray:
-        """Signed distance for an (N, 2) array of points -> (N,). <0 inside, >0 outside."""
+    def sdf_many(self, points: np.ndarray) -> np.ndarray:
+        """Signed distance for an (N, 2) array of points -> (N,).
 
-    def normal_many(self, P: np.ndarray) -> np.ndarray:
-        """Outward unit normals, (N, 2). Default: numerical gradient of the sdf."""
+        <0 inside, >0 outside.
+        """
+
+    def normal_many(self, points: np.ndarray) -> np.ndarray:
+        """Outward unit normals, (N, 2).
+
+        Default: numerical gradient of the sdf.
+        """
         e = self._GRAD_EPS
         ex, ey = np.array([e, 0.0]), np.array([0.0, e])
         g = np.stack(
             [
-                self.sdf_many(P + ex) - self.sdf_many(P - ex),
-                self.sdf_many(P + ey) - self.sdf_many(P - ey),
+                self.sdf_many(points + ex) - self.sdf_many(points - ex),
+                self.sdf_many(points + ey) - self.sdf_many(points - ey),
             ],
             axis=1,
         )
-        return g / np.maximum(np.linalg.norm(g, axis=1, keepdims=True), 1e-12)
+        norm = np.linalg.norm(g, axis=1, keepdims=True)
+        return g / np.maximum(norm, 1e-12)
 
     def sdf(self, p: np.ndarray) -> float:
-        return float(self.sdf_many(np.asarray(p, dtype=float)[None, :2])[0])
+        point = np.asarray(p, dtype=float)[None, :2]
+        return float(self.sdf_many(point)[0])
 
     def normal(self, p: np.ndarray) -> np.ndarray:
-        return self.normal_many(np.asarray(p, dtype=float)[None, :2])[0]
+        point = np.asarray(p, dtype=float)[None, :2]
+        return self.normal_many(point)[0]
 
     def to_mobject(self, **kwargs) -> VMobject:
         raise NotImplementedError(f"{type(self).__name__} has no mobject")
@@ -41,9 +77,10 @@ class RectBoundary(Boundary):
         self.c = np.array([(left + right) / 2, (bottom + top) / 2])
         self.h = np.array([(right - left) / 2, (top - bottom) / 2])
 
-    def sdf_many(self, P):
-        q = np.abs(P - self.c) - self.h
-        return np.linalg.norm(np.maximum(q, 0.0), axis=1) + np.minimum(q.max(axis=1), 0.0)
+    def sdf_many(self, points):
+        q = np.abs(points - self.c) - self.h
+        outside = np.linalg.norm(np.maximum(q, 0.0), axis=1)
+        return outside + np.minimum(q.max(axis=1), 0.0)
 
     def to_mobject(self, **kwargs):
         kwargs.setdefault("color", WHITE)
@@ -55,18 +92,21 @@ class RectBoundary(Boundary):
 class CircleBoundary(Boundary):
     def __init__(self, center, radius):
         self.c = np.asarray(center, dtype=float)[:2]
-        self.R = radius
+        self.radius = radius
 
-    def sdf_many(self, P):
-        return np.linalg.norm(P - self.c, axis=1) - self.R
+    def sdf_many(self, points):
+        return np.linalg.norm(points - self.c, axis=1) - self.radius
 
-    def normal_many(self, P):
-        d = P - self.c
-        return d / np.maximum(np.linalg.norm(d, axis=1, keepdims=True), 1e-12)
+    def normal_many(self, points):
+        d = points - self.c
+        norm = np.linalg.norm(d, axis=1, keepdims=True)
+        return d / np.maximum(norm, 1e-12)
 
     def to_mobject(self, **kwargs):
         kwargs.setdefault("color", WHITE)
-        return Circle(radius=self.R, **kwargs).move_to(np.append(self.c, 0.0))
+        return Circle(radius=self.radius, **kwargs).move_to(
+            np.append(self.c, 0.0)
+        )
 
 
 class EllipseBoundary(Boundary):
@@ -81,43 +121,52 @@ class EllipseBoundary(Boundary):
         a, b = self.r
         cx, cy = self.c
         if a >= b:
-            c = np.sqrt(a ** 2 - b ** 2)
+            c = np.sqrt(a**2 - b**2)
             return np.array([cx - c, cy, 0.0]), np.array([cx + c, cy, 0.0])
-        c = np.sqrt(b ** 2 - a ** 2)
+        c = np.sqrt(b**2 - a**2)
         return np.array([cx, cy - c, 0.0]), np.array([cx, cy + c, 0.0])
 
-    def sdf_many(self, P):
-        # first-order approximation; exact on the zero level set, which is what collisions use
-        q = P - self.c
+    def sdf_many(self, points):
+        # first-order approximation; exact on the zero level set, which is
+        # what collisions use
+        q = points - self.c
         k0 = np.linalg.norm(q / self.r, axis=1)
-        k1 = np.linalg.norm(q / self.r ** 2, axis=1)
-        return np.where(k1 > 0, k0 * (k0 - 1) / np.maximum(k1, 1e-12), -self.r.min())
+        k1 = np.linalg.norm(q / self.r**2, axis=1)
+        return np.where(
+            k1 > 0, k0 * (k0 - 1) / np.maximum(k1, 1e-12), -self.r.min()
+        )
 
-    def normal_many(self, P):
-        g = (P - self.c) / self.r ** 2
-        return g / np.maximum(np.linalg.norm(g, axis=1, keepdims=True), 1e-12)
+    def normal_many(self, points):
+        g = (points - self.c) / self.r**2
+        norm = np.linalg.norm(g, axis=1, keepdims=True)
+        return g / np.maximum(norm, 1e-12)
 
     def to_mobject(self, **kwargs):
         kwargs.setdefault("color", WHITE)
-        return Ellipse(width=2 * self.r[0], height=2 * self.r[1], **kwargs).move_to(np.append(self.c, 0.0))
+        return Ellipse(
+            width=2 * self.r[0], height=2 * self.r[1], **kwargs
+        ).move_to(np.append(self.c, 0.0))
 
 
 class StadiumBoundary(Boundary):
-    """Capsule: a horizontal segment of half-length `h`, inflated by radius `r`."""
+    """Capsule: a horizontal segment of half-length `h`, inflated by `r`."""
 
     def __init__(self, center, h, r):
         self.c = np.asarray(center, dtype=float)[:2]
         self.h, self.r = h, r
 
-    def sdf_many(self, P):
-        q = P - self.c
+    def sdf_many(self, points):
+        q = points - self.c
         qx = q[:, 0] - np.clip(q[:, 0], -self.h, self.h)
         return np.hypot(qx, q[:, 1]) - self.r
 
     def to_mobject(self, **kwargs):
         kwargs.setdefault("color", WHITE)
         return RoundedRectangle(
-            width=2 * (self.h + self.r), height=2 * self.r, corner_radius=self.r, **kwargs
+            width=2 * (self.h + self.r),
+            height=2 * self.r,
+            corner_radius=self.r,
+            **kwargs,
         ).move_to(np.append(self.c, 0.0))
 
 
@@ -128,8 +177,8 @@ class RingBoundary(Boundary):
         self.c = np.asarray(center, dtype=float)[:2]
         self.ri, self.ro = r_inner, r_outer
 
-    def sdf_many(self, P):
-        d = np.linalg.norm(P - self.c, axis=1)
+    def sdf_many(self, points):
+        d = np.linalg.norm(points - self.c, axis=1)
         return np.maximum(d - self.ro, self.ri - d)
 
     def to_mobject(self, **kwargs):
@@ -153,10 +202,20 @@ def star(n, outer, inner, rotation=PI / 2):
 
 
 def cross(arm_half_width, arm_length):
-    w, L = arm_half_width, arm_length
+    w, arm = arm_half_width, arm_length
     return [
-        (w, L), (-w, L), (-w, w), (-L, w), (-L, -w), (-w, -w),
-        (-w, -L), (w, -L), (w, -w), (L, -w), (L, w), (w, w)
+        (w, arm),
+        (-w, arm),
+        (-w, w),
+        (-arm, w),
+        (-arm, -w),
+        (-w, -w),
+        (-w, -arm),
+        (w, -arm),
+        (w, -w),
+        (arm, -w),
+        (arm, w),
+        (w, w),
     ]
 
 
@@ -167,15 +226,15 @@ class PolygonBoundary(Boundary):
         self.a = np.asarray(verts, dtype=float)[:, :2]
         self.b = np.roll(self.a, -1, axis=0)
         self.ab = self.b - self.a
-        self.len2 = (self.ab ** 2).sum(1)
+        self.len2 = (self.ab**2).sum(1)
 
-    def sdf_many(self, P):
-        ap = P[:, None, :] - self.a[None]  # (N, E, 2)
+    def sdf_many(self, points):
+        ap = points[:, None, :] - self.a[None]  # (N, E, 2)
         t = np.clip((ap * self.ab).sum(-1) / self.len2, 0, 1)
         d = np.linalg.norm(ap - t[..., None] * self.ab, axis=-1).min(axis=1)
 
         # ray-casting inside test
-        x, y = P[:, 0:1], P[:, 1:2]
+        x, y = points[:, 0:1], points[:, 1:2]
         crosses = (self.a[:, 1] > y) != (self.b[:, 1] > y)
         dy = np.where(self.ab[:, 1] == 0, 1, self.ab[:, 1])
         x_int = self.a[:, 0] + (y - self.a[:, 1]) * self.ab[:, 0] / dy
@@ -193,36 +252,42 @@ class World:
     pos: np.ndarray  # (N, 2), updated in place
     vel: np.ndarray  # (N, 2), updated in place
     boundary: Boundary
-    wall_radius: float = 0.0  # 0 = ideal point reflection; dot radius is draw-only
+    # 0 = ideal point reflection; dot radius is draw-only
+    wall_radius: float = 0.0
     max_bounces: int = 8
 
     def step(self, dt: float):
-        P, V, b, wr = self.pos, self.vel, self.boundary, self.wall_radius
-        rem = np.full(len(P), dt)
-        active = np.arange(len(P))
+        pos, vel = self.pos, self.vel
+        b, wr = self.boundary, self.wall_radius
+        rem = np.full(len(pos), dt)
+        active = np.arange(len(pos))
         for _ in range(self.max_bounces):
-            end = P[active] + V[active] * rem[active, None]
+            end = pos[active] + vel[active] * rem[active, None]
             out = b.sdf_many(end) + wr > 0
-            P[active[~out]] = end[~out]  # no collision: done for this frame
+            pos[active[~out]] = end[~out]  # no collision: done for this frame
             active = active[out]
             if active.size == 0:
                 break
 
-            p0, v0, r0 = P[active], V[active], rem[active]
-            lo, hi = np.zeros(len(active)), r0.copy()  # lo: inside, hi: outside
-            for _ in range(40):  # bisect impact time, only for colliding points
+            p0, v0, r0 = pos[active], vel[active], rem[active]
+            # lo: inside, hi: outside
+            lo, hi = np.zeros(len(active)), r0.copy()
+            # bisect impact time, only for colliding points
+            for _ in range(40):
                 mid = 0.5 * (lo + hi)
                 bad = b.sdf_many(p0 + v0 * mid[:, None]) + wr > 0
                 hi = np.where(bad, mid, hi)
                 lo = np.where(bad, lo, mid)
 
-            P[active] = p0 + v0 * lo[:, None]
-            n = b.normal_many(P[active])
+            pos[active] = p0 + v0 * lo[:, None]
+            n = b.normal_many(pos[active])
             vn = np.einsum("ij,ij->i", v0, n)
-            V[active] = v0 - 2 * (vn * (vn > 0))[:, None] * n  # reflect only if moving outward
+            # reflect only if moving outward
+            vel[active] = v0 - 2 * (vn * (vn > 0))[:, None] * n
             rem[active] = r0 - lo
         else:
-            P[active] += V[active] * rem[active, None]  # bounce budget spent (tight corner)
+            # bounce budget spent (tight corner)
+            pos[active] += vel[active] * rem[active, None]
 
 
 def draw_dots(pos: np.ndarray, dots: list[Dot]) -> Callable[[Mobject], Any]:
@@ -237,7 +302,14 @@ def draw_dots(pos: np.ndarray, dots: list[Dot]) -> Callable[[Mobject], Any]:
 
 
 POINT_PALETTE: Final[tuple[ManimColor, ...]] = (
-    BLUE, ORANGE, GREEN, PINK, YELLOW, PURPLE, RED, TEAL,
+    BLUE,
+    ORANGE,
+    GREEN,
+    PINK,
+    YELLOW,
+    PURPLE,
+    RED,
+    TEAL,
 )
 
 
@@ -255,30 +327,48 @@ class BoundaryScene(Scene):
         if not self.colors_fractions:
             return [POINT_PALETTE[0]] * self.points_count
         if len(self.colors_fractions) > len(POINT_PALETTE):
-            raise ValueError(f"at most {len(POINT_PALETTE)} fractions, got {len(self.colors_fractions)}")
+            raise ValueError(
+                f"at most {len(POINT_PALETTE)} fractions, "
+                f"got {len(self.colors_fractions)}"
+            )
 
         weights = np.asarray(self.colors_fractions, dtype=float)
-        edges = np.round(np.cumsum(weights) / weights.sum() * self.points_count).astype(int)
-        idx = np.searchsorted(edges, np.arange(self.points_count), side="right")
+        edges = np.round(
+            np.cumsum(weights) / weights.sum() * self.points_count
+        ).astype(int)
+        point_ids = np.arange(self.points_count)
+        idx = np.searchsorted(edges, point_ids, side="right")
 
-        # rotate the whole color layout: point i has angle i * TAU / points_count
+        # rotate the whole color layout:
+        # point i has angle i * TAU / points_count
         shift = int(round(self.colors_start_angle / TAU * self.points_count))
         idx = np.roll(idx, shift)
         return [POINT_PALETTE[i] for i in idx]
 
     def velocities(self, angles: np.ndarray) -> np.ndarray:
-        return self.points_speed * np.stack([np.cos(angles), np.sin(angles)], axis=1)
+        directions = np.stack([np.cos(angles), np.sin(angles)], axis=1)
+        return self.points_speed * directions
 
     def construct(self) -> None:
         angles = np.linspace(0, TAU, self.points_count, endpoint=False)
-        pos = np.tile(np.asarray(self.points_origin, dtype=float)[:2], (self.points_count, 1))
+        origin = np.asarray(self.points_origin, dtype=float)[:2]
+        pos = np.tile(origin, (self.points_count, 1))
 
         world = World(pos, self.velocities(angles), self.boundary)
-        world_updater = lambda _, dt: world.step(dt)
-        world_group = VGroup(self.boundary.to_mobject()).add_updater(world_updater)
+
+        def world_updater(_, dt):
+            world.step(dt)
+
+        world_group = VGroup(self.boundary.to_mobject())
+        world_group.add_updater(world_updater)
 
         dots = [
-            Dot(np.append(pos[i], 0.0), radius=self.points_radius, color=c, num_components=4)
+            Dot(
+                np.append(pos[i], 0.0),
+                radius=self.points_radius,
+                color=c,
+                num_components=4,
+            )
             for i, c in enumerate(self.point_colors())
         ]
         dots_group = VGroup(*dots).add_updater(draw_dots(world.pos, dots))
@@ -296,7 +386,8 @@ class CircleLight(BoundaryScene):
 
 
 class HexagonLight(BoundaryScene):
-    boundary = PolygonBoundary(regular_polygon(6, 2.0))  # vertices on the x-axis, so half-width = R
+    # vertices on the x-axis, so half-width = R
+    boundary = PolygonBoundary(regular_polygon(6, 2.0))
     colors_fractions = [1, 1, 1, 1, 1, 1]
 
 
@@ -320,7 +411,7 @@ class EllipseLight(BoundaryScene):
 
 
 class StadiumLight(BoundaryScene):
-    boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15 + 0.85) = 4.0
+    boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15+0.85)=4.0
     colors_fractions = [1, 3]
     colors_start_angle = -PI / 4
 
