@@ -428,7 +428,7 @@ class WideCannonsLight(Scene):
 
 
 class WideCannonsShortLight(Scene):
-    simulation_time: int = 5
+    simulation_time: int = 15
     cannon_width: float = 0.9
     face_x: float = -1.9
     top_margin: float = 0.35
@@ -443,7 +443,7 @@ class WideCannonsShortLight(Scene):
     points_radius: float = 0.017
 
     def spawn_sound(self, lane: int) -> Sound:
-        return Sample(ASSETS_DIR / "bubble.wav", gain=-12, every=20, every_jitter=5, gain_jitter=3, seed=lane)
+        return Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=30, every_jitter=10, gain_jitter=3, seed=lane)
 
     def construct(self) -> None:
         top = config.frame_height / 2 - self.top_margin
