@@ -439,7 +439,7 @@ class WideCannonsShortLight(Scene):
         ("normal 2σ", Normal(2)),
         ("normal 3σ", Normal(3)),
         ("bimodal", Bimodal()),
-        ("arcsine", Arcsine()),
+        ("arcsine", Arcsine(0.2)),
     )
     points_radius: float = 0.017
 
