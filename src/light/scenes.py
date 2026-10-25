@@ -308,8 +308,8 @@ class MathShortLight(BoundaryScene):
     boundary = MirrorPath(word_path)
     cannon = StreamCannon(
         origin=word_path[0],
-        velocity=2.5,
-        spawn_rate=120.0,
+        velocity=2,
+        spawn_rate=15.0,
         coloring=Gradient(
             (BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)
         ),
