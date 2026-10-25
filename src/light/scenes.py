@@ -428,6 +428,40 @@ class WideCannonsLight(Scene):
 
 
 class WideCannonsShortLight(Scene):
+    """
+Title:
+Six Random Distributions Drawn by Streams of Dots
+
+Description:
+Six streams of dots, each spawned from a different random distribution, drawn side by side in a 15-second vertical
+Short: uniform, normal, bimodal and arcsine.
+
+Each stream starts at a short grey line on the left and flies straight to the right at speed 1.3, 120 dots per second,
+1,801 dots per stream and 10,806 in total. Where a dot starts on its line is random, and that is the only difference
+between the six streams. From top to bottom: uniform, so every spot on the line is equally likely; three normal (bell
+curve) streams where the line spans 1, 2 and 3 standard deviations, so the bunching toward the middle gets tighter;
+bimodal, two bell curves, one on each half of the line; and arcsine, a U shape that piles dots at the two ends and
+leaves the middle sparse. Each stream has its own color: blue, orange, green, pink, yellow and purple. Roughly one dot
+in every 30 pops a bubble sound as it appears, with random timing and loudness.
+
+Made with Manim Community 0.22 in Python. The starting points are drawn with NumPy's random number generator from fixed
+seeds, so every render is identical. In the normal streams, a dot that would land outside the line is redrawn rather
+than clipped, so nothing piles up at the ends unless the distribution says so. There are no walls: the dots simply fly
+off the right edge.
+
+#shorts #statistics #manim
+
+Tags:
+normal distribution, uniform distribution, bimodal distribution, arcsine distribution, probability distributions,
+random sampling, bell curve, statistics visualization, particle stream, manim, python, simulation, mathematics, shorts
+
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Six Distributions
+    """
+
     simulation_time: int = 15
     cannon_width: float = 0.9
     face_x: float = -1.9
