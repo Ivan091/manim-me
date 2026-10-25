@@ -403,7 +403,7 @@ Thumbnail text: 30 Mirrors
 
 
 class ZShortLight(BoundaryScene):
-    simulation_time = 12
+    simulation_time = 15
     half_width = 1.5
     half_height = 2.0
     offscreen = 2.75
@@ -418,14 +418,14 @@ class ZShortLight(BoundaryScene):
         origin=z_path[0],
         direction=0.0,
         width=0.8,
-        velocity=2,
+        velocity=3,
         spawn_rate=120.0,
         firing_time=10.0,
         distribution=Normal(2),
         coloring=Gradient((BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)),
-        sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=30, every_jitter=10, gain_jitter=3),
+        sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=20, every_jitter=4, gain_jitter=3),
     )
-    points_radius = 0.02
+    points_radius = 0.03
 
 
 class WideCannonsLight(Scene):
