@@ -30,7 +30,7 @@ from light.alphabet import (
     heading,
     letter_path,
     mirror_half_lengths,
-    path_length,
+    travel_length,
 )
 from light.base import ASSETS_DIR, BoundaryScene
 from light.boundaries import MirrorPath
@@ -63,7 +63,7 @@ class LetterShortLight(BoundaryScene):
             coloring=Gradient(RAINBOW),
             sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=20, every_jitter=4, gain_jitter=3),
         )
-        cls.simulation_time = math.ceil(cls.firing_time + path_length(path) / cls.velocity + 0.5)
+        cls.simulation_time = math.ceil(cls.firing_time + travel_length(cls.passes) / cls.velocity + 0.5)
 
     def construct(self) -> None:
         edges = ((LEFT, WINDOW_HALF_WIDTH), (RIGHT, WINDOW_HALF_WIDTH), (UP, WINDOW_HALF_HEIGHT), (DOWN, WINDOW_HALF_HEIGHT))
@@ -72,6 +72,106 @@ class LetterShortLight(BoundaryScene):
             curtain.next_to(side * half, side, buff=0)
             self.add_foreground_mobjects(curtain)
         super().construct()
+
+
+class AShortLight(LetterShortLight):
+    passes = [[(R, B), (0.0, T), (L, B)], [(L, -1.2), (R, -1.2)]]
+
+
+class BShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T)], [(L, T), (1.0, T), (1.0, 0.5), (L, 0.5)], [(L, B), (R, B), (R, -0.5), (L, -0.5)]]
+
+
+class CShortLight(LetterShortLight):
+    passes = [[(R, T), (-0.5, T), (L, 0.0), (-0.5, B), (R, B)]]
+
+
+class DShortLight(LetterShortLight):
+    passes = [[(L, T), (0.5, T), (R, 0.0), (0.5, B), (L, B)], [(L, B), (L, T)]]
+
+
+class EShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T)], [(L, T), (R, T)], [(R, 0.0), (L, 0.0)], [(L, B), (R, B)]]
+
+
+class FShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T)], [(L, T), (R, T)], [(R, 0.0), (L, 0.0)]]
+
+
+class GShortLight(LetterShortLight):
+    passes = [[(R, T), (L, T), (L, B), (R, B), (R, 0.0), (L, 0.0)]]
+
+
+class HShortLight(LetterShortLight):
+    passes = [[(L, 0.0), (R, 0.0)], [(R, B), (R, T)], [(L, T), (L, B)]]
+
+
+class IShortLight(LetterShortLight):
+    passes = [[(L, T), (R, T)], [(0.0, T), (0.0, B)], [(R, B), (L, B)]]
+
+
+class JShortLight(LetterShortLight):
+    passes = [[(R, T), (0.5, T), (0.5, B), (L, B)]]
+
+
+class KShortLight(LetterShortLight):
+    passes = [[(R, T), (L, 0.0)], [(L, 0.0), (R, B)], [(L, B), (L, T)]]
+
+
+class LShortLight(LetterShortLight):
+    passes = [[(L, T), (L, B), (R, B)]]
+
+
+class MShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T), (0.0, -0.8), (R, T), (R, B)]]
+
+
+class NShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T), (R, B), (R, T)]]
+
+
+class OShortLight(LetterShortLight):
+    passes = [[(R, T), (L, T), (L, B), (R, B)], [(R, T), (R, B)]]
+
+
+class PShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T)], [(L, T), (R, T), (R, 0.0), (L, 0.0)]]
+
+
+class QShortLight(LetterShortLight):
+    passes = [[(R, T), (L, T), (L, B), (R, B)], [(0.2, B), (R, -0.7)], [(R, T), (R, B)]]
+
+
+class RShortLight(LetterShortLight):
+    passes = [[(L, B), (L, T)], [(L, T), (R, T), (R, 0.0), (L, 0.0)], [(L, 0.0), (R, B)]]
+
+
+class SShortLight(LetterShortLight):
+    passes = [[(R, T), (L, T), (L, 0.4), (R, -0.4), (R, B), (L, B)]]
+
+
+class TShortLight(LetterShortLight):
+    passes = [[(L, T), (R, T)], [(0.0, T), (0.0, B)]]
+
+
+class UShortLight(LetterShortLight):
+    passes = [[(L, T), (L, B), (R, B), (R, T)]]
+
+
+class VShortLight(LetterShortLight):
+    passes = [[(L, T), (0.0, B), (R, T)]]
+
+
+class WShortLight(LetterShortLight):
+    passes = [[(L, T), (-0.75, B), (0.0, T), (0.75, B), (R, T)]]
+
+
+class XShortLight(LetterShortLight):
+    passes = [[(L, T), (R, B)], [(L, B), (R, T)]]
+
+
+class YShortLight(LetterShortLight):
+    passes = [[(L, T), (0.0, 0.0), (R, T)], [(0.0, B), (0.0, 0.0)]]
 
 
 class ZShortLight(LetterShortLight):

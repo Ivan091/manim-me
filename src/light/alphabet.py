@@ -177,8 +177,9 @@ def _clear(mirrors: list[Segment], segments: list[Segment]) -> bool:
 
 
 class _Layout:
-    def __init__(self, strokes: list[np.ndarray]):
+    def __init__(self, strokes: list[np.ndarray], retrace: bool):
         self.strokes = strokes
+        self.retrace = retrace
         self.mirrors: list[Segment] = []
         self.segments: list[Segment] = []
         self.entry_rays: list[Segment] = []
@@ -189,16 +190,22 @@ class _Layout:
             self.mirrors.extend(_mirror(a, b, c) for a, b, c in zip(stroke, stroke[1:], stroke[2:]))
             d_in = _unit(stroke[0], stroke[1])
             t = _window_exit(stroke[0], -d_in)
-            reach = CANNON_DISTANCE if i == 0 else RAY_REACH
+            reach = CANNON_DISTANCE if i == 0 and not retrace else RAY_REACH
             self.entry_rays.append((stroke[0] - d_in * (t + reach), stroke[0]))
+            if i == last and retrace:
+                self.exit_rays.append((stroke[-1], stroke[-1]))
+                continue
             d_out = _unit(stroke[-2], stroke[-1])
             t = _window_exit(stroke[-1], d_out)
-            reach = RAY_REACH if i == last else RAY_REACH
-            self.exit_rays.append((stroke[-1], stroke[-1] + d_out * (t + reach)))
+            self.exit_rays.append((stroke[-1], stroke[-1] + d_out * (t + RAY_REACH)))
+        junction = strokes[-1][-1] if retrace else None
         for i, stroke in enumerate(strokes):
             others = [s for j in range(len(strokes)) if j != i for s in (self.entry_rays[j], self.exit_rays[j])]
             for a, b, c in zip(stroke, stroke[1:], stroke[2:]):
-                if not _clear([_mirror(a, b, c)], others + [s for s in self.segments if not _is_endpoint(b, s)]):
+                blocking = others + [s for s in self.segments if not _is_endpoint(b, s)]
+                if junction is not None and np.linalg.norm(b - junction) < 1e-9:
+                    blocking = [s for s in blocking if not _is_endpoint(junction, s)]
+                if not _clear([_mirror(a, b, c)], blocking):
                     raise ValueError(f"another stroke's beam passes through the mirror at {tuple(np.round(b, 2))}")
 
     def fixed_segments(self, transition: int) -> list[Segment]:
@@ -242,10 +249,17 @@ def _is_endpoint(point, segment: Segment) -> bool:
     return bool(np.linalg.norm(point - segment[0]) < 1e-9 or np.linalg.norm(point - segment[1]) < 1e-9)
 
 
+def retraces(passes: Sequence[Pass]) -> bool:
+    strokes = [np.asarray(p, dtype=float) for p in passes]
+    end = strokes[-1][-1]
+    return any(np.linalg.norm(end - point) < 1e-9 for stroke in strokes[:-1] for point in stroke[1:-1])
+
+
 def letter_path(passes: Sequence[Pass]) -> list[Point]:
     strokes = [np.asarray(p, dtype=float) for p in passes]
-    layout = _Layout(strokes)
-    points: list[np.ndarray] = [layout.entry_rays[0][0]]
+    layout = _Layout(strokes, retraces(passes))
+    first_dir = _unit(strokes[0][0], strokes[0][1])
+    points: list[np.ndarray] = [strokes[0][0] - first_dir * (_window_exit(strokes[0][0], -first_dir) + CANNON_DISTANCE)]
     ring = 1
     for transition, (stroke, following) in enumerate(zip(strokes, strokes[1:])):
         points.extend(stroke[1:-1])
@@ -262,9 +276,12 @@ def letter_path(passes: Sequence[Pass]) -> list[Point]:
         ring = candidate_ring + used
     last = strokes[-1]
     points.extend(last[1:-1])
-    last_dir = _unit(last[-2], last[-1])
-    t = _window_exit(last[-1], last_dir)
-    points.append(last[-1] + last_dir * (t + EXIT_DISTANCE))
+    if layout.retrace:
+        points.append(last[-1])
+    else:
+        last_dir = _unit(last[-2], last[-1])
+        t = _window_exit(last[-1], last_dir)
+        points.append(last[-1] + last_dir * (t + EXIT_DISTANCE))
     cleaned = [points[0]]
     for p in points[1:]:
         if np.linalg.norm(p - cleaned[-1]) > 1e-6:
@@ -289,12 +306,20 @@ def heading(path: Sequence[Point]) -> float:
 
 def visible_segments(passes: Sequence[Pass]) -> list[tuple[Point, Point]]:
     segments = []
-    for stroke in (np.asarray(p, dtype=float) for p in passes):
+    strokes = [np.asarray(p, dtype=float) for p in passes]
+    for i, stroke in enumerate(strokes):
         d_in = _unit(stroke[0], stroke[1])
         t = _window_exit(stroke[0], -d_in)
         segments.append((tuple(stroke[0] - d_in * t), tuple(stroke[0])))
         segments.extend((tuple(a), tuple(b)) for a, b in zip(stroke, stroke[1:]))
+        if i == len(strokes) - 1 and retraces(passes):
+            continue
         d_out = _unit(stroke[-2], stroke[-1])
         t = _window_exit(stroke[-1], d_out)
         segments.append((tuple(stroke[-1]), tuple(stroke[-1] + d_out * t)))
     return segments
+
+
+def travel_length(passes: Sequence[Pass]) -> float:
+    length = path_length(letter_path(passes))
+    return 2 * length if retraces(passes) else length
