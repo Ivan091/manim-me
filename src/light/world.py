@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 import numpy as np
-from manim import Dot, ManimColor, Mobject, VGroup
+from manim import Dot, ManimColor, Mobject, Scene, VGroup
 
 from light.boundaries import Boundary
 from light.cannon import Cannon
@@ -29,12 +29,14 @@ class World:
         self.colors = self.cannon.colors(count)
         self._fire()
 
-    def step(self, dt: float):
+    def step(self, dt: float) -> int:
         self.elapsed += dt
+        before = self.alive
         self._fire()
         self._move(dt)
+        return self.alive - before
 
-    def to_mobject(self, dot_radius: float) -> VGroup:
+    def to_mobject(self, dot_radius: float, scene: Scene) -> VGroup:
         dots = [
             Dot(
                 np.append(self.pos[i], 0.0),
@@ -47,7 +49,7 @@ class World:
         ]
         dots_group = VGroup(*dots).add_updater(self._draw(dots))
         view = VGroup(self.boundary.to_mobject(), dots_group)
-        view.add_updater(lambda _, dt: self.step(dt))
+        view.add_updater(lambda _, dt: self.cannon.sound.play(scene, self.step(dt), dt))
         return view
 
     def _draw(self, dots: list[Dot]) -> Callable[[Mobject], Any]:

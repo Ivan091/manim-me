@@ -8,6 +8,7 @@ from manim import TAU, ManimColor
 
 from light.coloring import Coloring, StaticColor
 from light.distribution import Distribution, Uniform
+from light.sound import Silence, Sound
 
 INSTANT: Final[float] = math.inf
 _TIME_EPS: Final[float] = 1e-9
@@ -40,6 +41,10 @@ class Cannon(ABC):
     @abstractmethod
     def fired(self, elapsed: float) -> int: ...
 
+    @property
+    @abstractmethod
+    def sound(self) -> Sound: ...
+
 
 @dataclass(frozen=True)
 class RadialCannon(Cannon):
@@ -48,6 +53,7 @@ class RadialCannon(Cannon):
     velocity: float = 1.3
     coloring: Coloring = StaticColor()
     spawn_rate: float = INSTANT
+    sound: Sound = Silence()
 
     def __post_init__(self):
         if self.amount <= 0:
@@ -86,6 +92,7 @@ class StreamCannon(Cannon):
     velocity: float = 1.3
     coloring: Coloring = StaticColor()
     spawn_rate: float = 60.0
+    sound: Sound = Silence()
 
     def __post_init__(self):
         _check_stream_rate(self.spawn_rate)
@@ -118,6 +125,7 @@ class WideCannon(Cannon):
     spawn_rate: float = 60.0
     distribution: Distribution = Uniform()
     seed: int = 0
+    sound: Sound = Silence()
 
     def __post_init__(self):
         if self.width <= 0:

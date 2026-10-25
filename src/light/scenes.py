@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from manim import (
     BLACK,
     BLUE,
@@ -41,10 +43,14 @@ from light.cannon import Cannon, RadialCannon, StreamCannon, WideCannon
 from light.coloring import PALETTE, Gradient, Palette, StaticColor
 from light.distribution import Arcsine, Bimodal, Distribution, Normal, Uniform
 from light.lettering import vertical_math_path
+from light.sound import Sample, Silence, Sound
 from light.world import World
+
+ASSETS_DIR = Path(__file__).parent / "assets"
 
 
 def wide_lane(
+    scene: Scene,
     center,
     direction: float,
     width: float,
@@ -52,6 +58,7 @@ def wide_lane(
     distribution: Distribution,
     duration: float,
     points_radius: float,
+    sound: Sound = Silence(),
 ) -> tuple[VGroup, Line]:
     cannon = WideCannon(
         origin=center,
@@ -60,11 +67,12 @@ def wide_lane(
         spawn_rate=120.0,
         coloring=StaticColor(color),
         distribution=distribution,
+        sound=sound,
     )
     world = World(OpenBoundary(), cannon, duration)
     face = Line(LEFT * width / 2, RIGHT * width / 2, color=GRAY)
     face.rotate(direction - PI / 2).move_to(center)
-    return world.to_mobject(points_radius), face
+    return world.to_mobject(points_radius, scene), face
 
 
 class BoundaryScene(Scene):
@@ -75,7 +83,7 @@ class BoundaryScene(Scene):
 
     def construct(self) -> None:
         world = World(self.boundary, self.cannon, self.simulation_time)
-        self.add(world.to_mobject(self.points_radius))
+        self.add(world.to_mobject(self.points_radius, self))
         self.wait(self.simulation_time)
 
 
@@ -412,7 +420,7 @@ class WideCannonsLight(Scene):
         for x, color, (label, distribution) in lanes:
             center = RIGHT * x + UP * self.face_height
             view, face = wide_lane(
-                center, PI / 2, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
+                self, center, PI / 2, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
             )
             caption = Text(label, font_size=24).next_to(face, DOWN)
             self.add(view, face, caption)
@@ -424,6 +432,7 @@ class WideCannonsShortLight(Scene):
     cannon_width: float = 0.9
     face_x: float = -1.9
     top_margin: float = 0.35
+    spawn_sound: Sound = Sample(ASSETS_DIR / "bubble.wav", gain=-18)
     distributions: tuple[tuple[str, Distribution], ...] = (
         ("uniform", Uniform()),
         ("normal 1σ", Normal(1)),
@@ -441,7 +450,15 @@ class WideCannonsShortLight(Scene):
         for y, color, (label, distribution) in zip(heights, PALETTE, self.distributions):
             center = RIGHT * self.face_x + UP * y
             view, face = wide_lane(
-                center, 0.0, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
+                self,
+                center,
+                0.0,
+                self.cannon_width,
+                color,
+                distribution,
+                self.simulation_time,
+                self.points_radius,
+                self.spawn_sound,
             )
             caption = Text(label, font_size=20).next_to(face, UP, buff=0.08, aligned_edge=LEFT)
             self.add(view, face, caption)
