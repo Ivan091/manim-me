@@ -102,7 +102,7 @@ Thumbnail text: Off-Center Source
 
 ## Workflow
 
-1. **Locate the scenes.** Read the file and each named scene class, including class attributes inherited from its base. Note the render profile if the user mentions one (`dev_short.cfg`, `dev_sim_short.cfg` and `pro_sim_short.cfg` are vertical 9:16 Shorts; the others are 16:9).
+1. **Locate the scenes.** Read the file and each named scene class, including class attributes inherited from its base. Note the render profile if the user mentions one (any `*_short.cfg` profile is a vertical 9:16 Short; the others are 16:9, see the profile table in `CLAUDE.md`).
 2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (`simulation_time`), use `#shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
 3. **Gather facts** to use in the text: shape name and dimensions, the scene's cannon (`RadialCannon`: `origin`, `amount`, `velocity`, `spawn_rate` `INSTANT` or dots per second; `StreamCannon`: `origin`, `direction`, `velocity`, `spawn_rate`, firing until the scene ends or `firing_time` runs out; `WideCannon`: the same plus a face of `width` across `direction` and a `distribution`, `Uniform`, `Normal(sigmas)`, `Bimodal` or `Arcsine`, that places each dot on it) and its `coloring` (`StaticColor`: one color; `Palette`: color groups from `fractions` and `start_angle`; `Gradient`: a blend through its `stops` in firing order), its `sound` (`Silence`, or a `Sample` file played for `every` nth spawned dot), `simulation_time`, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.

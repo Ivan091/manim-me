@@ -15,6 +15,8 @@ manim -c dev_sim.cfg src/light/scenes.py <SceneName>   # fast preview render of 
 
 Imports are rooted at `src/` (e.g. `from utils.MeineLiebeScene import MeineLiebeScene`), so the editable install (or running with `src` on `PYTHONPATH`) is required.
 
+`python` and `manim` are not on PATH in this environment: run `.venv/Scripts/manim.exe` and `.venv/Scripts/python.exe` from the repo root, or activate the venv first. Any `*_short.cfg` profile is a vertical 9:16 Short; the others are 16:9.
+
 Render profiles are manim config files passed with `-c`; they differ only in resolution/fps/outputs (all use the cairo renderer):
 
 | File | Use |
