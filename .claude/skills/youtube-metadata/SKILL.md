@@ -15,7 +15,7 @@ Write the publishing text as the class docstring of a scene, so it lives next to
 - **Do not publish or upload anything.** This skill only edits source. The visibility recorded in the docstring defaults to `public`; it is only text to copy, not a setting this skill applies.
 - **Edit only the named scene classes.** Do not touch the base class or other scenes.
 - **Docstring, not a field.** The metadata is the class docstring (`__doc__`), with no `youtube_metadata` attribute. A class that already has a metadata docstring or a legacy `youtube_metadata` dict is updated in place: show the user what changes instead of silently overwriting hand-written text, and keep fields the user did not ask to change.
-- **Line length is 120 at most.** Every line of the docstring, including descriptions and tags, is at most 120 characters. Wrap longer paragraphs and the tags line at 120; blank lines still separate paragraphs. Tell the user in the report that wrapped lines carry line breaks when pasted.
+- **Line length is 120 at most.** Every line of the docstring, including descriptions and tags, is at most 120 characters. Wrap longer paragraphs and the tags line at 120; blank lines still separate paragraphs, and never break a line inside a hyphenated word (it pastes as "off- center"). Tell the user in the report that wrapped lines carry line breaks when pasted.
 
 ## Docstring layout
 
@@ -61,6 +61,43 @@ class HexagonLight(BoundaryScene):
 - **Made for kids**: `no` unless the user says otherwise.
 - **Thumbnail text**: at most 4 words, readable at small size, complementing (not repeating) the title.
 - **Chapters**: add a `Chapters:` section (one `MM:SS Label` per line, first at `00:00`, at least three, each at least 10 seconds apart) only if the scene uses `next_section` or has clearly distinct phases. Otherwise omit the section.
+
+## Example
+
+`CircleLight` in `src/light/light.py` is the reference for tone, level of detail, and wrapping:
+
+```python
+class CircleLight(BoundaryScene):
+    """
+    Title:
+    Light Bouncing Inside a Circle (Off-Center Source)
+
+    Description:
+    5,760 points of light start from one spot inside a circle and bounce off its wall for 15 seconds. The source is
+    off-center, so the pattern is not symmetric.
+
+    The circle has radius 2 and the source sits one third of the radius above the center. The points leave in 5,760
+    evenly spaced directions at speed 1.3. The directions pointing left are blue and the directions pointing right are
+    orange, so you can follow where each half of the light ends up.
+
+    Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line
+    at constant speed and reflects perfectly off the wall: the angle of incidence equals the angle of reflection. The
+    simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each
+    point meets the wall is found by bisection.
+
+    #Manim #Simulation #Math
+
+    Tags:
+    circle billiard, off-center light source, mathematical billiards, dynamical billiards, reflection, light simulation,
+    manim, python, simulation, mathematics, physics visualization
+
+    Category: Science & Technology
+    Language: en
+    Visibility: public
+    Made for kids: no
+    Thumbnail text: Off-Center Source
+    """
+```
 
 ## Workflow
 
