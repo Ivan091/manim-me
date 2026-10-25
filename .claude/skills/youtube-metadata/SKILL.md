@@ -15,35 +15,36 @@ Write the publishing text as the class docstring of a scene, so it lives next to
 - **Do not publish or upload anything.** This skill only edits source. The visibility recorded in the docstring defaults to `public`; it is only text to copy, not a setting this skill applies.
 - **Edit only the named scene classes.** Do not touch the base class or other scenes.
 - **Docstring, not a field.** The metadata is the class docstring (`__doc__`), with no `youtube_metadata` attribute. A class that already has a metadata docstring or a legacy `youtube_metadata` dict is updated in place: show the user what changes instead of silently overwriting hand-written text, and keep fields the user did not ask to change.
+- **No indentation inside the docstring.** Every line between the opening and closing quotes starts at column 0 (no leading spaces, even though the class body is indented), so a block copies out clean. Only the opening and closing `"""` lines keep the class-body indent. This is specific to this skill and overrides the usual docstring indentation.
 - **Line length is 120 at most.** Every line of the docstring, including descriptions and tags, is at most 120 characters. Wrap longer paragraphs and the tags line at 120; blank lines still separate paragraphs, and never break a line inside a hyphenated word (it pastes as "off- center"). Tell the user in the report that wrapped lines carry line breaks when pasted.
 
 ## Docstring layout
 
-The docstring is the first statement in the class body. Section labels sit on their own line with the pasteable content directly below, so each block can be selected and copied on its own. Blank lines separate sections.
+The docstring is the first statement in the class body, with its content flush left at column 0. Section labels sit on their own line with the pasteable content directly below, so each block can be selected and copied on its own. Blank lines separate sections.
 
 ```python
 class HexagonLight(BoundaryScene):
     """
-    Title:
-    Light Bouncing Inside a Hexagon
+Title:
+Light Bouncing Inside a Hexagon
 
-    Description:
-    <hook paragraph>
+Description:
+<hook paragraph>
 
-    <what-you-see paragraph>
+<what-you-see paragraph>
 
-    <how-it-was-made paragraph>
+<how-it-was-made paragraph>
 
-    #Manim #Simulation #Math
+#Manim #Simulation #Math
 
-    Tags:
-    tag one, tag two, tag three
+Tags:
+tag one, tag two, tag three
 
-    Category: Science & Technology
-    Language: en
-    Visibility: public
-    Made for kids: no
-    Thumbnail text: Six Colors
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Six Colors
     """
 ```
 
@@ -69,33 +70,33 @@ class HexagonLight(BoundaryScene):
 ```python
 class CircleLight(BoundaryScene):
     """
-    Title:
-    Light Bouncing Inside a Circle (Off-Center Source)
+Title:
+Light Bouncing Inside a Circle (Off-Center Source)
 
-    Description:
-    5,760 points of light start from one spot inside a circle and bounce off its wall for 15 seconds. The source is
-    off-center, so the pattern is not symmetric.
+Description:
+5,760 points of light start from one spot inside a circle and bounce off its wall for 15 seconds. The source is
+off-center, so the pattern is not symmetric.
 
-    The circle has radius 2 and the source sits one third of the radius above the center. The points leave in 5,760
-    evenly spaced directions at speed 1.3. The directions pointing left are blue and the directions pointing right are
-    orange, so you can follow where each half of the light ends up.
+The circle has radius 2 and the source sits one third of the radius above the center. The points leave in 5,760 evenly
+spaced directions at speed 1.3. The directions pointing left are blue and the directions pointing right are orange, so
+you can follow where each half of the light ends up.
 
-    Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line
-    at constant speed and reflects perfectly off the wall: the angle of incidence equals the angle of reflection. The
-    simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each
-    point meets the wall is found by bisection.
+Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
+constant speed and reflects perfectly off the wall: the angle of incidence equals the angle of reflection. The
+simulation is vectorised with NumPy, so all 5,760 points advance together every frame, and the exact moment each point
+meets the wall is found by bisection.
 
-    #Manim #Simulation #Math
+#Manim #Simulation #Math
 
-    Tags:
-    circle billiard, off-center light source, mathematical billiards, dynamical billiards, reflection, light simulation,
-    manim, python, simulation, mathematics, physics visualization
+Tags:
+circle billiard, off-center light source, mathematical billiards, dynamical billiards, reflection, light simulation,
+manim, python, simulation, mathematics, physics visualization
 
-    Category: Science & Technology
-    Language: en
-    Visibility: public
-    Made for kids: no
-    Thumbnail text: Off-Center Source
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Off-Center Source
     """
 ```
 
@@ -106,5 +107,5 @@ class CircleLight(BoundaryScene):
 3. **Gather facts** to use in the text: shape name and dimensions, `points_count`, `points_speed`, color groups (`colors_fractions`, `colors_start_angle`), `simulation_time`, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.
 5. **Write the docstring** as the first statement of each scene class, keeping the surrounding formatting, and remove any legacy `youtube_metadata` dict from that class.
-6. **Verify.** Import the module (`python -c "import light.light"` from `src/`, or the equivalent for the file) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, and no line over 120 characters.
+6. **Verify.** Import the module (`python -c "import light.light"` from `src/`, or the equivalent for the file) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, no line over 120 characters, and no leading spaces inside the docstring.
 7. **Report.** List each scene's title and tags, say which extras (links, credits, socials) the user can still add, and state that nothing was published.
