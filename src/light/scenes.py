@@ -47,7 +47,6 @@ from light.sound import Sample, Silence, Sound
 from light.world import World
 
 ASSETS_DIR = Path(__file__).parent / "assets"
-config.disable_caching = True
 
 
 def wide_lane(
