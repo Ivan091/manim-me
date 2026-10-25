@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 
@@ -13,12 +13,16 @@ class World:
     # 0 = ideal point reflection; dot radius is draw-only
     wall_radius: float = 0.0
     max_bounces: int = 8
+    alive: int = field(init=False, default=0)
+
+    def spawn(self, count: int):
+        self.alive = max(self.alive, min(count, len(self.pos)))
 
     def step(self, dt: float):
         pos, vel = self.pos, self.vel
         b, wr = self.boundary, self.wall_radius
         rem = np.full(len(pos), dt)
-        active = np.arange(len(pos))
+        active = np.arange(self.alive)
         for _ in range(self.max_bounces):
             end = pos[active] + vel[active] * rem[active, None]
             out = b.sdf_many(end) + wr > 0
