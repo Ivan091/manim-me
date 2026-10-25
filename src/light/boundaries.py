@@ -2,11 +2,13 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 from manim import (
+    GRAY,
     PI,
     TAU,
     WHITE,
     Circle,
     Ellipse,
+    Line,
     Polygon,
     Rectangle,
     RoundedRectangle,
@@ -178,6 +180,48 @@ class OpenBoundary(Boundary):
 
     def to_mobject(self, **kwargs):
         return VGroup()
+
+
+class MirrorPath(Boundary):
+    def __init__(self, points, half_length=0.06, radius=0.03):
+        p = np.asarray(points, dtype=float)[:, :2]
+        d = np.diff(p, axis=0)
+        d /= np.linalg.norm(d, axis=1, keepdims=True)
+        m = d[:-1] - d[1:]
+        self.normals = m / np.linalg.norm(m, axis=1, keepdims=True)
+        self.tangents = np.stack([-self.normals[:, 1], self.normals[:, 0]], 1)
+        self.faces = p[1:-1]
+        self.cores = self.faces + radius * self.normals
+        self.half_length = half_length
+        self.radius = radius
+
+    def _closest(self, points):
+        rel = points[:, None, :] - self.cores[None]
+        s = np.clip(
+            (rel * self.tangents).sum(-1), -self.half_length, self.half_length
+        )
+        return self.cores[None] + s[..., None] * self.tangents[None]
+
+    def sdf_many(self, points):
+        gap = points[:, None, :] - self._closest(points)
+        return self.radius - np.linalg.norm(gap, axis=-1).min(axis=1)
+
+    def normal_many(self, points):
+        gap = self._closest(points) - points[:, None, :]
+        nearest = np.linalg.norm(gap, axis=-1).argmin(axis=1)
+        n = gap[np.arange(len(points)), nearest]
+        norm = np.linalg.norm(n, axis=1, keepdims=True)
+        return n / np.maximum(norm, 1e-12)
+
+    def to_mobject(self, **kwargs):
+        kwargs.setdefault("color", GRAY)
+        reach = self.half_length * self.tangents
+        return VGroup(
+            *[
+                Line(np.append(f - r, 0.0), np.append(f + r, 0.0), **kwargs)
+                for f, r in zip(self.faces, reach)
+            ]
+        )
 
 
 def regular_polygon(n, radius, rotation=0.0):

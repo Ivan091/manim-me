@@ -1,9 +1,10 @@
-from manim import PI, RIGHT, TAU, UP, Scene
+from manim import BLACK, LEFT, PI, RIGHT, TAU, UP, Rectangle, Scene
 
 from light.boundaries import (
     Boundary,
     CircleBoundary,
     EllipseBoundary,
+    MirrorPath,
     PolygonBoundary,
     RingBoundary,
     StadiumBoundary,
@@ -11,7 +12,8 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon, RadialCannon
+from light.cannon import Cannon, RadialCannon, StreamCannon
+from light.lettering import vertical_math_path
 from light.world import World
 
 
@@ -278,6 +280,29 @@ Thumbnail text: Inside the Ring
 
     boundary = RingBoundary((0, 0), 0.67, 2.0)
     cannon = RadialCannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
+
+
+class MathShortLight(BoundaryScene):
+    simulation_time = 20
+    letter_half_width = 1.0
+    visible_half_width = letter_half_width + 0.05
+    word_path = vertical_math_path(half_width=letter_half_width)
+    boundary = MirrorPath(word_path)
+    cannon = StreamCannon(origin=word_path[0], velocity=2.5, spawn_rate=120.0)
+    points_radius = 0.025
+
+    def construct(self) -> None:
+        for side in (LEFT, RIGHT):
+            curtain = Rectangle(
+                width=10,
+                height=10,
+                fill_color=BLACK,
+                fill_opacity=1,
+                stroke_width=0,
+            )
+            curtain.next_to(side * self.visible_half_width, side, buff=0)
+            self.add_foreground_mobjects(curtain)
+        super().construct()
 
 
 del BoundaryScene
