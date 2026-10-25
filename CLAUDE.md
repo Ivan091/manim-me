@@ -22,7 +22,7 @@ Render profiles are manim config files passed with `-c`; they differ only in res
 | `dev.cfg` | 1280x720 @60fps, opens preview |
 | `dev_short.cfg` | 720x1280 (vertical/Shorts) @60fps, opens preview |
 | `dev_sim.cfg` / `dev_sim_short.cfg` | same as the two above, with caching disabled, for simulation scenes |
-| `pro_scene.cfg` | 2560x1440 @240fps, saves PNGs and sections |
+| `pro.cfg` | 2560x1440 @240fps, saves PNGs and sections |
 | `pro_sim.cfg` / `pro_sim_short.cfg` | 2560x1440 / 1440x2560 @120fps, saves PNGs |
 | `pro_thumbnail.cfg` | single PNG frame, 2560x1440 |
 
