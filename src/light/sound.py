@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -25,6 +25,7 @@ class Sample(Sound):
     every_jitter: float = 0.0
     gain_jitter: float = 0.0
     seed: int = 0
+    _pops: list[tuple[int, float, float]] = field(default_factory=list, init=False, repr=False, compare=False)
 
     def __post_init__(self):
         if self.every < 1:
@@ -33,10 +34,16 @@ class Sample(Sound):
             raise ValueError(f"jitters must not be negative, got {self.every_jitter} and {self.gain_jitter}")
 
     def play(self, scene: Scene, start: int, count: int, within: float) -> None:
-        for i in range(start, start + count):
-            block, slot = divmod(i, self.every)
-            rng = np.random.default_rng([self.seed, block])
-            chosen = round((self.every - 1) / 2 + rng.normal(0.0, self.every_jitter))
-            if slot == min(max(chosen, 0), self.every - 1):
-                gain = self.gain + rng.normal(0.0, self.gain_jitter)
-                scene.add_sound(str(self.path), time_offset=within * (i - start) / count, gain=gain)
+        end = start + count
+        self._schedule_until(end)
+        for index, gain, phase in self._pops:
+            if start <= index < end:
+                scene.add_sound(str(self.path), time_offset=within * phase, gain=gain)
+
+    def _schedule_until(self, end: int) -> None:
+        pops = self._pops
+        while not pops or pops[-1][0] < end:
+            rng = np.random.default_rng([self.seed, len(pops)])
+            gap = max(1, round(rng.normal(self.every, self.every_jitter)))
+            last = pops[-1][0] if pops else -1
+            pops.append((last + gap, self.gain + rng.normal(0.0, self.gain_jitter), rng.random()))
