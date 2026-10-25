@@ -12,7 +12,7 @@ Write the publishing text as the class docstring of a scene, so it lives next to
 - **Work only on the scenes the user names** (one or several). If a scene is missing or ambiguous, ask once; do not guess.
 - **Describe only what the code renders.** Read the scene and everything it inherits or configures (boundary shape, point count, speed, colors, `simulation_time`, sections, audio). Never invent effects, math claims, or facts the scene does not show.
 - **Never fabricate external facts, and never leave placeholders.** Do not write `TODO:` lines. Links, channel name, social handles, music credits, and sponsor text are included only if the user supplied them; otherwise omit them entirely and mention in the report that the user can add them.
-- **Do not publish or upload anything.** This skill only edits source. Visibility defaults to `private`.
+- **Do not publish or upload anything.** This skill only edits source. The visibility recorded in the docstring defaults to `public`; it is only text to copy, not a setting this skill applies.
 - **Edit only the named scene classes.** Do not touch the base class or other scenes.
 - **Docstring, not a field.** The metadata is the class docstring (`__doc__`), with no `youtube_metadata` attribute. A class that already has a metadata docstring or a legacy `youtube_metadata` dict is updated in place: show the user what changes instead of silently overwriting hand-written text, and keep fields the user did not ask to change.
 - **Line length is 120 at most.** Every line of the docstring, including descriptions and tags, is at most 120 characters. Wrap longer paragraphs and the tags line at 120; blank lines still separate paragraphs. Tell the user in the report that wrapped lines carry line breaks when pasted.
@@ -41,7 +41,7 @@ class HexagonLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Six Colors
     """
@@ -57,7 +57,7 @@ class HexagonLight(BoundaryScene):
 - **Tags**: a comma-separated list, 8 to 15 entries, most specific first, total length under 500 characters including separators. Mix the specific (shape, "ray reflection", "billiards"), the tool ("manim", "python"), and the broad ("simulation", "mathematics", "physics visualization"). No repeats of the title wording as one long tag, no misleading tags.
 - **Category**: one of YouTube's category names; default `Science & Technology`, use `Education` only when the scene teaches step by step.
 - **Language**: BCP-47 code of the spoken or on-screen text, `en` by default.
-- **Visibility**: `private`, unless the user says otherwise.
+- **Visibility**: `public`, unless the user says otherwise.
 - **Made for kids**: `no` unless the user says otherwise.
 - **Thumbnail text**: at most 4 words, readable at small size, complementing (not repeating) the title.
 - **Chapters**: add a `Chapters:` section (one `MM:SS Label` per line, first at `00:00`, at least three, each at least 10 seconds apart) only if the scene uses `next_section` or has clearly distinct phases. Otherwise omit the section.
