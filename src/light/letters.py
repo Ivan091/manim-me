@@ -80,7 +80,7 @@ Title:
 A Wide Beam of Dots Draws the Letter Z With Two Mirrors
 
 Description:
-A wide beam of dots flies in from the left, bounces off two mirrors and draws the letter Z in a 15-second vertical
+A wide beam of dots flies in from the left, bounces off two mirrors and draws the letter Z in a 16-second vertical
 Short, then switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so the stroke is dense in the middle and soft
