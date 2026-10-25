@@ -16,9 +16,12 @@ from manim import (
     UP,
     YELLOW,
     Line,
+    ManimColor,
     Rectangle,
     Scene,
     Text,
+    VGroup,
+    config,
 )
 
 from light.boundaries import (
@@ -36,9 +39,32 @@ from light.boundaries import (
 )
 from light.cannon import Cannon, RadialCannon, StreamCannon, WideCannon
 from light.coloring import PALETTE, Gradient, Palette, StaticColor
-from light.distribution import Distribution, Normal, Uniform
+from light.distribution import Arcsine, Bimodal, Distribution, Normal, Uniform
 from light.lettering import vertical_math_path
 from light.world import World
+
+
+def wide_lane(
+    center,
+    direction: float,
+    width: float,
+    color: ManimColor,
+    distribution: Distribution,
+    duration: float,
+    points_radius: float,
+) -> tuple[VGroup, Line]:
+    cannon = WideCannon(
+        origin=center,
+        direction=direction,
+        width=width,
+        spawn_rate=120.0,
+        coloring=StaticColor(color),
+        distribution=distribution,
+    )
+    world = World(OpenBoundary(), cannon, duration)
+    face = Line(LEFT * width / 2, RIGHT * width / 2, color=GRAY)
+    face.rotate(direction - PI / 2).move_to(center)
+    return world.to_mobject(points_radius), face
 
 
 class BoundaryScene(Scene):
@@ -385,18 +411,40 @@ class WideCannonsLight(Scene):
         lanes = zip(self.lane_centers, PALETTE, self.distributions)
         for x, color, (label, distribution) in lanes:
             center = RIGHT * x + UP * self.face_height
-            cannon = WideCannon(
-                origin=center,
-                direction=PI / 2,
-                width=self.cannon_width,
-                spawn_rate=120.0,
-                coloring=StaticColor(color),
-                distribution=distribution,
+            view, face = wide_lane(
+                center, PI / 2, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
             )
-            world = World(OpenBoundary(), cannon, self.simulation_time)
-            face = Line(LEFT * self.cannon_width / 2, RIGHT * self.cannon_width / 2, color=GRAY).move_to(center)
             caption = Text(label, font_size=24).next_to(face, DOWN)
-            self.add(world.to_mobject(self.points_radius), face, caption)
+            self.add(view, face, caption)
+        self.wait(self.simulation_time)
+
+
+class WideCannonsShortLight(Scene):
+    simulation_time: int = 15
+    cannon_width: float = 0.9
+    face_x: float = -1.9
+    top_margin: float = 0.35
+    distributions: tuple[tuple[str, Distribution], ...] = (
+        ("uniform", Uniform()),
+        ("normal 1σ", Normal(1)),
+        ("normal 2σ", Normal(2)),
+        ("normal 3σ", Normal(3)),
+        ("bimodal", Bimodal()),
+        ("arcsine", Arcsine()),
+    )
+    points_radius: float = 0.017
+
+    def construct(self) -> None:
+        top = config.frame_height / 2 - self.top_margin
+        band = (config.frame_height - self.top_margin) / len(self.distributions)
+        heights = (top - (i + 0.5) * band for i in range(len(self.distributions)))
+        for y, color, (label, distribution) in zip(heights, PALETTE, self.distributions):
+            center = RIGHT * self.face_x + UP * y
+            view, face = wide_lane(
+                center, 0.0, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
+            )
+            caption = Text(label, font_size=20).next_to(face, UP, buff=0.08, aligned_edge=LEFT)
+            self.add(view, face, caption)
         self.wait(self.simulation_time)
 
 
