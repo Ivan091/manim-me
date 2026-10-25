@@ -428,7 +428,7 @@ class WideCannonsLight(Scene):
 
 
 class WideCannonsShortLight(Scene):
-    simulation_time: int = 15
+    simulation_time: int = 5
     cannon_width: float = 0.9
     face_x: float = -1.9
     top_margin: float = 0.35
