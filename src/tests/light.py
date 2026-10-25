@@ -242,22 +242,22 @@ POINT_PALETTE: Final[tuple[ManimColor, ...]] = (
 
 
 class BoundaryScene(Scene):
+    simulation_time: int = 15
     boundary: Boundary
     points_origin: Vector3D = ORIGIN
     points_speed: float = 1.3
     points_radius: float = 0.017
-    simulation_time: int = 15
     points_count: int = 5760
-    fractions: Sequence[float] = ()
+    colors_fractions: Sequence[float] = ()
     colors_start_angle: float = 0.0
 
     def point_colors(self) -> list[ManimColor]:
-        if not self.fractions:
+        if not self.colors_fractions:
             return [POINT_PALETTE[0]] * self.points_count
-        if len(self.fractions) > len(POINT_PALETTE):
-            raise ValueError(f"at most {len(POINT_PALETTE)} fractions, got {len(self.fractions)}")
+        if len(self.colors_fractions) > len(POINT_PALETTE):
+            raise ValueError(f"at most {len(POINT_PALETTE)} fractions, got {len(self.colors_fractions)}")
 
-        weights = np.asarray(self.fractions, dtype=float)
+        weights = np.asarray(self.colors_fractions, dtype=float)
         edges = np.round(np.cumsum(weights) / weights.sum() * self.points_count).astype(int)
         idx = np.searchsorted(edges, np.arange(self.points_count), side="right")
 
@@ -291,44 +291,44 @@ class BoundaryScene(Scene):
 class CircleLight(BoundaryScene):
     boundary = CircleBoundary((0, 0), 2.0)
     points_origin = UP * (2 / 3)  # same 1/3-of-radius offset as before
-    fractions = [1, 1]
+    colors_fractions = [1, 1]
     colors_start_angle = PI / 2
 
 
 class HexagonLight(BoundaryScene):
     boundary = PolygonBoundary(regular_polygon(6, 2.0))  # vertices on the x-axis, so half-width = R
-    fractions = [1, 1, 1, 1, 1, 1]
+    colors_fractions = [1, 1, 1, 1, 1, 1]
 
 
 class StarLight(BoundaryScene):
     # widest tips at ±outer·cos(18°) ≈ ±0.951·outer, so outer = 2.1 gives ±2.0
     boundary = PolygonBoundary(star(5, 2.1, 0.92))
-    fractions = [1, 1, 1, 1, 1]
+    colors_fractions = [1, 1, 1, 1, 1]
     colors_start_angle = PI / 2 - TAU / 10 - TAU / 5
 
 
 class CrossLight(BoundaryScene):
     boundary = PolygonBoundary(cross(0.53, 2.0))
-    fractions = [1, 1, 1, 1]
+    colors_fractions = [1, 1, 1, 1]
     colors_start_angle = -PI / 4
 
 
 class EllipseLight(BoundaryScene):
     boundary = EllipseBoundary((0, 0), 2.0, 3.0)  # 4.0 wide, 6.0 tall
     points_origin = boundary.foci[0]  # bottom focus, (0, -2.236)
-    fractions = [1]
+    colors_fractions = [1]
 
 
 class StadiumLight(BoundaryScene):
     boundary = StadiumBoundary((0, 0), 1.15, 0.85)  # width 2·(1.15 + 0.85) = 4.0
-    fractions = [1, 3]
+    colors_fractions = [1, 3]
     colors_start_angle = -PI / 4
 
 
 class RingLight(BoundaryScene):
     boundary = RingBoundary((0, 0), 0.67, 2.0)
     points_origin = RIGHT * 1.33  # mid-band, as before
-    fractions = [1]
+    colors_fractions = [1]
 
 
 del BoundaryScene
