@@ -1,6 +1,10 @@
+from pathlib import Path
+
 from manim import (
     BLACK,
     BLUE,
+    DOWN,
+    GRAY,
     GREEN,
     LEFT,
     ORANGE,
@@ -13,8 +17,13 @@ from manim import (
     TEAL,
     UP,
     YELLOW,
+    Line,
+    ManimColor,
     Rectangle,
     Scene,
+    Text,
+    VGroup,
+    config,
 )
 
 from light.boundaries import (
@@ -22,6 +31,7 @@ from light.boundaries import (
     CircleBoundary,
     EllipseBoundary,
     MirrorPath,
+    OpenBoundary,
     PolygonBoundary,
     RingBoundary,
     StadiumBoundary,
@@ -29,10 +39,40 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon, RadialCannon, StreamCannon
-from light.coloring import Gradient, Palette
+from light.cannon import Cannon, RadialCannon, StreamCannon, WideCannon
+from light.coloring import PALETTE, Gradient, Palette, StaticColor
+from light.distribution import Arcsine, Bimodal, Distribution, Normal, Uniform
 from light.lettering import vertical_math_path
+from light.sound import Sample, Silence, Sound
 from light.world import World
+
+ASSETS_DIR = Path(__file__).parent / "assets"
+
+
+def wide_lane(
+    scene: Scene,
+    center,
+    direction: float,
+    width: float,
+    color: ManimColor,
+    distribution: Distribution,
+    duration: float,
+    points_radius: float,
+    sound: Sound = Silence(),
+) -> tuple[VGroup, Line]:
+    cannon = WideCannon(
+        origin=center,
+        direction=direction,
+        width=width,
+        spawn_rate=120.0,
+        coloring=StaticColor(color),
+        distribution=distribution,
+        sound=sound,
+    )
+    world = World(OpenBoundary(), cannon, duration)
+    face = Line(LEFT * width / 2, RIGHT * width / 2, color=GRAY)
+    face.rotate(direction - PI / 2).move_to(center)
+    return world.to_mobject(points_radius, scene), face
 
 
 class BoundaryScene(Scene):
@@ -43,7 +83,7 @@ class BoundaryScene(Scene):
 
     def construct(self) -> None:
         world = World(self.boundary, self.cannon, self.simulation_time)
-        self.add(world.to_mobject(self.points_radius))
+        self.add(world.to_mobject(self.points_radius, self))
         self.wait(self.simulation_time)
 
 
@@ -360,6 +400,165 @@ Thumbnail text: 30 Mirrors
             curtain.next_to(side * self.visible_half_width, side, buff=0)
             self.add_foreground_mobjects(curtain)
         super().construct()
+
+
+class ZShortLight(BoundaryScene):
+    """
+Title:
+A Wide Beam of Dots Draws the Letter Z With Two Mirrors
+
+Description:
+A wide beam of dots flies in from the left, bounces off two mirrors and draws the letter Z in a 15-second vertical
+Short, then switches off and drains away.
+
+The beam is 0.8 wide and the dots are spread across it on a bell curve, so the stroke is dense in the middle and soft
+at the edges. The letter is 3 wide and 4 tall. The dots enter along the top bar at speed 3, 120 per second, 1,200 in
+total. A mirror at the top-right corner sends them down the diagonal, a mirror at the bottom-left corner sends them
+along the bottom bar, and they leave through the right edge. Each new dot is a slightly different color, moving
+through blue, teal, green, yellow, orange, red, pink and purple, so the Z is drawn in changing hues. Roughly one dot in
+every 20 pops a bubble sound as it appears, with random timing and loudness. After 10 seconds the beam stops, and the
+last dots trace the Z and leave just before the video ends.
+
+Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
+constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The
+mirror angles are computed from the path the beam should follow, each dot's starting height is drawn with NumPy from a
+fixed seed, and the exact moment each dot meets a mirror is found by bisection.
+
+#shorts #manim #simulation
+
+Tags:
+letter z, mirror reflection, wide beam, normal distribution, bell curve, ray reflection, mirrors, light simulation,
+particle stream, manim, python, simulation, physics visualization, shorts
+
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Two Mirrors
+    """
+
+    simulation_time = 15
+    half_width = 1.5
+    half_height = 2.0
+    offscreen = 2.75
+    z_path = (
+        (-offscreen, half_height),
+        (half_width, half_height),
+        (-half_width, -half_height),
+        (offscreen, -half_height),
+    )
+    boundary = MirrorPath(z_path, half_length=0.6)
+    cannon = WideCannon(
+        origin=z_path[0],
+        direction=0.0,
+        width=0.8,
+        velocity=3,
+        spawn_rate=120.0,
+        firing_time=10.0,
+        distribution=Normal(2),
+        coloring=Gradient((BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)),
+        sound=Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=20, every_jitter=4, gain_jitter=3),
+    )
+    points_radius = 0.03
+
+
+class WideCannonsLight(Scene):
+    simulation_time: int = 15
+    cannon_width: float = 3.0
+    face_height: float = -3.0
+    lane_centers: tuple[float, ...] = (-5.25, -1.75, 1.75, 5.25)
+    distributions: tuple[tuple[str, Distribution], ...] = (
+        ("uniform", Uniform()),
+        ("normal, 1 sigma", Normal(1)),
+        ("normal, 2 sigma", Normal(2)),
+        ("normal, 3 sigma", Normal(3)),
+    )
+    points_radius: float = 0.017
+
+    def construct(self) -> None:
+        lanes = zip(self.lane_centers, PALETTE, self.distributions)
+        for x, color, (label, distribution) in lanes:
+            center = RIGHT * x + UP * self.face_height
+            view, face = wide_lane(
+                self, center, PI / 2, self.cannon_width, color, distribution, self.simulation_time, self.points_radius
+            )
+            caption = Text(label, font_size=24).next_to(face, DOWN)
+            self.add(view, face, caption)
+        self.wait(self.simulation_time)
+
+
+class WideCannonsShortLight(Scene):
+    """
+Title:
+Six Random Distributions Drawn by Streams of Dots
+
+Description:
+Six streams of dots, each spawned from a different random distribution, drawn side by side in a 15-second vertical
+Short: uniform, normal, bimodal and arcsine.
+
+Each stream starts at a short grey line on the left and flies straight to the right at speed 1.3, 120 dots per second,
+1,801 dots per stream and 10,806 in total. Where a dot starts on its line is random, and that is the only difference
+between the six streams. From top to bottom: uniform, so every spot on the line is equally likely; three normal (bell
+curve) streams where the line spans 1, 2 and 3 standard deviations, so the bunching toward the middle gets tighter;
+bimodal, two bell curves, one on each half of the line; and arcsine, a U shape that piles dots at the two ends and
+leaves the middle sparse. Each stream has its own color: blue, orange, green, pink, yellow and purple. Roughly one dot
+in every 30 pops a bubble sound as it appears, with random timing and loudness.
+
+Made with Manim Community 0.22 in Python. The starting points are drawn with NumPy's random number generator from fixed
+seeds, so every render is identical. In the normal streams, a dot that would land outside the line is redrawn rather
+than clipped, so nothing piles up at the ends unless the distribution says so. There are no walls: the dots simply fly
+off the right edge.
+
+#shorts #statistics #manim
+
+Tags:
+normal distribution, uniform distribution, bimodal distribution, arcsine distribution, probability distributions,
+random sampling, bell curve, statistics visualization, particle stream, manim, python, simulation, mathematics, shorts
+
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Six Distributions
+    """
+
+    simulation_time: int = 15
+    cannon_width: float = 0.9
+    face_x: float = -1.9
+    top_margin: float = 0.35
+    distributions: tuple[tuple[str, Distribution], ...] = (
+        ("uniform", Uniform()),
+        ("normal 1σ", Normal(1)),
+        ("normal 2σ", Normal(2)),
+        ("normal 3σ", Normal(3)),
+        ("bimodal", Bimodal()),
+        ("arcsine", Arcsine(0.2)),
+    )
+    points_radius: float = 0.017
+
+    def spawn_sound(self, lane: int) -> Sound:
+        return Sample(ASSETS_DIR / "bubble.wav", gain=-15, every=30, every_jitter=10, gain_jitter=3, seed=lane)
+
+    def construct(self) -> None:
+        top = config.frame_height / 2 - self.top_margin
+        band = (config.frame_height - self.top_margin) / len(self.distributions)
+        lanes = zip(PALETTE, self.distributions)
+        for lane, (color, (label, distribution)) in enumerate(lanes):
+            center = RIGHT * self.face_x + UP * (top - (lane + 0.5) * band)
+            view, face = wide_lane(
+                self,
+                center,
+                0.0,
+                self.cannon_width,
+                color,
+                distribution,
+                self.simulation_time,
+                self.points_radius,
+                self.spawn_sound(lane),
+            )
+            caption = Text(label, font_size=20).next_to(face, UP, buff=0.08, aligned_edge=LEFT)
+            self.add(view, face, caption)
+        self.wait(self.simulation_time)
 
 
 del BoundaryScene
