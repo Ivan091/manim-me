@@ -31,3 +31,18 @@ class Normal(Distribution):
             offsets[outside] = rng.normal(0.0, scale, int(outside.sum()))
             outside = np.abs(offsets) > 1.0
         return offsets
+
+
+@dataclass(frozen=True)
+class Bimodal(Distribution):
+    peak: Normal = Normal()
+
+    def offsets(self, count: int, rng: np.random.Generator) -> np.ndarray:
+        sides = rng.choice((-0.5, 0.5), count)
+        return sides + self.peak.offsets(count, rng) / 2
+
+
+@dataclass(frozen=True)
+class Arcsine(Distribution):
+    def offsets(self, count: int, rng: np.random.Generator) -> np.ndarray:
+        return np.cos(rng.uniform(0.0, np.pi, count))
