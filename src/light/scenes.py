@@ -403,6 +403,40 @@ Thumbnail text: 30 Mirrors
 
 
 class ZShortLight(BoundaryScene):
+    """
+Title:
+A Wide Beam of Dots Draws the Letter Z With Two Mirrors
+
+Description:
+A wide beam of dots flies in from the left, bounces off two mirrors and draws the letter Z in a 15-second vertical
+Short, then switches off and drains away.
+
+The beam is 0.8 wide and the dots are spread across it on a bell curve, so the stroke is dense in the middle and soft
+at the edges. The letter is 3 wide and 4 tall. The dots enter along the top bar at speed 3, 120 per second, 1,200 in
+total. A mirror at the top-right corner sends them down the diagonal, a mirror at the bottom-left corner sends them
+along the bottom bar, and they leave through the right edge. Each new dot is a slightly different color, moving
+through blue, teal, green, yellow, orange, red, pink and purple, so the Z is drawn in changing hues. Roughly one dot in
+every 20 pops a bubble sound as it appears, with random timing and loudness. After 10 seconds the beam stops, and the
+last dots trace the Z and leave just before the video ends.
+
+Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
+constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The
+mirror angles are computed from the path the beam should follow, each dot's starting height is drawn with NumPy from a
+fixed seed, and the exact moment each dot meets a mirror is found by bisection.
+
+#shorts #manim #simulation
+
+Tags:
+letter z, mirror reflection, wide beam, normal distribution, bell curve, ray reflection, mirrors, light simulation,
+particle stream, manim, python, simulation, physics visualization, shorts
+
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: Two Mirrors
+    """
+
     simulation_time = 15
     half_width = 1.5
     half_height = 2.0
