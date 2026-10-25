@@ -284,11 +284,12 @@ Thumbnail text: Inside the Ring
 
 class MathShortLight(BoundaryScene):
     simulation_time = 20
-    word_path = vertical_math_path()
+    letter_half_width = 1.0
+    visible_half_width = letter_half_width + 0.05
+    word_path = vertical_math_path(half_width=letter_half_width)
     boundary = MirrorPath(word_path)
     cannon = StreamCannon(origin=word_path[0], velocity=2.5, spawn_rate=120.0)
     points_radius = 0.025
-    visible_half_width = 1.4
 
     def construct(self) -> None:
         for side in (LEFT, RIGHT):
