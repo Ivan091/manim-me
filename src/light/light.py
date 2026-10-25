@@ -405,7 +405,7 @@ class CircleLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Off-Center Source
     """
@@ -441,7 +441,7 @@ class HexagonLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Six Colors
     """
@@ -476,7 +476,7 @@ class StarLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Five Colors
     """
@@ -512,7 +512,7 @@ class CrossLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Four Colors
     """
@@ -547,7 +547,7 @@ class EllipseLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Start at Focus
     """
@@ -583,7 +583,7 @@ class StadiumLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Stadium Billiard
     """
@@ -617,7 +617,7 @@ class RingLight(BoundaryScene):
 
     Category: Science & Technology
     Language: en
-    Visibility: private
+    Visibility: public
     Made for kids: no
     Thumbnail text: Inside the Ring
     """
