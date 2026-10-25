@@ -301,6 +301,38 @@ Thumbnail text: Inside the Ring
 
 
 class MathShortLight(BoundaryScene):
+    """
+Title:
+One Stream of Dots Spells MATH With Mirrors
+
+Description:
+A single stream of dots bounces off 30 mirrors and spells MATH, one letter after another, in a 20-second vertical Short.
+
+The dots leave a hidden cannon on the left at speed 2, 15 per second, 301 in total. Every mirror sits at a corner of a
+letter and is angled so that its reflection sends the stream along the next stroke. The letters are stacked from top to
+bottom, M, A, T, H, each 2 units wide and 1.45 tall, and the mirrors show as small grey marks before the stream reaches
+them. Between strokes the stream disappears into the dark side margins, where more mirrors turn it around and send it
+back. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and
+purple, so the letters are drawn in changing hues, and the last stroke of the H lands just before the video ends.
+
+Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
+constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
+angles are computed from the path the stream should follow, and the exact moment each dot meets a mirror is found by
+bisection, so every dot follows the same path.
+
+#shorts #math #manim
+
+Tags:
+mirror maze, word made of light, math lettering, ray reflection, mirrors, light reflection, light simulation, manim,
+python, simulation, mathematics, physics visualization, shorts
+
+Category: Science & Technology
+Language: en
+Visibility: public
+Made for kids: no
+Thumbnail text: 30 Mirrors
+    """
+
     simulation_time = 20
     letter_half_width = 1.0
     visible_half_width = letter_half_width + 0.05
