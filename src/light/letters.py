@@ -44,10 +44,10 @@ RAINBOW = (BLUE, TEAL, GREEN, YELLOW, ORANGE, RED, PINK, PURPLE)
 
 class LetterShortLight(BoundaryScene):
     passes: Sequence[Pass]
-    velocity: float = 5.0
-    spawn_rate: float = 200.0
+    velocity: float = 7.0
+    spawn_rate: float = 280.0
     hold_time: float = 4.0
-    mirror_radius: float = 0.06
+    mirror_radius: float = 0.07
     veil_opacity: float = 0.8
     points_radius = 0.03
 
@@ -91,19 +91,19 @@ Title:
 A Wide Beam of Dots Draws the Letter A With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter A in a 27-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter A in a 13-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The A is pointed: two legs run from the bottom corners to a peak
-at the top, and a crossbar sits low, a fifth of the way up. The letter is drawn in two straight passes. Between passes
-the beam leaves the frame, where five hidden mirrors turn it around and send it back for the next stroke, and one mirror
-sits on the letter itself. Outside the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you
-can still follow them. The dots move at speed 5, 200 per second, 3,001 in total. Each new dot is a slightly different
-color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues.
-Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires
-for 15 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the
-letter and leave the frame just before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The A is square: a box open at the bottom, with a crossbar a
+little below the middle. The letter is drawn in two straight passes. Between passes the beam leaves the frame, where
+three hidden mirrors turn it around and send it back for the next stroke, and two mirrors sit on the letter itself.
+Outside the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The
+dots move at speed 7, 280 per second, 2,241 in total. Each new dot is a slightly different color, moving through blue,
+teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150
+makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 8 seconds, long enough to
+light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame
+just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -120,9 +120,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Six Mirrors
+Thumbnail text: Five Mirrors
     """
-    passes = [[(R, B), (0.0, T), (L, B)], [(L, -1.2), (R, -1.2)]]
+    passes = [[(L, B), (L, T), (R, T), (R, B)], [(R, -0.3), (L, -0.3)]]
 
 
 class BShortLight(LetterShortLight):
@@ -131,19 +131,19 @@ Title:
 A Wide Beam of Dots Draws the Letter B With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter B in a 21-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter B in a 17-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The B has square bowls, the upper one a little narrower than the
-lower one. The letter is drawn in three straight passes. Between passes the beam leaves the frame, where five hidden
-mirrors turn it around and send it back for the next stroke, and four mirrors sit on the letter itself. Outside the
-letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at
-speed 5, 200 per second, 2,401 in total. Each new dot is a slightly different color, moving through blue, teal, green,
-yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
-bubble sound as it appears, with random timing and loudness. The cannon fires for 12 seconds, long enough to light the
-whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
-the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The B is a rectangle with a bar across the middle. The letter is
+drawn in two straight passes. Between passes the beam leaves the frame, where four hidden mirrors turn it around and
+send it back for the next stroke, and three mirrors sit on the letter itself. Outside the letter's box a dark veil dims
+the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 7, 280 per second, 2,801
+in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and
+purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears,
+with random timing and loudness. The cannon fires for 10 seconds, long enough to light the whole letter at once for 4
+seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops
+cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -160,9 +160,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Nine Mirrors
+Thumbnail text: Seven Mirrors
     """
-    passes = [[(L, B), (L, T)], [(L, T), (1.0, T), (1.0, 0.5), (L, 0.5)], [(L, B), (R, B), (R, -0.5), (L, -0.5)]]
+    passes = [[(L, B), (L, T), (R, T), (R, B), (L, B)], [(R, 0.0), (L, 0.0)]]
 
 
 class CShortLight(LetterShortLight):
@@ -171,18 +171,17 @@ Title:
 A Wide Beam of Dots Draws the Letter C With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter C in a 11-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter C in a 9-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The C is pointed: its top and bottom bars meet a chevron on the
 left side. The whole letter is drawn in one pass that turns at three mirrors. Outside the letter's box a dark veil dims
-the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,401
-in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and
-purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears,
-with random timing and loudness. The cannon fires for 7 seconds, long enough to light the whole letter at once for 4
-seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops
-cleanly.
+the beam as it comes in and goes out. The dots move at speed 7, 280 per second, 1,681 in total. Each new dot is a
+slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn
+in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness.
+The cannon fires for 6 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last
+dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -210,19 +209,17 @@ Title:
 A Wide Beam of Dots Draws the Letter D With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter D in a 15-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter D in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The D is pointed: its top and bottom bars slant in to meet at a
-point on the right. The letter is drawn in two straight passes. Between passes the beam leaves the frame, where three
-hidden mirrors turn it around and send it back for the next stroke, and three mirrors sit on the letter itself. Outside
-the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move
-at speed 5, 200 per second, 1,801 in total. Each new dot is a slightly different color, moving through blue, teal,
-green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes
-a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 9 seconds, long enough to light
-the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just
-before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The D is a stem whose top and bottom bars slant in to meet at a
+point on the right. The whole letter is drawn in one pass that turns at four mirrors. Outside the letter's box a dark
+veil dims the beam as it comes in and goes out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot
+is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
+drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
+loudness. The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
+and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -239,9 +236,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Six Mirrors
+Thumbnail text: Four Mirrors
     """
-    passes = [[(L, T), (0.5, T), (R, 0.0), (0.5, B), (L, B)], [(L, B), (L, T)]]
+    passes = [[(L, B), (L, T), (0.5, T), (R, 0.0), (0.5, B), (L, B)]]
 
 
 class EShortLight(LetterShortLight):
@@ -250,19 +247,18 @@ Title:
 A Wide Beam of Dots Draws the Letter E With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter E in a 35-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter E in a 13-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The E is a stem with three full bars. The letter is drawn in
-four straight passes. Between passes the beam leaves the frame, where eleven hidden mirrors turn it around and send it
-back for the next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the
-letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at
-speed 5, 200 per second, 3,801 in total. Each new dot is a slightly different color, moving through blue, teal, green,
-yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
-bubble sound as it appears, with random timing and loudness. The cannon fires for 19 seconds, long enough to light the
-whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
-the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The E is a stem with three full bars. The letter is drawn in two
+straight passes. Between passes the beam leaves the frame, where two hidden mirrors turn it around and send it back for
+the next stroke, and two mirrors sit on the letter itself. Outside the letter's box a dark veil dims the hidden mirrors
+and the beam's detours, so you can still follow them. The dots move at speed 7, 280 per second, 2,241 in total. Each new
+dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter
+is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
+loudness. The cannon fires for 8 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
+and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -279,9 +275,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Eleven Mirrors
+Thumbnail text: Four Mirrors
     """
-    passes = [[(L, B), (L, T)], [(L, T), (R, T)], [(R, 0.0), (L, 0.0)], [(L, B), (R, B)]]
+    passes = [[(R, T), (L, T), (L, B), (R, B)], [(R, 0.0), (L, 0.0)]]
 
 
 class FShortLight(LetterShortLight):
@@ -290,19 +286,19 @@ Title:
 A Wide Beam of Dots Draws the Letter F With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter F in a 31-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter F in a 17-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The F is a stem with a top bar and a middle bar. The letter is
-drawn in three straight passes. Between passes the beam leaves the frame, where nine hidden mirrors turn it around and
-send it back for the next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the
-letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at
-speed 5, 200 per second, 3,401 in total. Each new dot is a slightly different color, moving through blue, teal, green,
-yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
-bubble sound as it appears, with random timing and loudness. The cannon fires for 17 seconds, long enough to light the
-whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
-the video ends, so it loops cleanly.
+drawn in two straight passes. Between passes the beam leaves the frame, where five hidden mirrors turn it around and
+send it back for the next stroke, and one mirror sits on the letter itself. Outside the letter's box a dark veil dims
+the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 7, 280 per second, 2,801
+in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and
+purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears,
+with random timing and loudness. The cannon fires for 10 seconds, long enough to light the whole letter at once for 4
+seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops
+cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -319,9 +315,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Nine Mirrors
+Thumbnail text: Six Mirrors
     """
-    passes = [[(L, B), (L, T)], [(L, T), (R, T)], [(R, 0.0), (L, 0.0)]]
+    passes = [[(R, T), (L, T), (L, B)], [(L, 0.0), (R, 0.0)]]
 
 
 class GShortLight(LetterShortLight):
@@ -330,17 +326,17 @@ Title:
 A Wide Beam of Dots Draws the Letter G With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter G in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter G in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The G is square, with its inner bar running across the middle.
-The whole letter is drawn in one pass that turns at four mirrors. Outside the letter's box a dark veil dims the hidden
-mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,601 in total.
-Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so
-the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random
-timing and loudness. The cannon fires for 8 seconds, long enough to light the whole letter at once for 4 seconds; then
-it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+The whole letter is drawn in one pass that turns at four mirrors. Outside the letter's box a dark veil dims the beam as
+it comes in and goes out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different
+color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues.
+Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires
+for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the
+letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -368,17 +364,17 @@ Title:
 A Wide Beam of Dots Draws the Letter H With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter H in a 25-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter H in a 17-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The H is two legs joined by a crossbar. The letter is drawn in
-three straight passes. Between passes the beam leaves the frame, where seven hidden mirrors turn it around and send it
+three straight passes. Between passes the beam leaves the frame, where five hidden mirrors turn it around and send it
 back for the next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the
 letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at
-speed 5, 200 per second, 2,801 in total. Each new dot is a slightly different color, moving through blue, teal, green,
+speed 7, 280 per second, 2,801 in total. Each new dot is a slightly different color, moving through blue, teal, green,
 yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
-bubble sound as it appears, with random timing and loudness. The cannon fires for 14 seconds, long enough to light the
+bubble sound as it appears, with random timing and loudness. The cannon fires for 10 seconds, long enough to light the
 whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
 the video ends, so it loops cleanly.
 
@@ -397,9 +393,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Seven Mirrors
+Thumbnail text: Five Mirrors
     """
-    passes = [[(L, 0.0), (R, 0.0)], [(R, B), (R, T)], [(L, T), (L, B)]]
+    passes = [[(L, T), (L, B)], [(R, B), (R, T)], [(L, 0.0), (R, 0.0)]]
 
 
 class IShortLight(LetterShortLight):
@@ -408,17 +404,15 @@ Title:
 A Wide Beam of Dots Draws the Letter I With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter I in a 21-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter I in a 9-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The I has serifs: a top bar, a stem and a bottom bar. The letter
-is drawn in three straight passes. Between passes the beam leaves the frame, where six hidden mirrors turn it around and
-send it back for the next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the
-letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at
-speed 5, 200 per second, 2,401 in total. Each new dot is a slightly different color, moving through blue, teal, green,
+at the edges. The letter fills a box 3 wide and 4 tall. The I is a single stem. The whole letter is one straight pass
+with no mirror at all. Outside the letter's box a dark veil dims the beam as it comes in and goes out. The dots move at
+speed 7, 280 per second, 1,681 in total. Each new dot is a slightly different color, moving through blue, teal, green,
 yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
-bubble sound as it appears, with random timing and loudness. The cannon fires for 12 seconds, long enough to light the
+bubble sound as it appears, with random timing and loudness. The cannon fires for 6 seconds, long enough to light the
 whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
 the video ends, so it loops cleanly.
 
@@ -437,9 +431,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Six Mirrors
+Thumbnail text: No Mirrors
     """
-    passes = [[(L, T), (R, T)], [(0.0, T), (0.0, B)], [(R, B), (L, B)]]
+    passes = [[(0.0, T), (0.0, B)]]
 
 
 class JShortLight(LetterShortLight):
@@ -448,17 +442,17 @@ Title:
 A Wide Beam of Dots Draws the Letter J With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter J in a 11-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter J in a 9-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The J has a top serif, a stem and a square foot. The whole
-letter is drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the hidden mirrors and
-the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,401 in total. Each new dot
-is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
-drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
-loudness. The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
-and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+letter is drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the beam as it comes in
+and goes out. The dots move at speed 7, 280 per second, 1,681 in total. Each new dot is a slightly different color,
+moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly
+one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 6
+seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter
+and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -486,19 +480,19 @@ Title:
 A Wide Beam of Dots Draws the Letter K With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter K in a 29-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter K in a 13-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The K is a stem with two arms that meet it in the middle. The
-letter is drawn in three straight passes. Between passes the beam leaves the frame, where seven hidden mirrors turn it
-around and send it back for the next stroke; every stroke on the letter itself is a straight line with no mirror on it.
-Outside the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The
-dots move at speed 5, 200 per second, 3,201 in total. Each new dot is a slightly different color, moving through blue,
-teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150
-makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 16 seconds, long enough
-to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame
-just before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The K is a stem with two arms that meet just right of it in the
+middle. The letter is drawn in two straight passes. Between passes the beam leaves the frame, where two hidden mirrors
+turn it around and send it back for the next stroke, and one mirror sits on the letter itself. Outside the letter's box
+a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 7, 280
+per second, 2,241 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow,
+orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble
+sound as it appears, with random timing and loudness. The cannon fires for 8 seconds, long enough to light the whole
+letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before the
+video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -515,9 +509,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Seven Mirrors
+Thumbnail text: Three Mirrors
     """
-    passes = [[(R, T), (L, 0.0)], [(L, 0.0), (R, B)], [(L, B), (L, T)]]
+    passes = [[(1.1, B), (-0.9, 0.0), (1.1, T)], [(L, T), (L, B)]]
 
 
 class LShortLight(LetterShortLight):
@@ -526,17 +520,17 @@ Title:
 A Wide Beam of Dots Draws the Letter L With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter L in a 11-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter L in a 9-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The L is a stem and a foot. The whole letter is drawn in one
-pass that turns at one mirror. Outside the letter's box a dark veil dims the hidden mirrors and the beam's detours, so
-you can still follow them. The dots move at speed 5, 200 per second, 1,401 in total. Each new dot is a slightly
-different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in
-changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness.
-The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last
-dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+pass that turns at one mirror. Outside the letter's box a dark veil dims the beam as it comes in and goes out. The dots
+move at speed 7, 280 per second, 1,681 in total. Each new dot is a slightly different color, moving through blue, teal,
+green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes
+a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 6 seconds, long enough to light
+the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just
+before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -564,18 +558,17 @@ Title:
 A Wide Beam of Dots Draws the Letter M With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter M in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter M in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The M has two outer legs and a middle point that dips below the
 centre. The whole letter is drawn in one pass that turns at three mirrors. Outside the letter's box a dark veil dims the
-hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,601 in
-total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and
-purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears,
-with random timing and loudness. The cannon fires for 8 seconds, long enough to light the whole letter at once for 4
-seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops
-cleanly.
+beam as it comes in and goes out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly
+different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in
+changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness.
+The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last
+dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -603,17 +596,17 @@ Title:
 A Wide Beam of Dots Draws the Letter N With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter N in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter N in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The N is two legs joined by a diagonal. The whole letter is
-drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the hidden mirrors and the beam's
-detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,601 in total. Each new dot is a
-slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn
-in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness.
-The cannon fires for 8 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last
-dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the beam as it comes in and goes
+out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color, moving
+through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one
+dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 7
+seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter
+and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -641,18 +634,17 @@ Title:
 A Wide Beam of Dots Draws the Letter O With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter O in a 17-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter O in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The O is a rectangle. The letter is drawn in two straight
-passes. Between passes the beam leaves the frame, where three hidden mirrors turn it around and send it back for the
-next stroke, and two mirrors sit on the letter itself. Outside the letter's box a dark veil dims the hidden mirrors and
-the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 2,001 in total. Each new dot
-is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
-drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
-loudness. The cannon fires for 10 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
-and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The O is a rectangle. The whole letter is drawn in one pass that
+turns at three mirrors. Outside the letter's box a dark veil dims the beam as it comes in and goes out. The dots move at
+speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color, moving through blue, teal, green,
+yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
+bubble sound as it appears, with random timing and loudness. The cannon fires for 7 seconds, long enough to light the
+whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
+the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -669,9 +661,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Five Mirrors
+Thumbnail text: Three Mirrors
     """
-    passes = [[(R, T), (L, T), (L, B), (R, B)], [(R, T), (R, B)]]
+    passes = [[(L, B), (L, T), (R, T), (R, B), (L, B)]]
 
 
 class PShortLight(LetterShortLight):
@@ -680,18 +672,17 @@ Title:
 A Wide Beam of Dots Draws the Letter P With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter P in a 15-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter P in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The P is a stem with a square bowl. The letter is drawn in two
-straight passes. Between passes the beam leaves the frame, where three hidden mirrors turn it around and send it back
-for the next stroke, and two mirrors sit on the letter itself. Outside the letter's box a dark veil dims the hidden
-mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,801 in total.
-Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so
-the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random
-timing and loudness. The cannon fires for 9 seconds, long enough to light the whole letter at once for 4 seconds; then
-it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The P is a stem with a square bowl. The whole letter is drawn in
+one pass that turns at three mirrors. Outside the letter's box a dark veil dims the beam as it comes in and goes out.
+The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color, moving through
+blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in
+every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 7 seconds, long
+enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the
+frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -708,9 +699,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Five Mirrors
+Thumbnail text: Three Mirrors
     """
-    passes = [[(L, B), (L, T)], [(L, T), (R, T), (R, 0.0), (L, 0.0)]]
+    passes = [[(L, B), (L, T), (R, T), (R, 0.0), (L, 0.0)]]
 
 
 class QShortLight(LetterShortLight):
@@ -719,19 +710,19 @@ Title:
 A Wide Beam of Dots Draws the Letter Q With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter Q in a 37-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter Q in a 15-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The Q is a rectangle with a diagonal tail cutting the
-bottom-right corner. The letter is drawn in three straight passes. Between passes the beam leaves the frame, where eight
-hidden mirrors turn it around and send it back for the next stroke, and two mirrors sit on the letter itself. Outside
+bottom-right corner. The letter is drawn in two straight passes. Between passes the beam leaves the frame, where two
+hidden mirrors turn it around and send it back for the next stroke, and three mirrors sit on the letter itself. Outside
 the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move
-at speed 5, 200 per second, 4,001 in total. Each new dot is a slightly different color, moving through blue, teal,
+at speed 7, 280 per second, 2,521 in total. Each new dot is a slightly different color, moving through blue, teal,
 green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes
-a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 20 seconds, long enough to
-light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame
-just before the video ends, so it loops cleanly.
+a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 9 seconds, long enough to light
+the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just
+before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -748,9 +739,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Ten Mirrors
+Thumbnail text: Five Mirrors
     """
-    passes = [[(R, T), (L, T), (L, B), (R, B)], [(0.2, B), (R, -0.7)], [(R, T), (R, B)]]
+    passes = [[(R, -0.7), (0.2, B)], [(L, B), (L, T), (R, T), (R, B), (L, B)]]
 
 
 class RShortLight(LetterShortLight):
@@ -759,19 +750,17 @@ Title:
 A Wide Beam of Dots Draws the Letter R With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter R in a 19-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter R in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The R is a stem with a square bowl and a diagonal leg. The
-letter is drawn in three straight passes. Between passes the beam leaves the frame, where five hidden mirrors turn it
-around and send it back for the next stroke, and two mirrors sit on the letter itself. Outside the letter's box a dark
-veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per
-second, 2,201 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange,
-red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as
-it appears, with random timing and loudness. The cannon fires for 11 seconds, long enough to light the whole letter at
-once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends,
-so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The R is a stem with a square bowl and a diagonal leg that
+starts from the bowl's lower bar. The whole letter is drawn in one pass that turns at four mirrors. Outside the letter's
+box a dark veil dims the beam as it comes in and goes out. The dots move at speed 7, 280 per second, 1,961 in total.
+Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so
+the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random
+timing and loudness. The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then
+it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -788,9 +777,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Seven Mirrors
+Thumbnail text: Four Mirrors
     """
-    passes = [[(L, B), (L, T)], [(L, T), (R, T), (R, 0.0), (L, 0.0)], [(L, 0.0), (R, B)]]
+    passes = [[(L, B), (L, T), (R, T), (R, 0.0), (-0.3, 0.0), (R, B)]]
 
 
 class SShortLight(LetterShortLight):
@@ -799,17 +788,17 @@ Title:
 A Wide Beam of Dots Draws the Letter S With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter S in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter S in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The S is angular, with a slanted middle stroke. The whole letter
-is drawn in one pass that turns at four mirrors. Outside the letter's box a dark veil dims the hidden mirrors and the
-beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,601 in total. Each new dot is
-a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
-drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
-loudness. The cannon fires for 8 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
-and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+is drawn in one pass that turns at four mirrors. Outside the letter's box a dark veil dims the beam as it comes in and
+goes out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color, moving
+through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one
+dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 7
+seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter
+and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -837,17 +826,17 @@ Title:
 A Wide Beam of Dots Draws the Letter T With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter T in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter T in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The T is a bar and a stem. The letter is drawn in two straight
 passes. Between passes the beam leaves the frame, where three hidden mirrors turn it around and send it back for the
 next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the letter's box a dark
-veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per
-second, 1,601 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange,
+veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 7, 280 per
+second, 1,961 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange,
 red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as
-it appears, with random timing and loudness. The cannon fires for 8 seconds, long enough to light the whole letter at
+it appears, with random timing and loudness. The cannon fires for 7 seconds, long enough to light the whole letter at
 once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before the video ends,
 so it loops cleanly.
 
@@ -877,17 +866,17 @@ Title:
 A Wide Beam of Dots Draws the Letter U With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter U in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter U in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The U is square. The whole letter is drawn in one pass that
-turns at two mirrors. Outside the letter's box a dark veil dims the hidden mirrors and the beam's detours, so you can
-still follow them. The dots move at speed 5, 200 per second, 1,601 in total. Each new dot is a slightly different color,
-moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly
-one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 8
-seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter
-and leave the frame just before the video ends, so it loops cleanly.
+turns at two mirrors. Outside the letter's box a dark veil dims the beam as it comes in and goes out. The dots move at
+speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color, moving through blue, teal, green,
+yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft
+bubble sound as it appears, with random timing and loudness. The cannon fires for 7 seconds, long enough to light the
+whole letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before
+the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -915,17 +904,17 @@ Title:
 A Wide Beam of Dots Draws the Letter V With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter V in a 11-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter V in a 9-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The V is two diagonals meeting at a point at the bottom. The
-whole letter is drawn in one pass that turns at one mirror. Outside the letter's box a dark veil dims the hidden mirrors
-and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,401 in total. Each new
-dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter
-is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
-loudness. The cannon fires for 7 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
-and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+whole letter is drawn in one pass that turns at one mirror. Outside the letter's box a dark veil dims the beam as it
+comes in and goes out. The dots move at speed 7, 280 per second, 1,681 in total. Each new dot is a slightly different
+color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues.
+Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires
+for 6 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the
+letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -953,17 +942,17 @@ Title:
 A Wide Beam of Dots Draws the Letter W With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter W in a 15-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter W in a 13-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The W has four diagonals, with its middle peak at full height.
-The whole letter is drawn in one pass that turns at three mirrors. Outside the letter's box a dark veil dims the hidden
-mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,801 in total.
-Each new dot is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so
-the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random
-timing and loudness. The cannon fires for 9 seconds, long enough to light the whole letter at once for 4 seconds; then
-it stops, and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+The whole letter is drawn in one pass that turns at three mirrors. Outside the letter's box a dark veil dims the beam as
+it comes in and goes out. The dots move at speed 7, 280 per second, 2,241 in total. Each new dot is a slightly different
+color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues.
+Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires
+for 8 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the
+letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -991,17 +980,17 @@ Title:
 A Wide Beam of Dots Draws the Letter X With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter X in a 15-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter X in a 13-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The X is two crossing diagonals. The letter is drawn in two
 straight passes. Between passes the beam leaves the frame, where two hidden mirrors turn it around and send it back for
 the next stroke; every stroke on the letter itself is a straight line with no mirror on it. Outside the letter's box a
-dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 5, 200
-per second, 1,801 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow,
+dark veil dims the hidden mirrors and the beam's detours, so you can still follow them. The dots move at speed 7, 280
+per second, 2,241 in total. Each new dot is a slightly different color, moving through blue, teal, green, yellow,
 orange, red, pink and purple, so the letter is drawn in changing hues. Roughly one dot in every 150 makes a soft bubble
-sound as it appears, with random timing and loudness. The cannon fires for 9 seconds, long enough to light the whole
+sound as it appears, with random timing and loudness. The cannon fires for 8 seconds, long enough to light the whole
 letter at once for 4 seconds; then it stops, and the last dots finish the letter and leave the frame just before the
 video ends, so it loops cleanly.
 
@@ -1031,20 +1020,20 @@ Title:
 A Wide Beam of Dots Draws the Letter Y With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter Y in a 57-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter Y in a 19-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
-at the edges. The letter fills a box 3 wide and 4 tall. The Y is a V with a stem below it. The letter is drawn in two
-straight passes. Between passes the beam leaves the frame, where four hidden mirrors turn it around and send it back for
-the next stroke, and one mirror sits on the letter itself. The stem ends on the mirror at the point of the V, so the
-beam bounces straight back and retraces the whole letter in reverse before it leaves the way it came in, which makes
-this the longest letter of the alphabet. Outside the letter's box a dark veil dims the hidden mirrors and the beam's
-detours, so you can still follow them. The dots move at speed 5, 200 per second, 6,001 in total. Each new dot is a
-slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn
-in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness.
-The cannon fires for 30 seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the
-last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+at the edges. The letter fills a box 3 wide and 4 tall. The Y is a wide V with a stem below it. The letter is drawn in
+two straight passes. Between passes the beam leaves the frame, where three hidden mirrors turn it around and send it
+back for the next stroke, and one mirror sits on the letter itself. The stem ends on the mirror at the point of the V,
+so the beam bounces straight back and retraces the whole letter in reverse before it leaves the way it came in, which
+makes this the longest letter of the alphabet. Outside the letter's box a dark veil dims the hidden mirrors and the
+beam's detours, so you can still follow them. The dots move at speed 7, 280 per second, 3,081 in total. Each new dot is
+a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
+drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
+loudness. The cannon fires for 11 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
+and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
@@ -1061,9 +1050,9 @@ Category: Science & Technology
 Language: en
 Visibility: public
 Made for kids: no
-Thumbnail text: Five Mirrors
+Thumbnail text: Four Mirrors
     """
-    passes = [[(L, T), (0.0, 0.0), (R, T)], [(0.0, B), (0.0, 0.0)]]
+    passes = [[(L, 1.6), (0.0, -0.2), (R, 1.6)], [(0.0, B), (0.0, -0.2)]]
 
 
 class ZShortLight(LetterShortLight):
@@ -1072,17 +1061,17 @@ Title:
 A Wide Beam of Dots Draws the Letter Z With Mirrors
 
 Description:
-A wide beam of dots bounces off mirrors and draws the whole letter Z in a 13-second vertical Short, holds it, then
+A wide beam of dots bounces off mirrors and draws the whole letter Z in a 11-second vertical Short, holds it, then
 switches off and drains away.
 
 The beam is 0.8 wide and the dots are spread across it on a bell curve, so every stroke is dense in the middle and soft
 at the edges. The letter fills a box 3 wide and 4 tall. The Z is a top bar, a diagonal and a bottom bar. The whole
-letter is drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the hidden mirrors and
-the beam's detours, so you can still follow them. The dots move at speed 5, 200 per second, 1,601 in total. Each new dot
-is a slightly different color, moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is
-drawn in changing hues. Roughly one dot in every 150 makes a soft bubble sound as it appears, with random timing and
-loudness. The cannon fires for 8 seconds, long enough to light the whole letter at once for 4 seconds; then it stops,
-and the last dots finish the letter and leave the frame just before the video ends, so it loops cleanly.
+letter is drawn in one pass that turns at two mirrors. Outside the letter's box a dark veil dims the beam as it comes in
+and goes out. The dots move at speed 7, 280 per second, 1,961 in total. Each new dot is a slightly different color,
+moving through blue, teal, green, yellow, orange, red, pink and purple, so the letter is drawn in changing hues. Roughly
+one dot in every 150 makes a soft bubble sound as it appears, with random timing and loudness. The cannon fires for 7
+seconds, long enough to light the whole letter at once for 4 seconds; then it stops, and the last dots finish the letter
+and leave the frame just before the video ends, so it loops cleanly.
 
 Made with Manim Community 0.22 in Python. Every dot is an independent point particle that moves in a straight line at
 constant speed and reflects perfectly off the mirrors: the angle of incidence equals the angle of reflection. The mirror
