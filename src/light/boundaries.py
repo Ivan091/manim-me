@@ -172,6 +172,14 @@ class RingBoundary(Boundary):
         )
 
 
+class OpenBoundary(Boundary):
+    def sdf_many(self, points):
+        return np.full(len(points), -np.inf)
+
+    def to_mobject(self, **kwargs):
+        return VGroup()
+
+
 def regular_polygon(n, radius, rotation=0.0):
     a = rotation + np.linspace(0, TAU, n, endpoint=False)
     return [(radius * np.cos(t), radius * np.sin(t)) for t in a]

@@ -16,6 +16,7 @@ from light.boundaries import (
     Boundary,
     CircleBoundary,
     EllipseBoundary,
+    OpenBoundary,
     PolygonBoundary,
     RingBoundary,
     StadiumBoundary,
@@ -23,7 +24,7 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon, RadialCannon
+from light.cannon import Cannon, RadialCannon, StreamCannon
 from light.world import World
 
 
@@ -335,6 +336,12 @@ Thumbnail text: Inside the Ring
 
     boundary = RingBoundary((0, 0), 0.67, 2.0)
     cannon = RadialCannon(origin=RIGHT * 1.33, color_fractions=[1])  # mid-band
+
+
+
+class StreamLight(BoundaryScene):
+    boundary = OpenBoundary()
+    cannon = StreamCannon(origin=(-6.0, 0.0))
 
 
 del BoundaryScene
