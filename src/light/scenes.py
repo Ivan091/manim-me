@@ -1,6 +1,8 @@
 from manim import (
     BLACK,
     BLUE,
+    DOWN,
+    GRAY,
     GREEN,
     LEFT,
     ORANGE,
@@ -13,8 +15,10 @@ from manim import (
     TEAL,
     UP,
     YELLOW,
+    Line,
     Rectangle,
     Scene,
+    Text,
 )
 
 from light.boundaries import (
@@ -22,6 +26,7 @@ from light.boundaries import (
     CircleBoundary,
     EllipseBoundary,
     MirrorPath,
+    OpenBoundary,
     PolygonBoundary,
     RingBoundary,
     StadiumBoundary,
@@ -29,8 +34,9 @@ from light.boundaries import (
     regular_polygon,
     star,
 )
-from light.cannon import Cannon, RadialCannon, StreamCannon
-from light.coloring import Gradient, Palette
+from light.cannon import Cannon, RadialCannon, StreamCannon, WideCannon
+from light.coloring import PALETTE, Gradient, Palette, StaticColor
+from light.distribution import Distribution, Normal, Uniform
 from light.lettering import vertical_math_path
 from light.world import World
 
@@ -360,6 +366,38 @@ Thumbnail text: 30 Mirrors
             curtain.next_to(side * self.visible_half_width, side, buff=0)
             self.add_foreground_mobjects(curtain)
         super().construct()
+
+
+class WideCannonsLight(Scene):
+    simulation_time: int = 15
+    cannon_width: float = 3.0
+    face_height: float = -3.0
+    lane_centers: tuple[float, ...] = (-5.25, -1.75, 1.75, 5.25)
+    distributions: tuple[tuple[str, Distribution], ...] = (
+        ("uniform", Uniform()),
+        ("normal, 1 sigma", Normal(1)),
+        ("normal, 2 sigma", Normal(2)),
+        ("normal, 3 sigma", Normal(3)),
+    )
+    points_radius: float = 0.017
+
+    def construct(self) -> None:
+        lanes = zip(self.lane_centers, PALETTE, self.distributions)
+        for x, color, (label, distribution) in lanes:
+            center = RIGHT * x + UP * self.face_height
+            cannon = WideCannon(
+                origin=center,
+                direction=PI / 2,
+                width=self.cannon_width,
+                spawn_rate=120.0,
+                coloring=StaticColor(color),
+                distribution=distribution,
+            )
+            world = World(OpenBoundary(), cannon, self.simulation_time)
+            face = Line(LEFT * self.cannon_width / 2, RIGHT * self.cannon_width / 2, color=GRAY).move_to(center)
+            caption = Text(label, font_size=24).next_to(face, DOWN)
+            self.add(world.to_mobject(self.points_radius), face, caption)
+        self.wait(self.simulation_time)
 
 
 del BoundaryScene
