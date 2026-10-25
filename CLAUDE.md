@@ -10,7 +10,7 @@ A personal collection of [Manim Community](https://www.manim.community/) (>=0.22
 
 ```sh
 uv sync                      # or: pip install -e .   (puts src/ on the path via setuptools package-dir)
-manim -c dev.cfg src/light/light.py <SceneName>       # fast preview render
+manim -c dev.cfg src/light/scenes.py <SceneName>       # fast preview render
 ```
 
 Imports are rooted at `src/` (e.g. `from utils.MeineLiebeScene import MeineLiebeScene`), so the editable install (or running with `src` on `PYTHONPATH`) is required.
@@ -34,7 +34,7 @@ Output goes to `media/` (gitignored).
   - `SourceCode` renders code listings (used with files under `code/` or `src/` next to a video); `FollowingLines` is another reusable mobject.
 - `src/youtube/<video>/` — one package per published video, each with its scene module(s) plus local assets (`svg/`, `code/`, `src/*.java`). Asset paths are often relative (e.g. `SourceCode("code/stack.txt", ...)`), so render from the directory the scene expects or check how the path is resolved before moving files.
 - `src/background_noise/` — looping ambient scenes (DVD logo, network).
-- `src/light/light.py` — the most active work: a `Boundary` ABC (signed-distance `sdf_many`/`normal_many` vectorised over `(N, 2)` numpy arrays, numerical-gradient normals by default) with concrete shapes like `RectBoundary`, plus scenes that simulate particles/light in batch and reflect them off boundaries.
+- `src/light/` — the most active work: particles of light bouncing inside a shape. `boundaries.py` has the `Boundary` ABC (signed-distance `sdf_many`/`normal_many` vectorised over `(N, 2)` numpy arrays, numerical-gradient normals by default) and concrete shapes like `RectBoundary`; `world.py` has `World`, which advances all points in batch and reflects them off a boundary; `scenes.py` has `BoundaryScene` plus one scene per shape (the scene docstrings hold the YouTube metadata). Render scenes from `scenes.py`.
 - `src/tests/` — experiments and physics/visual sandboxes (misnamed: not automated tests). Several files here have non-identifier names (`3x+1.py`) and must be run by path.
 - `assets/` — shared sound effects (`ball_hit*.wav`).
 
