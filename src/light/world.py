@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
+from typing import Any, Callable
 
 import numpy as np
-from manim import ManimColor
+from manim import Dot, ManimColor, Mobject, VGroup
 
 from light.boundaries import Boundary
 from light.cannon import Cannon
@@ -32,6 +33,40 @@ class World:
         self.elapsed += dt
         self._fire()
         self._move(dt)
+
+    def to_mobject(self, dot_radius: float) -> VGroup:
+        dots = [
+            Dot(
+                np.append(self.pos[i], 0.0),
+                radius=dot_radius,
+                color=c,
+                fill_opacity=1.0 if i < self.alive else 0.0,
+                num_components=4,
+            )
+            for i, c in enumerate(self.colors)
+        ]
+        dots_group = VGroup(*dots).add_updater(self._draw(dots))
+        view = VGroup(self.boundary.to_mobject(), dots_group)
+        view.add_updater(self._advance)
+        return view
+
+    def _advance(self, _: Mobject, dt: float):
+        self.step(dt)
+
+    def _draw(self, dots: list[Dot]) -> Callable[[Mobject], Any]:
+        p3 = np.zeros((len(dots), 3))
+        shown = self.alive
+
+        def update(_: Mobject):
+            nonlocal shown
+            for d in dots[shown : self.alive]:
+                d.set_opacity(1)
+            shown = self.alive
+            p3[:shown, :2] = self.pos[:shown]
+            for i, d in enumerate(dots[:shown]):
+                d.move_to(p3[i])
+
+        return update
 
     def _fire(self):
         fired = min(self.cannon.fired(self.elapsed), len(self.pos))

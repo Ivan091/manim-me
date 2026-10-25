@@ -1,16 +1,4 @@
-from typing import Any, Callable
-
-import numpy as np
-from manim import (
-    PI,
-    RIGHT,
-    TAU,
-    UP,
-    Dot,
-    Mobject,
-    Scene,
-    VGroup,
-)
+from manim import PI, RIGHT, TAU, UP, Scene
 
 from light.boundaries import (
     Boundary,
@@ -28,22 +16,6 @@ from light.cannon import Cannon, RadialCannon, StreamCannon
 from light.world import World
 
 
-def draw_dots(world: World, dots: list[Dot]) -> Callable[[Mobject], Any]:
-    p3 = np.zeros((len(dots), 3))
-    shown = world.alive
-
-    def update(_: Mobject):
-        nonlocal shown
-        for d in dots[shown : world.alive]:
-            d.set_opacity(1)
-        shown = world.alive
-        p3[:shown, :2] = world.pos[:shown]
-        for i, d in enumerate(dots[:shown]):
-            d.move_to(p3[i])
-
-    return update
-
-
 class BoundaryScene(Scene):
     simulation_time: int = 15
     boundary: Boundary
@@ -52,27 +24,7 @@ class BoundaryScene(Scene):
 
     def construct(self) -> None:
         world = World(self.boundary, self.cannon, self.simulation_time)
-
-        def world_updater(_, dt):
-            world.step(dt)
-
-        world_group = VGroup(self.boundary.to_mobject())
-        world_group.add_updater(world_updater)
-
-        dots = [
-            Dot(
-                np.append(world.pos[i], 0.0),
-                radius=self.points_radius,
-                color=c,
-                fill_opacity=1.0 if i < world.alive else 0.0,
-                num_components=4,
-            )
-            for i, c in enumerate(world.colors)
-        ]
-        dots_group = VGroup(*dots).add_updater(draw_dots(world, dots))
-
-        self.add(world_group)
-        self.add_foreground_mobjects(dots_group)
+        self.add(world.to_mobject(self.points_radius))
         self.wait(self.simulation_time)
 
 
