@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 import numpy as np
-from manim import Dot, ManimColor, Mobject, Scene, VGroup
+from manim import Dot, ManimColor, Scene, VGroup, config
 
 from light.boundaries import Boundary
 from light.cannon import Cannon
@@ -16,6 +16,7 @@ class World:
     # 0 = ideal point reflection; dot radius is draw-only
     wall_radius: float = 0.0
     max_bounces: int = 8
+    view_margin: float = 0.5
     pos: np.ndarray = field(init=False)  # (N, 2), updated in place
     vel: np.ndarray = field(init=False)  # (N, 2), updated in place
     colors: list[ManimColor] = field(init=False)
@@ -38,16 +39,13 @@ class World:
 
     def to_mobject(self, dot_radius: float, scene: Scene) -> VGroup:
         dots = [
-            Dot(
-                np.append(self.pos[i], 0.0),
-                radius=dot_radius,
-                color=c,
-                fill_opacity=1.0 if i < self.alive else 0.0,
-                num_components=4,
-            )
+            Dot(np.append(self.pos[i], 0.0), radius=dot_radius, color=c, num_components=4)
             for i, c in enumerate(self.colors)
         ]
-        dots_group = VGroup(*dots).add_updater(self._draw(dots))
+        dots_group = VGroup()
+        draw = self._draw(dots, dots_group, dot_radius + self.view_margin)
+        draw()
+        dots_group.add_updater(lambda _: draw())
         view = VGroup(self.boundary.to_mobject(), dots_group)
         view.add_updater(lambda _, dt: self._tick(scene, dt))
         return view
@@ -57,20 +55,26 @@ class World:
         fired = self.step(dt)
         self.cannon.sound.play(scene, start, fired, dt)
 
-    def _draw(self, dots: list[Dot]) -> Callable[[Mobject], Any]:
+    def _draw(self, dots: list[Dot], group: VGroup, margin: float) -> Callable[[], Any]:
         p3 = np.zeros((len(dots), 3))
-        shown = self.alive
+        half = np.array([config.frame_x_radius, config.frame_y_radius]) + margin
+        visible = np.zeros(len(dots), dtype=bool)
 
-        def update(_: Mobject):
-            nonlocal shown
-            for d in dots[shown : self.alive]:
-                d.set_opacity(1)
-            shown = self.alive
-            p3[:shown, :2] = self.pos[:shown]
-            for i, d in enumerate(dots[:shown]):
-                d.move_to(p3[i])
+        def draw():
+            n = self.alive
+            inside = np.zeros(len(dots), dtype=bool)
+            inside[:n] = (np.abs(self.pos[:n]) <= half).all(axis=1)
+            gone, arrived = visible & ~inside, inside & ~visible
+            if gone.any():
+                group.remove(*(dots[i] for i in np.flatnonzero(gone)))
+            if arrived.any():
+                group.add(*(dots[i] for i in np.flatnonzero(arrived)))
+            visible[:] = inside
+            p3[:n, :2] = self.pos[:n]
+            for i in np.flatnonzero(inside):
+                dots[i].move_to(p3[i])
 
-        return update
+        return draw
 
     def _fire(self):
         fired = min(self.cannon.fired(self.elapsed), len(self.pos))
