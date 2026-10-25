@@ -578,7 +578,7 @@ class StadiumLight(BoundaryScene):
     #Manim #Simulation #Math
 
     Tags:
-    stadium billiard, Bunimovich stadium, mathematical billiards, dynamical billiards, reflection, light simulation,
+    stadium billiard, bunimovich stadium, mathematical billiards, dynamical billiards, reflection, light simulation,
     manim, python, simulation, mathematics, physics visualization
 
     Category: Science & Technology
