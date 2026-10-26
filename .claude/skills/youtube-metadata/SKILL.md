@@ -1,6 +1,6 @@
 ---
 name: youtube-metadata
-description: Add YouTube publishing metadata (title, description, tags, hashtags, category, language, visibility, thumbnail text) as a copy-ready docstring on the named Manim scene classes in this repo, derived from what each scene actually renders. Invoke whenever the user asks to add, generate, update, or review YouTube metadata, a title, a description, or tags for a scene (e.g. one in src/light/scenes.py) they plan to publish.
+description: Add YouTube publishing metadata (title, description, tags, hashtags, category, language, visibility, thumbnail text) as a copy-ready docstring on the named Manim scene classes in this repo, derived from what each scene actually renders. Invoke whenever the user asks to add, generate, update, or review YouTube metadata, a title, a description, or tags for a scene (e.g. one in src/youtube/<video>/) they plan to publish.
 ---
 
 # youtube-metadata
@@ -10,7 +10,7 @@ Write the publishing text as the class docstring of a scene, so it lives next to
 ## Hard rules
 
 - **Work only on the scenes the user names** (one or several). If a scene is missing or ambiguous, ask once; do not guess.
-- **Describe only what the code renders.** Read the scene and everything it inherits or configures (boundary shape, point count, speed, colors, `simulation_time`, sections, audio). Never invent effects, math claims, or facts the scene does not show.
+- **Describe only what the code renders.** Read the scene and everything it inherits or configures (what is shown, counts, motion, colors, run time, sections, audio). Never invent effects, math claims, or facts the scene does not show.
 - **Never fabricate external facts, and never leave placeholders.** Do not write `TODO:` lines. Links, channel name, social handles, music credits, and sponsor text are included only if the user supplied them; otherwise omit them entirely and mention in the report that the user can add them.
 - **Do not publish or upload anything.** This skill only edits source. The visibility recorded in the docstring defaults to `public`; it is only text to copy, not a setting this skill applies.
 - **Edit only the named scene classes.** Do not touch the base class or other scenes.
@@ -23,7 +23,7 @@ Write the publishing text as the class docstring of a scene, so it lives next to
 The docstring is the first statement in the class body, with its content flush left at column 0. Section labels sit on their own line with the pasteable content directly below, so each block can be selected and copied on its own. Blank lines separate sections.
 
 ```python
-class HexagonLight(BoundaryScene):
+class HexagonLight(MeineLiebeScene):
     """
 Title:
 Light Bouncing Inside a Hexagon
@@ -103,7 +103,7 @@ Thumbnail text: Off-Center Source
 ## Workflow
 
 1. **Locate the scenes.** Read the file and each named scene class, including class attributes inherited from its base. Note the render profile if the user mentions one (any `*_short.cfg` profile is a vertical 9:16 Short; the others are 16:9, see the profile table in `CLAUDE.md`).
-2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (`simulation_time`), use `#shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
+2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (the sum of its `wait` and `play` run times), use `#shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
 3. **Gather facts** to use in the text from the scene's code: what is shown and its dimensions, how many objects move and how, what the colors mean, the duration (the sum of `wait` and `play` run times), sections, sounds, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.
 5. **Write the docstring** as the first statement of each scene class, keeping the surrounding formatting, and remove any legacy `youtube_metadata` dict from that class.
