@@ -65,7 +65,7 @@ Thumbnail text: Six Colors
 
 ## Example
 
-`CircleLight` in `src/light/scenes.py` is the reference for tone, level of detail, and wrapping:
+This description of `CircleLight`, a light simulation that now lives in the me-sim repository, is the reference for tone, level of detail, and wrapping:
 
 ```python
 class CircleLight(BoundaryScene):
@@ -104,8 +104,8 @@ Thumbnail text: Off-Center Source
 
 1. **Locate the scenes.** Read the file and each named scene class, including class attributes inherited from its base. Note the render profile if the user mentions one (any `*_short.cfg` profile is a vertical 9:16 Short; the others are 16:9, see the profile table in `CLAUDE.md`).
 2. **Detect Shorts.** If the video is for a vertical profile and 60 seconds or less (`simulation_time`), use `#shorts` as one of the three hashtags and mention Shorts in the description only if it is short enough to qualify; omit chapters.
-3. **Gather facts** to use in the text: shape name and dimensions, the scene's cannon (`RadialCannon`: `origin`, `amount`, `velocity`, `spawn_rate` `INSTANT` or dots per second; `StreamCannon`: `origin`, `direction`, `velocity`, `spawn_rate`, firing until the scene ends or `firing_time` runs out; `WideCannon`: the same plus a face of `width` across `direction` and a `distribution`, `Uniform`, `Normal(sigmas)`, `Bimodal` or `Arcsine`, that places each dot on it) and its `coloring` (`StaticColor`: one color; `Palette`: color groups from `fractions` and `start_angle`; `Gradient`: a blend through its `stops` in firing order), its `sound` (`Silence`, or a `Sample` file played for `every` nth spawned dot), `simulation_time`, and anything else in `construct`.
+3. **Gather facts** to use in the text from the scene's code: what is shown and its dimensions, how many objects move and how, what the colors mean, the duration (the sum of `wait` and `play` run times), sections, sounds, and anything else in `construct`.
 4. **Draft the sections** following the rules above. Prefer concrete wording over superlatives.
 5. **Write the docstring** as the first statement of each scene class, keeping the surrounding formatting, and remove any legacy `youtube_metadata` dict from that class.
-6. **Verify.** Import the module (`python -c "import light.scenes"` from `src/`, or the equivalent for the file) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, no line over 120 characters, and no leading spaces inside the docstring.
+6. **Verify.** Import the scene's module (for example `python -c "import youtube.<video>.<module>"` from `src/`) to confirm it still loads, read each `__doc__` back, and check the limits above: title length, tag count and total length, hashtag count, description length, no line over 120 characters, and no leading spaces inside the docstring.
 7. **Report.** List each scene's title and tags, say which extras (links, credits, socials) the user can still add, and state that nothing was published.
